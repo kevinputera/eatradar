@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: mdillon/postgis:11-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    env_file:
+      - .env
+
+  pgweb:
+    image: sosedoff/pgweb
+    ports: 
+      - "8081:8081"
+    links:
+      - "postgres:postgres"
+    depends_on:
+      - "postgres"
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
+
