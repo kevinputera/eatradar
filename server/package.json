@@ -4,7 +4,8 @@
   "description": "eatradar server app",
   "main": "app.js",
   "scripts": {
-    "start": "echo \"Error: no start script provided\" && exit 1",
+    "start": "node -r dotenv/config app.js dotenv_config_path=../.env",
+    "start-dev": "nodemon -r dotenv/config app.js dotenv_config_path=../env",
     "init-table": "node -r dotenv/config scripts/tables.js dotenv_config_path=../.env",
     "seed": "node -r dotenv/config scripts/seed.js dotenv_config_path=../.env",
     "test": "echo \"Error: no test specified\" && exit 1"
