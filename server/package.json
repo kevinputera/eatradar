@@ -1,0 +1,30 @@
+{
+  "name": "eatradar-server",
+  "version": "0.1.0",
+  "description": "eatradar server app",
+  "main": "app.js",
+  "scripts": {
+    "start": "echo \"Error: no start script provided\" && exit 1",
+    "init-table": "node -r dotenv/config scripts/tables.js dotenv_config_path=../.env",
+    "seed": "node -r dotenv/config scripts/seed.js dotenv_config_path=../.env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "nodemon": "^1.19.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinputera/eatradar.git"
+  },
+  "contributors": [
+    "Justin Chia Jia Jin",
+    "Kevin Putera"
+  ],
+  "license": "ISC"
+}
