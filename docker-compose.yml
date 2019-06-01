@@ -20,7 +20,7 @@ services:
     depends_on:
       - "postgres"
     environment:
-      - "DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
+      - "DATABASE_URL=postgres://${PGUSER}:${PGPASSWORD}@postgres:${PGPORT}/${PGDATABASE}?sslmode=disable"
 
 volumes:
   postgres_data:
