@@ -18,8 +18,8 @@ services:
       - "postgres:postgres"
     depends_on:
       - "postgres"
-    env_file:
-      - .env
+    environment:
+      - "DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
 
 volumes:
   postgres_data:
