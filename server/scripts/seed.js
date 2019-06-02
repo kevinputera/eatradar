@@ -51,7 +51,7 @@ const client = new Client();
   // populate restaurant table
   await (async () => {
     for (let i = 0; i < 500; i++) {
-      const name = faker.name.firstName() + "'s" + faker.company.catchPhrase();
+      const name = `${faker.name.firstName()}'s ${faker.company.catchPhrase()}`;
       const lon = faker.address.longitude();
       const lat = faker.address.latitude();
       const post = faker.address.zipCode();

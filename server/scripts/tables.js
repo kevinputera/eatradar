@@ -24,7 +24,7 @@ const { Client } = require("pg");
       CREATE TABLE restaurant (
         id SERIAL PRIMARY KEY,
         name VARCHAR(200) NOT NULL,
-        location GEOGRAPHY NOT NULL,
+        location GEOGRAPHY(Point) NOT NULL,
         postcode VARCHAR(20),
         street_id INTEGER NOT NULL,
         FOREIGN KEY (street_id) REFERENCES street(id)
