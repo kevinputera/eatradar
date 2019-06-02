@@ -15,8 +15,11 @@ Docker-compose might fail on the first run due to `pgweb` not being able to conn
 ### server
 
 `npm run start` or `npm start` - launch app.js
+
 `npm run start-dev` launch app.js using nodemon(auto refresh)
+
 `npm run init-table` recreate database tables *WARNING: This will erase all existing data*
+
 `npm run seed` seed the tables with some fake data
 
 ### client
