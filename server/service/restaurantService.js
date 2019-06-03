@@ -1,9 +1,9 @@
 const { pool } = require("../db");
 
 const funcs = {
-  // get restaurants closest to lon, lat
-  getRestaurants: async (lon, lat, page = 1, pageSize = 10) => {
-    const geog = `Point(${lon} ${lat})`;
+  // Get restaurants closest to longitude, latitude
+  getRestaurants: async (longitude, latitude, page = 1, pageSize = 10) => {
+    const geog = `Point(${longitude} ${latitude})`;
     const query = {
       text: `
         SELECT restaurant.id AS id, 
@@ -28,8 +28,8 @@ const funcs = {
       const res = await client.query(query);
       return res.rows;
     } catch (e) {
-      console.log(`restaurantDb.js: error in getRestaurants: ${e}`);
-      throw new Error(`restaurantDb.js: failed to retrieve restaurants: ${e}`);
+      console.log(`restaurantService.js: error in getRestaurants: ${e}`);
+      throw new Error(`restaurantService.js: failed to retrieve restaurants: ${e}`);
     } finally {
       client.release();
     }
