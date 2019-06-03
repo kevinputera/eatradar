@@ -1,8 +1,7 @@
-const { Client } = require("pg");
+const { pool } = require("../db");
 
 (async () => {
-  const client = new Client();
-  await client.connect();
+  const client = await pool.connect();
 
   const dropQuery = 
       `DROP TABLE IF EXISTS restaurant_cuisine;
@@ -54,7 +53,7 @@ const { Client } = require("pg");
   } catch (e) {
     console.log(`tables.js: error during creation: ${e}`);
   } finally {
-    await client.end();
+    await client.release();
   }
 
 })().then(() => {

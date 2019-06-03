@@ -1,10 +1,8 @@
-const { Client } = require("pg");
+const { pool } = require("../db");
 const faker = require("faker");
 
-const client = new Client();
-
 (async () => {
-  await client.connect();
+  const client = await pool.connect();
 
   let street_pk = [];
   let cuisine_pk = [];
@@ -98,7 +96,7 @@ const client = new Client();
     }
   })();
 
-  await client.end();
+  await client.release();
 
 })().then(() => {
   console.log("seeding complete!")

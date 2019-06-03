@@ -7,7 +7,6 @@ services:
       - "5432:5432"
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
-      - "./server/scripts/tables.sql:/docker-entrypoint-initdb.d/tables.sql"
     env_file:
       - .env
 
@@ -20,7 +19,7 @@ services:
     depends_on:
       - "postgres"
     environment:
-      - "DATABASE_URL=postgres://${PGUSER}:${PGPASSWORD}@postgres:${PGPORT}/${PGDATABASE}?sslmode=disable"
+      - "DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
 
 volumes:
   postgres_data:
