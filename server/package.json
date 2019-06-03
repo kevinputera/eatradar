@@ -8,6 +8,7 @@
     "start-dev": "nodemon app.js",
     "init-table": "node scripts/tables.js",
     "seed": "node scripts/seed.js",
+    "trial": "node trial.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

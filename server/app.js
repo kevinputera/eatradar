@@ -1,15 +1,13 @@
 const express = require('express');
+
+const restaurantRoute = require('./routes/restaurants');
+const reviewRoute = require('./routes/reviews');
+
 const app = express();
-const path = require('path');
-//Port declaration, to either use environment variable or pre defined
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.EXPRESS_PORT || 5000;
 
-//Setting static folder to access html files
-app.use(express.static(path.join(__dirname, 'public')));
-
-//Restaurant API routes
-app.use('/api/restaurants', require('./routes/api/restaurants'));
-app.use('/api/reviews', require('./routes/api/reviews'));
-
+// Restaurant API routes
+app.use('/restaurants', restaurantRoute);
+app.use('/reviews', reviewRoute);
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
