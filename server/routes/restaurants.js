@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Get all Restaurants
 router.get('/', async (req,res) => {
-  const longitude = req.query.lon;
+  const longitude = req.query.lng;
   const latitude = req.query.lat;
   let page = req.query.p;
   let pageSize = req.query.ps;
