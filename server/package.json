@@ -4,14 +4,14 @@
   "description": "eatradar server app",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "start-dev": "nodemon app.js",
-    "init-table": "node scripts/tables.js",
-    "seed": "node scripts/seed.js",
-    "trial": "node trial.js",
+    "start": "node -r dotenv/config app.js dotenv_config_path=../.env",
+    "start-dev": "nodemon -r dotenv/config app.js dotenv_config_path=../.env",
+    "table": "node -r dotenv/config scripts/tables.js dotenv_config_path=../.env",
+    "seed": "node -r dotenv/config scripts/seed.js dotenv_config_path=../.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "pg": "^7.11.0"
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinputera/eatradar.git"
+    "url": "https://github.com/kevinputera/eatradar.git"
   },
   "contributors": [
     "Justin Chia Jia Jin",
