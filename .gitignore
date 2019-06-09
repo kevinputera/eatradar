@@ -10,3 +10,6 @@ package-lock.json
 
 # environemnt
 .env
+
+# raw data file
+eating-establishments-geojson.geojson 
