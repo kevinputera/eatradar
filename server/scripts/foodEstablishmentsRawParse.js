@@ -2,7 +2,7 @@ const fs = require("fs");
 const readline = require("readline");
 
 const inputStream = fs.createReadStream("eating-establishments-geojson.geojson", { encoding: "utf-8" });
-const outputStream = fs.createWriteStream("output.txt");
+const outputStream = fs.createWriteStream("foodEstablishmentsParsed.txt");
 
 const reader = readline.createInterface({
   input: inputStream,
@@ -13,17 +13,7 @@ const reader = readline.createInterface({
 // start of output json list
 outputStream.write("[");
 
-let started = false; // to keep track of comma addition in forming json list
-
 reader.on("line", line => {
-  // add comma to the end of the json to form a list
-  if (!started) {
-    started = true;
-  }
-  else {
-    outputStream.write(",\n");
-  }
-
   let data = line;
   if (line.charAt(line.length - 1) === ',') {
     data = line.slice(0, -1);
@@ -32,6 +22,7 @@ reader.on("line", line => {
 
   const id = json.properties.Name;
   const desc = json.properties.Description;
+  const geom = json.geometry;
 
   const rgx = new RegExp(
     /^.+?LIC_NAME.+?<td>(.+?)</i.source +     // get license name
@@ -44,24 +35,68 @@ reader.on("line", line => {
   );
   const matched = desc.match(rgx);
 
-  const license = matched[1];
-  const block = matched[2];
-  const street = matched[3];
-  const unit = matched[4];
-  const postcode = matched[5];
-  const name = matched[6];
-  const level = matched[7];
+  let license = matched[1];
+  let block = matched[2];
+  let street = matched[3];
+  let unit = matched[4];
+  let postcode = matched[5];
+  let name = matched[6];
+  let level = matched[7];
 
-  outputStream.write(JSON.stringify({
-    id: id, 
-    name: name, 
-    block: block, 
-    street: street, 
-    unit: unit, 
-    postcode: postcode, 
-    level: level, 
-    license: license
-  }));
+  // some '(single quot) is in `(backtick)
+  license = license.replace('`', '\'');
+  name = name.replace('`', '\'');
+
+  // clean up stray ?, e.g.: STARBRIGHT BARREL CLUB PTE LTD?
+  license = license.replace('?', '');
+  name = name.replace('?', '');
+
+  // validate
+  const valid = /^[a-z0-9().,*&#\-'@\/ ]+$/i;
+  if (!valid.test(license) || license === '-') {
+    console.log(`invalid license: ${license}`);
+    license = "";
+  }
+  if (!valid.test(block) || block === '-') {
+    console.log(`invalid block: ${block}`);
+    block = "";
+  }
+  if (!valid.test(street) || street === '-') {
+    console.log(`invalid street: ${street}`);
+    street = "";
+  }
+  if (!valid.test(unit) || unit === '-') {
+    console.log(`invalid unit: ${unit}`);
+    unit = "";
+  }
+  if (!valid.test(postcode) || postcode === '-') {
+    console.log(`invalid postcode: ${postcode}`);
+    postcode = "";
+  }
+  if (!valid.test(name) || name === '-') {
+    console.log(`invalid name: ${name}`);
+    name = "";
+  }
+  if (!valid.test(level) || level === '-') {
+    console.log(`invalid level: ${level}`);
+    level = "";
+  }
+
+  if (name !== '') {
+    outputStream.write(JSON.stringify({
+      id: id, 
+      name: name, 
+      block: block, 
+      street: street, 
+      unit: unit, 
+      postcode: postcode, 
+      level: level, 
+      license: license,
+      geometry: geom
+    }));
+
+    outputStream.write(",\n");
+  }
 });
 
 reader.on("close", () => {
