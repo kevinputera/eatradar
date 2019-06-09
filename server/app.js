@@ -2,7 +2,7 @@ const express = require('express');
 
 const restaurantRoute = require('./routes/restaurantRoute');
 const detailRoute = require('./routes/detailRoute');
-const reviewRoute = require('./routes/reviewsRoute');
+const reviewRoute = require('./routes/reviewRoute');
 const blogPostRoute = require('./routes/blogPostRoute');
 
 const app = express();
