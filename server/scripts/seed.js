@@ -1,104 +1,140 @@
-const { pool } = require("../db");
-const faker = require("faker");
+const fs = require('fs');
+const { pgPool } = require('../config/dbConfig');
+const { capitalize } = require('../utils/stringUtils');
+
+const raw = fs.readFileSync('scripts/foodEstablishmentsParsed.txt');
+const json = JSON.parse(raw);
+
+let entries = [];
+
+for (let i = 0; i < 100; i++) {
+  entries.push(json[i]);
+}
+
+const cuisines = [
+  'Chinese', 
+  'Japanese', 
+  'American', 
+  'Indian', 
+  'Korean', 
+  'Italian'
+];
+
+let cuisinePks = [];  
+let restaurantPks = [];
 
 (async () => {
-  const client = await pool.connect();
+  const pgClient = await pgPool.connect();
 
-  let street_pk = [];
-  let cuisine_pk = [];
-  let restaurant_pk = [];
-
-  // populate street table
-  await (async () => {
-    for (let i = 0; i < 100; i++) {
-      const name = faker.address.streetAddress(); 
-      const query = {
-        text: 'INSERT INTO street(name) VALUES ($1) RETURNING id',
-        values: [name]
-      };
-
-      let id;
-      try {
-        id = (await client.query(query)).rows[0].id;
-      } catch (e) {
-        console.log(`seed.js: error in street insert query: ${e}`);
-      }
-      street_pk.push(id);
-    } 
-  })();
-
-  // populate cuisine table
-  await (async () => {
-    for (let i = 0; i < 20; i++) {
-      const name = faker.random.word();
-      const query = {
-        text: 'INSERT INTO cuisine(name) VALUES ($1) RETURNING id',
-        values: [name]
-      }
-
-      let id;
-      try {
-        id = (await client.query(query)).rows[0].id;
-      } catch (e) {
-        console.log(`seed.js: error in cuisine insert query: ${e}`);
-      }
-      cuisine_pk.push(id);
+  // populate cuisine table with random data
+  for (let cuisine of cuisines) {
+    const query = {
+      text: `
+        INSERT INTO cuisine(name) 
+        VALUES ($1) 
+        RETURNING id;
+      `,
+      values: [cuisine]
     }
-  })();
-
-  // populate restaurant table
-  await (async () => {
-    for (let i = 0; i < 500; i++) {
-      const name = `${faker.name.firstName()}'s ${faker.company.catchPhrase()}`;
-      const lon = faker.address.longitude();
-      const lat = faker.address.latitude();
-      const post = faker.address.zipCode();
-      const street_id = faker.random.number(street_pk.length - 1) + 1;
-      const query = {
-        text: 'INSERT INTO restaurant(name, location, postcode, street_id)' + 
-            'VALUES ($1, $2, $3, $4) RETURNING id',
-        values: [
-            name,
-            `POINT(${lon} ${lat})`,
-            post,
-            street_id
-        ]
-      }
-
-      let id;
-      try {
-        id = (await client.query(query)).rows[0].id;
-      } catch (e) {
-        console.log(`seed.js: error in restaurant insert query: ${e}`);
-      }
-      restaurant_pk.push(id);
+    
+    try {
+      const id = (await pgClient.query(query)).rows[0].id;
+      cuisinePks.push(id);
+    } catch (e) {
+      console.log(`seed.js: error in inserting cuisine\n${e}`);
     }
-  })();
+  }
 
-  // populate restaurant cuisine join table
-  await (async () => {
-    for (let i = 0; i < 1000; i++) {
-      const restaurant_id = faker.random.number(restaurant_pk.length - 1) + 1;
-      const cuisine_id = faker.random.number(cuisine_pk.length - 1) + 1;
-      const query = {
-        text: 'INSERT INTO restaurant_cuisine(restaurant_id, cuisine_id) VALUES ($1, $2)',
-        values: [
-            restaurant_id,
-            cuisine_id
-        ]
-      }
-
-      try {
-        await client.query(query);
-      } catch (e) {
-        console.log(`seed.js: error in restaurant_cuisine insert query: ${e}`);
-      }
+  // populate street + restaurant table with real data
+  for (let entry of entries) {
+    const findStreetPkQuery = {
+      text: `
+        SELECT street.id 
+        FROM street 
+        WHERE name = $1;
+      `,
+      values: [entry.street]
     }
-  })();
 
-  await client.release();
+    let streetPk;
+    try {
+      const findStreetPkResult = await pgClient.query(findStreetPkQuery);
+      
+      if (findStreetPkResult.rows.length == 0) {
+        const insertStreetQuery = {
+          text: `
+            INSERT INTO street(name) 
+            VALUES ($1) 
+            RETURNING id;
+          `,
+          values: [entry.street]
+        }
+
+        streetPk = (await pgClient.query(insertStreetQuery)).rows[0].id;
+      } else {
+        streetPk = findStreetPkResult.rows[0].id;
+      }
+    } catch (e) {
+      console.log(`seed.js: error in checking id\n${e}`);
+    }
+
+    const insertRestaurantQuery = {
+      text: `
+        INSERT INTO restaurant(
+            name, 
+            block, 
+            postcode, 
+            unit,
+            level, 
+            location, 
+            street_id) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING id;
+      `,
+      values: [
+        capitalize(entry.name),
+        entry.block === "" ? null : entry.block,
+        entry.postcode === "" ? null : entry.postcode,
+        entry.unit === "" ? null : entry.unit,
+        entry.level === "" ? null : entry.level,
+        `Point(${entry.geometry.coordinates[0]} ${entry.geometry.coordinates[1]})`,
+        streetPk
+      ]
+    }
+
+    try {
+      const id = (await pgClient.query(insertRestaurantQuery)).rows[0].id;
+      restaurantPks.push(id);
+    } catch (e) {
+      console.log(`seed.js: error in inserting into restaurant\n${e}`);
+    }
+  }
+
+  // populate restaurant_cuisine table
+  for (let i = 0; i < 200; i++) {
+    const restaurantId = restaurantPks[Math.floor(Math.random() * restaurantPks.length)];
+    const cuisineId = cuisinePks[Math.floor(Math.random() * cuisinePks.length)];
+    const query = {
+      text: `
+        INSERT INTO restaurant_cuisine(restaurant_id, cuisine_id) 
+        VALUES ($1, $2);
+      `,
+      values:[
+          restaurantId,
+          cuisineId
+      ]
+    }
+
+    try {
+      await pgClient.query(query);
+    } catch (e) {
+      console.log(`seed.js: error in inserting into restaurant_cuisine\n${e}`);
+    }
+  }
+
+  await pgClient.release();
 
 })().then(() => {
-  console.log("seeding complete!")
+  console.log('seed.js: seeding finished!');
   process.exit(0);
-});
+});       

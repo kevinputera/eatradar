@@ -1,7 +1,7 @@
-const { pool } = require("../db");
+const { pgPool } = require("../config/dbConfig");
 
 (async () => {
-  const client = await pool.connect();
+  const pgClient = await pgPool.connect();
 
   const dropQuery = 
       `DROP TABLE IF EXISTS restaurant_cuisine;
@@ -13,25 +13,29 @@ const { pool } = require("../db");
       `CREATE TABLE street (
         id SERIAL PRIMARY KEY,
         name VARCHAR(200) UNIQUE NOT NULL
-      );
-
-      CREATE TABLE cuisine (
+      );`
+      + 
+      `CREATE TABLE cuisine (
         id SERIAL PRIMARY KEY,
         name VARCHAR(50) UNIQUE NOT NULL
-      );
-
-      CREATE TABLE restaurant (
+      );`
+      +
+      `CREATE TABLE restaurant (
         id SERIAL PRIMARY KEY,
         name VARCHAR(200) NOT NULL,
-        location GEOGRAPHY(Point) NOT NULL,
+        block VARCHAR(10),
         postcode VARCHAR(20),
+        unit VARCHAR(10),
+        level VARCHAR(10),
+        location GEOGRAPHY(Point) NOT NULL,
+        google_places_id VARCHAR(200),
         street_id INTEGER NOT NULL,
         FOREIGN KEY (street_id) REFERENCES street(id)
           ON UPDATE CASCADE ON DELETE CASCADE
       );
-      CREATE INDEX location_geog_idx ON restaurant USING GIST (location);
-
-      CREATE TABLE restaurant_cuisine (
+      CREATE INDEX location_geog_idx ON restaurant USING GIST (location);`
+      +
+      `CREATE TABLE restaurant_cuisine (
         id SERIAL PRIMARY KEY,
         restaurant_id INTEGER NOT NULL,
         cuisine_id INTEGER NOT NULL,
@@ -42,18 +46,20 @@ const { pool } = require("../db");
       );`;
   
   try {
-    await client.query(dropQuery);
+    await pgClient.query(dropQuery);
   } catch (e) {
-    console.log(`tables.js: error during deletion: ${e}`);
-    await client.end();
+    console.log(`tables.js: error during table deletion\n${e}`);
+    await pgClient.end();
+    process.exit(1);
   }
   
   try {
-    await client.query(createQuery);
+    await pgClient.query(createQuery);
   } catch (e) {
-    console.log(`tables.js: error during creation: ${e}`);
+    console.log(`tables.js: error during table creation\n${e}`);
+    process.exit(1);
   } finally {
-    await client.release();
+    await pgClient.release();
   }
 
 })().then(() => {
