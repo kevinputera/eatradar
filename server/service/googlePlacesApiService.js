@@ -21,7 +21,25 @@ exports.getDetails = async (params) => {
       ]
     }).asPromise();
 
-    return res.json.result;
+    const photos = res.json.result.photos
+        .map(photo => {
+          const url = this.getPhotoUrl({
+            photoReference: photo.photo_reference,
+            maxWidth: 400,
+            maxHeight: 400
+          });
+          return {
+            html_attributions: photo.html_attributions,
+            url
+          };
+        });
+
+    return {
+      phone_number: res.json.result.international_phone_number,
+      opening_hours: res.json.result.opening_hours,
+      photos,
+      website: res.json.result.website
+    };
   } catch (e) {
     const message = `googlePlacesApiService.js: error in getDetails\n${e}`;
     console.log(message);
@@ -54,7 +72,7 @@ exports.getReviews = async (params) => {
     console.log(message);
     throw new Error(message);
   }
-},
+}
 
 /**
  * Get Google Places' place_id of a location
@@ -83,7 +101,25 @@ exports.getPlaceId = async (params) => {
     console.log(message);
     throw new Error(message);
   }
-},
+}
+
+/**
+ * Create photos url form Googles' photo reference
+ * 
+ * @param {Object} params
+ * @param {string} params.photoReference
+ * @param {number} [params.maxWidth]
+ * @param {number} [params.maxHeight]
+ * @return {string} - photo url
+ */
+exports.getPhotoUrl = (params) => {
+  const uri = 'https://maps.googleapis.com/maps/api/place/photo';
+  return uri
+      + `?key=${process.env.GOOGLE_MAPS_API_KEY_PHOTOS}`
+      + `&photoreference=${params.photoReference}`
+      + `&maxwidth=${params.maxWidth || 400}`
+      + `&maxHeight=${params.maxHeight || 400}`;
+}
 
 /**
  * Refresh Google Places' place_id of a restaurant
