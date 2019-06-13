@@ -15,7 +15,9 @@ exports.getDetails = async (params) => {
       language: params.language || 'en',
       fields: [
           'opening_hours', 
-          'international_phone_number'
+          'international_phone_number',
+          'website',
+          'photo'
       ]
     }).asPromise();
 
