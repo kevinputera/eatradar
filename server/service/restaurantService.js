@@ -12,10 +12,43 @@ exports.getAllRestaurants = async () => {}
  * @param {number} params.latitude 
  * @param {number} params.page
  * @param {number} params.pageSize
+ * @param {string} params.q
  * @return {Promise<Object[]>} - list of restaurants
  */
 exports.getClosestRestaurants =  async (params) => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
+  const pgClient = await pgPool.connect();
+
+  let q;
+  if (params.q) {
+    const query = {
+      text: /* sql */`
+        SELECT word
+        FROM lexeme
+        WHERE similarity(word, $1) > 0.3
+        ORDER BY word <-> $1
+        LIMIT 1;
+      `,
+      values: [params.q]
+    }
+
+    try {
+      const res = await pgClient.query(query);
+      if (res.rows[0]) {
+        console.log(res.rows[0]);
+        q = res.rows[0].word;
+      }
+    } catch (e) {
+      const message = `restaurantService.js: error in getClosestRestaurant\n${e}`;
+      console.log(message);
+      q = null;
+    }
+  }
+  
+  let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
+  if (q) {
+    values.push(q);
+  }
   const query = {
     text: /* sql */`
       SELECT restaurant.id AS id, 
@@ -29,14 +62,14 @@ exports.getClosestRestaurants =  async (params) => {
       FROM restaurant
       INNER JOIN street
           ON restaurant.street_id = street.id
+      ${q ? /* sql */`WHERE to_tsvector('simple', restaurant.name) @@ to_tsquery('simple', $4)` : ''}
       ORDER BY restaurant.location <-> $1 ASC
       OFFSET $2
       LIMIT $3;
     `,
-    values: [geog, (params.page - 1) * params.pageSize, params.pageSize]
-  }
+    values: values
+  };
   
-  const pgClient = await pgPool.connect();
   try {
     const res = await pgClient.query(query);
     return res.rows;

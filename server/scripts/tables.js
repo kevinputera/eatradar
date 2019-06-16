@@ -8,19 +8,17 @@ const { pgPool } = require("../config/dbConfig");
     DROP TABLE IF EXISTS restaurant;
     DROP TABLE IF EXISTS cuisine;
     DROP TABLE IF EXISTS street;
+    DROP EXTENSION IF EXISTS pg_trgm;
   `;
 
   const createQuery = /* sql */`
+    CREATE EXTENSION pg_trgm;
+
     CREATE TABLE street (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) UNIQUE NOT NULL
     );
-    
-    CREATE TABLE cuisine (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(50) UNIQUE NOT NULL
-    );
-    
+ 
     CREATE TABLE restaurant (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) NOT NULL,
@@ -35,7 +33,14 @@ const { pgPool } = require("../config/dbConfig");
         ON UPDATE CASCADE ON DELETE CASCADE
     );
     CREATE INDEX location_geog_idx ON restaurant USING GIST (location);
-    
+    CREATE INDEX name_ts_idx ON restaurant USING GIN (to_tsvector('simple', name));
+  `;
+
+    /* CREATE TABLE cuisine (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(50) UNIQUE NOT NULL
+    );
+ 
     CREATE TABLE restaurant_cuisine (
       id SERIAL PRIMARY KEY,
       restaurant_id INTEGER NOT NULL,
@@ -45,7 +50,7 @@ const { pgPool } = require("../config/dbConfig");
       FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)
         ON UPDATE CASCADE ON DELETE CASCADE
     );
-  `;
+  `; */
   
   try {
     await pgClient.query(dropQuery);
