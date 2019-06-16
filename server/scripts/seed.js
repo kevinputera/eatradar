@@ -5,12 +5,6 @@ const { capitalize } = require('../utils/stringUtils');
 const raw = fs.readFileSync('scripts/foodEstablishmentsParsed.txt');
 const json = JSON.parse(raw);
 
-let entries = [];
-
-for (let i = 0; i < 100; i++) {
-  entries.push(json[i]);
-}
-
 /* const cuisines = [
   'Chinese', 
   'Japanese', 
@@ -46,7 +40,7 @@ let restaurantPks = [];
   } */
 
   // populate street + restaurant table with real data
-  for (let entry of entries) {
+  for (let entry of json) {
     const findStreetPkQuery = {
       text: /* sql */`
         SELECT street.id 
