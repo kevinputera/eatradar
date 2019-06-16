@@ -35,7 +35,6 @@ exports.getClosestRestaurants =  async (params) => {
     try {
       const res = await pgClient.query(query);
       if (res.rows[0]) {
-        console.log(res.rows[0]);
         q = res.rows[0].word;
       }
     } catch (e) {
