@@ -6,6 +6,7 @@ exports.get = async body => {
   };
   return await fetch(endpoint, {
     method: 'GET',
-    headers
+    headers: headers,
+    body: JSON.stringify(body),
   });
 };
