@@ -10,8 +10,9 @@ router.get('/', async (req,res) => {
     longitude: req.query.lng,
     latitude: req.query.lat,
     page: req.query.p || 1,
-    pageSize: req.query.ps || 10
-  }
+    pageSize: req.query.ps || 10,
+    q: req.query.q || null
+  };
 
   if (!params.longitude || !params.latitude) {
     res.status(400).send(
