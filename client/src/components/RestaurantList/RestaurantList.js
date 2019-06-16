@@ -52,7 +52,10 @@ class RestaurantList extends React.Component {
 
   render() {
     const items = this.state.items.map((item, index) => 
-      <li key={item.name + index}>
+      <button 
+        key={item.name + index}
+        className="list-group-item list-group-item-action"
+      >
         <div>{item.name}</div>
         <div>{item.dist}</div>
         <div>
@@ -60,25 +63,30 @@ class RestaurantList extends React.Component {
           <span>{item.street}</span>
           <span>{item.unit ? ` #${item.unit}` : ''}</span>
         </div>
-      </li>
+      </button>
     );
 
     return (
-      <div className="container">
-        <form>
-          <label htmlFor="search-query">query</label>
+      <div className="mx-2">
+
+        <div className="input-group my-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text">search</span>
+          </div>
           <input 
             id="search-query"
             type="text"
             placeholder="search"
             value={this.state.query}
             onChange={this.handleQueryInputChange}
+            className="form-control"
           />
-        </form>
+        </div>
 
-        <ul>
+        <div className="list-group">
           {items}
-        </ul>
+        </div>
+        
       </div>
     );
   }
