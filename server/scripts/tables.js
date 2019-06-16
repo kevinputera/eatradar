@@ -8,6 +8,7 @@ const { pgPool } = require("../config/dbConfig");
     DROP TABLE IF EXISTS restaurant;
     DROP TABLE IF EXISTS cuisine;
     DROP TABLE IF EXISTS street;
+    DROP MATERIALIZED VIEW IF EXISTS lexeme;
     DROP EXTENSION IF EXISTS pg_trgm;
   `;
 
