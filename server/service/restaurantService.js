@@ -17,7 +17,7 @@ exports.getAllRestaurants = async () => {}
 exports.getClosestRestaurants =  async (params) => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
   const query = {
-    text: `
+    text: /* sql */`
       SELECT restaurant.id AS id, 
           restaurant.name AS name,
           restaurant.block AS block,
@@ -57,7 +57,7 @@ exports.getClosestRestaurants =  async (params) => {
  */
 exports.getRestaurant = async (id) => {
   const query = {
-    text: `
+    text: /* sql */`
       SELECT restaurant.id AS id, 
           restaurant.name AS name,
           restaurant.block AS block,
@@ -96,7 +96,7 @@ exports.getRestaurant = async (id) => {
  */
 exports.getGooglePlacesId = async (id) => {
   const query = {
-    text: `
+    text: /* sql */`
       SELECT restaurant.google_places_id
       FROM restaurant
       WHERE id = $1; 
@@ -124,7 +124,7 @@ exports.getGooglePlacesId = async (id) => {
  */
 exports.updateGooglePlacesId = async (id, googlePlacesId) => {
   const query = {
-    text: `
+    text: /* sql */`
       UPDATE restaurant
       SET google_places_id = $2
       WHERE id = $1;
