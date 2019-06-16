@@ -29,7 +29,7 @@ let restaurantPks = [];
   // populate cuisine table with random data
   for (let cuisine of cuisines) {
     const query = {
-      text: `
+      text: /* sql */`
         INSERT INTO cuisine(name) 
         VALUES ($1) 
         RETURNING id;
@@ -48,7 +48,7 @@ let restaurantPks = [];
   // populate street + restaurant table with real data
   for (let entry of entries) {
     const findStreetPkQuery = {
-      text: `
+      text: /* sql */`
         SELECT street.id 
         FROM street 
         WHERE name = $1;
@@ -62,7 +62,7 @@ let restaurantPks = [];
       
       if (findStreetPkResult.rows.length == 0) {
         const insertStreetQuery = {
-          text: `
+          text: /* sql */`
             INSERT INTO street(name) 
             VALUES ($1) 
             RETURNING id;
@@ -79,7 +79,7 @@ let restaurantPks = [];
     }
 
     const insertRestaurantQuery = {
-      text: `
+      text: /* sql */`
         INSERT INTO restaurant(
             name, 
             block, 
@@ -115,7 +115,7 @@ let restaurantPks = [];
     const restaurantId = restaurantPks[Math.floor(Math.random() * restaurantPks.length)];
     const cuisineId = cuisinePks[Math.floor(Math.random() * cuisinePks.length)];
     const query = {
-      text: `
+      text: /* sql */`
         INSERT INTO restaurant_cuisine(restaurant_id, cuisine_id) 
         VALUES ($1, $2);
       `,
