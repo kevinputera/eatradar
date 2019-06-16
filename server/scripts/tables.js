@@ -14,13 +14,14 @@ const { pgPool } = require("../config/dbConfig");
     CREATE TABLE street (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) UNIQUE NOT NULL
-    );
+    );`
     
-    CREATE TABLE cuisine (
+    /* CREATE TABLE cuisine (
       id SERIAL PRIMARY KEY,
       name VARCHAR(50) UNIQUE NOT NULL
-    );
-    
+    ); */
+
+    + /* sql */`
     CREATE TABLE restaurant (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) NOT NULL,
@@ -35,8 +36,9 @@ const { pgPool } = require("../config/dbConfig");
         ON UPDATE CASCADE ON DELETE CASCADE
     );
     CREATE INDEX location_geog_idx ON restaurant USING GIST (location);
+    `;
     
-    CREATE TABLE restaurant_cuisine (
+    /* CREATE TABLE restaurant_cuisine (
       id SERIAL PRIMARY KEY,
       restaurant_id INTEGER NOT NULL,
       cuisine_id INTEGER NOT NULL,
@@ -45,7 +47,7 @@ const { pgPool } = require("../config/dbConfig");
       FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)
         ON UPDATE CASCADE ON DELETE CASCADE
     );
-  `;
+  `; */
   
   try {
     await pgClient.query(dropQuery);

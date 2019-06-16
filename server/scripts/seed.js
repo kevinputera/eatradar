@@ -11,25 +11,25 @@ for (let i = 0; i < 100; i++) {
   entries.push(json[i]);
 }
 
-const cuisines = [
+/* const cuisines = [
   'Chinese', 
   'Japanese', 
   'American', 
   'Indian', 
   'Korean', 
   'Italian'
-];
+]; */
 
-let cuisinePks = [];  
+// let cuisinePks = [];  
 let restaurantPks = [];
 
 (async () => {
   const pgClient = await pgPool.connect();
 
   // populate cuisine table with random data
-  for (let cuisine of cuisines) {
+  /* for (let cuisine of cuisines) {
     const query = {
-      text: /* sql */`
+      text: /* sql `
         INSERT INTO cuisine(name) 
         VALUES ($1) 
         RETURNING id;
@@ -43,7 +43,7 @@ let restaurantPks = [];
     } catch (e) {
       console.log(`seed.js: error in inserting cuisine\n${e}`);
     }
-  }
+  } */
 
   // populate street + restaurant table with real data
   for (let entry of entries) {
@@ -111,11 +111,11 @@ let restaurantPks = [];
   }
 
   // populate restaurant_cuisine table
-  for (let i = 0; i < 200; i++) {
+  /* for (let i = 0; i < 200; i++) {
     const restaurantId = restaurantPks[Math.floor(Math.random() * restaurantPks.length)];
     const cuisineId = cuisinePks[Math.floor(Math.random() * cuisinePks.length)];
     const query = {
-      text: /* sql */`
+      text: /* sql `
         INSERT INTO restaurant_cuisine(restaurant_id, cuisine_id) 
         VALUES ($1, $2);
       `,
@@ -130,7 +130,7 @@ let restaurantPks = [];
     } catch (e) {
       console.log(`seed.js: error in inserting into restaurant_cuisine\n${e}`);
     }
-  }
+  } */
 
   await pgClient.release();
 
