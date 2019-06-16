@@ -35,7 +35,6 @@ exports.getClosestRestaurants =  async (params) => {
     try {
       const res = await pgClient.query(query);
       if (res.rows[0]) {
-        console.log(res.rows[0]);
         q = res.rows[0].word;
       }
     } catch (e) {
@@ -47,7 +46,7 @@ exports.getClosestRestaurants =  async (params) => {
   
   let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
   if (q) {
-    values.push(q);
+    values.push(`${q}:*`); // startswith 'q', i.e. match apple and app for query app
   }
   const query = {
     text: /* sql */`
@@ -62,7 +61,7 @@ exports.getClosestRestaurants =  async (params) => {
       FROM restaurant
       INNER JOIN street
           ON restaurant.street_id = street.id
-      ${q ? /* sql */`WHERE to_tsvector('simple', restaurant.name) @@ to_tsquery('simple', $4)` : ''}
+      ${q ? /* sql */`WHERE to_tsvector('simple', restaurant.name) @@ to_tsquery($4)` : ''}
       ORDER BY restaurant.location <-> $1 ASC
       OFFSET $2
       LIMIT $3;
