@@ -26,8 +26,7 @@ class App extends React.Component {
           await this.restaurantListRef.current.getRestaurants();
         }
       },
-      error => console.log(error.message), // TODO: update this
-      { enableHighAccuracy: true }
+      error => console.log(error.message) // TODO: update this
     );
   }
 
