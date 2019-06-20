@@ -7,8 +7,6 @@ class RestaurantList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: 1.305004,
-      longitude: 103.772474,
       page: 1,
       pageSize: 10,
       query: '',
@@ -18,16 +16,27 @@ class RestaurantList extends React.Component {
   }
 
   async componentDidMount() {
-    const params = {
-      lat: this.state.latitude,
-      lng: this.state.longitude,
-      page: this.state.page,
-      pageSize: this.state.pageSize,
-    };
-    await this.getRestaurants(params);
+    await this.getRestaurants();
   }
 
-  getRestaurants = async params => {
+  getRestaurants = async q => {
+    let params;
+    if (q) {
+      params = {
+        lat: this.props.latitude,
+        lng: this.props.longitude,
+        page: this.state.page,
+        pageSize: this.state.pageSize,
+        q: q,
+      };
+    } else {
+      params = {
+        lat: this.props.latitude,
+        lng: this.props.longitude,
+        page: this.state.page,
+        pageSize: this.state.pageSize,
+      }; 
+    }
     const res = await http.get('/restaurants', params);
     const json = await res.json();
     this.setState({
@@ -39,15 +48,7 @@ class RestaurantList extends React.Component {
     this.setState({
       query: e.target.value,
     });
-
-    const params = {
-      lat: this.state.latitude,
-      lng: this.state.longitude,
-      page: this.state.page,
-      pageSize: this.state.pageSize,
-      q: e.target.value,
-    };
-    this.debouncedGetRestaurants(params);
+    this.debouncedGetRestaurants(e.target.value);
   }
 
   render() {
