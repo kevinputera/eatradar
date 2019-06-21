@@ -4,7 +4,7 @@ import './RestaurantDetails.css';
 class RestaurantDetails extends React.Component {
   render() {
     return (
-      <p className="lead text-muted">
+      <p className="">
         Restaurant details here.
       </p>
     );

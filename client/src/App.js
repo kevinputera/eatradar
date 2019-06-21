@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import RestaurantList from './components/RestaurantList/RestaurantList';
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
@@ -37,23 +37,21 @@ class App extends React.Component {
 
   render() {
     return (
-      <Fragment>
-        <div className="row">
-          <div className="col-md-4 pl-4">
-            <Map />
-          </div>
-          <div className="col-md-4 border-left border-right pr-1 pl-1">
-            <RestaurantList 
-              latitude={this.state.latitude}
-              longitude={this.state.longitude}
-              ref={this.restaurantListRef}
-            />
-          </div>
-          <div className="col-md-4">
-            <RestaurantDetails />
-          </div>
+      <div className="app">
+        <div className="">
+          <Map />
         </div>
-      </Fragment>
+        <div className="">
+          <RestaurantList 
+            latitude={this.state.latitude}
+            longitude={this.state.longitude}
+            ref={this.restaurantListRef}
+          />
+        </div>
+        <div className="">
+          <RestaurantDetails />
+        </div>
+      </div>
     );
   }
 }

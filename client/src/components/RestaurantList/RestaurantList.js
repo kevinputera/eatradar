@@ -55,7 +55,7 @@ class RestaurantList extends React.Component {
     const items = this.state.items.map((item, index) => 
       <button 
         key={item.name + index}
-        className="list-group-item list-group-item-action"
+        className=""
       >
         <div>{item.name}</div>
         <div>{item.dist}</div>
@@ -68,26 +68,23 @@ class RestaurantList extends React.Component {
     );
 
     return (
-      <div className="mx-2">
-
-        <div className="input-group my-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text">search</span>
+      <div className="">
+        <div className="">
+          <div className="">
+            <span className="">search</span>
           </div>
           <input 
-            id="search-query"
             type="text"
             placeholder="search"
             value={this.state.query}
             onChange={this.handleQueryInputChange}
-            className="form-control"
+            className=""
           />
         </div>
 
-        <div className="list-group">
+        <div className="">
           {items}
         </div>
-        
       </div>
     );
   }
