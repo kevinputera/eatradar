@@ -3,6 +3,7 @@ import _ from 'lodash';
 import http from '../../utils/http';
 
 import RestaurantListFilter from '../RestaurantListFilter/RestaurantListFilter';
+import RestaurantListContent from '../RestaurantListContent/RestaurantListContent';
 
 import './RestaurantListContainer.css';
 
@@ -13,7 +14,8 @@ class RestaurantList extends React.Component {
       page: 1,
       pageSize: 10,
       query: '',
-      items: [],
+      contents: [],
+      activeRestaurantIndex: null,
     };
     this.debouncedGetRestaurants = _.debounce(this.getRestaurants, 300);
   }
@@ -35,7 +37,7 @@ class RestaurantList extends React.Component {
     const res = await http.get('/restaurants', params);
     const json = await res.json();
     this.setState({
-      items: json,
+      contents: json,
     });
   }
 
@@ -46,22 +48,13 @@ class RestaurantList extends React.Component {
     await this.debouncedGetRestaurants(e.target.value);
   }
 
-  render() {
-    const items = this.state.items.map((item, index) => 
-      <button 
-        key={item.name + index}
-        className=""
-      >
-        <div>{item.name}</div>
-        <div>{item.dist}</div>
-        <div>
-          <span>{item.block ? `${item.block} ` : ''}</span>
-          <span>{item.street}</span>
-          <span>{item.unit ? ` #${item.unit}` : ''}</span>
-        </div>
-      </button>
-    );
+  handleRestaurantContentClick = index => {
+    this.setState({
+      activeRestaurantIndex: index,
+    });
+  }
 
+  render() {
     return (
       <div className="restaurant-list-container">
         <RestaurantListFilter 
@@ -69,9 +62,11 @@ class RestaurantList extends React.Component {
           handleRefreshButtonClick={this.props.handleRefreshButtonClick}
           query={this.state.query}
         />
-        <div className="">
-          {items}
-        </div>
+        <RestaurantListContent
+          handleRestaurantContentClick={this.handleRestaurantContentClick}
+          activeRestaurantIndex={this.state.activeRestaurantIndex}
+          contents={this.state.contents}
+        />
       </div>
     );
   }
