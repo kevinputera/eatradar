@@ -1,0 +1,14 @@
+.restaurant-list-filter {
+  display: flex;
+  flex-flow: row nowrap;
+
+  margin: 15px 5px;
+}
+
+.search-input-wrapper {
+  flex-grow: 1;
+}
+
+.refresh-button-wrapper {
+  margin-left: 5px;
+}

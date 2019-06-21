@@ -3,7 +3,7 @@ import RestaurantList from './components/RestaurantListContainer/RestaurantListC
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
 
-import './App.css';
+import './AppContainer.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,17 +15,22 @@ class App extends React.Component {
     this.restaurantListRef = React.createRef();
   }
 
+  getLocationAndRefreshRestaurants = async ({ latitude, longitude }) => {
+    this.setState({
+      latitude,
+      longitude 
+    });
+    if (this.restaurantListRef) {
+      await this.restaurantListRef.current.getRestaurants();
+    }
+  }
+
   componentDidMount() {
     // enable position tracking, if available
     this.watchPositionCallback = navigator.geolocation.watchPosition(
-      async position => {
-        this.setState({ 
-          latitude: position.coords.latitude, 
-          longitude: position.coords.longitude 
-        });
-        if (this.restaurantListRef) {
-          await this.restaurantListRef.current.getRestaurants();
-        }
+      async res => {
+        const coords = res.coords;
+        await this.getLocationAndRefreshRestaurants(coords);
       },
       error => console.log(error.message) // TODO: update this
     );
@@ -34,6 +39,19 @@ class App extends React.Component {
   componentWillUnmount() {
     // clear position tracking
     navigator.geolocation.clearWatch(this.watchPositionCallback);
+  }
+
+  handleRefreshButtonClick = async () => {
+    // manual get position trigger
+    navigator.geolocation.getCurrentPosition(
+      async res => {
+        const coords = res.coords;
+        await this.getLocationAndRefreshRestaurants(coords);
+        console.log("manual trigger successful");
+      },
+      error => console.log(error.message),
+      { timeout: 10000 },
+    )
   }
 
   render() {
@@ -46,6 +64,7 @@ class App extends React.Component {
           <RestaurantList 
             latitude={this.state.latitude}
             longitude={this.state.longitude}
+            handleRefreshButtonClick={this.handleRefreshButtonClick}
             ref={this.restaurantListRef}
           />
         </div>

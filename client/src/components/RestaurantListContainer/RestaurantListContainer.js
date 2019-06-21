@@ -23,22 +23,14 @@ class RestaurantList extends React.Component {
   }
 
   getRestaurants = async q => {
-    let params;
+    let params = {
+      lat: this.props.latitude,
+      lng: this.props.longitude,
+      page: this.state.page,
+      pageSize: this.state.pageSize, 
+    };
     if (q) {
-      params = {
-        lat: this.props.latitude,
-        lng: this.props.longitude,
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-        q: q,
-      };
-    } else {
-      params = {
-        lat: this.props.latitude,
-        lng: this.props.longitude,
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-      }; 
+      params = { ...params, q: q }
     }
     const res = await http.get('/restaurants', params);
     const json = await res.json();
@@ -51,7 +43,7 @@ class RestaurantList extends React.Component {
     this.setState({
       query: e.target.value,
     });
-    this.debouncedGetRestaurants(e.target.value);
+    await this.debouncedGetRestaurants(e.target.value);
   }
 
   render() {
@@ -74,6 +66,7 @@ class RestaurantList extends React.Component {
       <div className="restaurant-list-container">
         <RestaurantListFilter 
           handleQueryInputChange={this.handleQueryInputChange}
+          handleRefreshButtonClick={this.props.handleRefreshButtonClick}
           query={this.state.query}
         />
         <div className="">
