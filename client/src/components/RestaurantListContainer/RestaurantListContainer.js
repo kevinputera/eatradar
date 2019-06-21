@@ -38,6 +38,7 @@ class RestaurantList extends React.Component {
     const json = await res.json();
     this.setState({
       contents: json,
+      activeRestaurantIndex: null,
     });
   }
 
