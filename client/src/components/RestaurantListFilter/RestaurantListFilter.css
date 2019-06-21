@@ -2,7 +2,9 @@
   display: flex;
   flex-flow: row nowrap;
 
-  margin: 15px 5px;
+  padding: 15px 15px;
+
+  border-bottom: solid 1px #CED9E0;
 }
 
 .search-input-wrapper {

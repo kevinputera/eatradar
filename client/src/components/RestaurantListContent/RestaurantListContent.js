@@ -9,7 +9,7 @@ function RestaurantListContent(props) {
       <div key={content.name + index} className="content-button-wrapper">
         <Button
           alignText="left"
-          style={{ height: '90px' }}
+          style={{ height: '90px', borderRadius: 0 }}
           active={index === props.activeRestaurantIndex}
           onClick={() => props.handleRestaurantContentClick(index)}
         >
@@ -36,7 +36,6 @@ function RestaurantListContent(props) {
       vertical
       className="contents-wrapper"
     >
-      <Divider style={{ margin: 0 }}/>
       {contents}
     </ButtonGroup>
   );
