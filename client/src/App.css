@@ -1,0 +1,27 @@
+.app {
+  display: flex;
+  flex-flow: row nowrap;
+
+  height: 100vh;
+}
+
+.map-column {
+  order: 0;
+  flex-grow: 1;
+
+  height: 100%;
+}
+
+.restaurant-list-column {
+  order: 1;
+  flex-basis: 30%;
+
+  height: 100%;
+}
+
+.restaurant-detail-column {
+  order: 2;
+  flex-basis: 30%;
+
+  height: 100%;
+}

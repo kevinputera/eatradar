@@ -2,6 +2,7 @@ import React from 'react';
 import RestaurantList from './components/RestaurantList/RestaurantList';
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
+
 import './App.css';
 
 class App extends React.Component {
@@ -38,17 +39,17 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <div className="">
+        <div className="map-column">
           <Map />
         </div>
-        <div className="">
+        <div className="restaurant-list-column">
           <RestaurantList 
             latitude={this.state.latitude}
             longitude={this.state.longitude}
             ref={this.restaurantListRef}
           />
         </div>
-        <div className="">
+        <div className="restaurant-detail-column">
           <RestaurantDetails />
         </div>
       </div>
