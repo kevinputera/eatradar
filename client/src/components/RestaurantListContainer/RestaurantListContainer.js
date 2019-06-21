@@ -1,7 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 import http from '../../utils/http';
-import './RestaurantList.css';
+
+import RestaurantListFilter from '../RestaurantListFilter/RestaurantListFilter';
+
+import './RestaurantListContainer.css';
 
 class RestaurantList extends React.Component {
   constructor(props) {
@@ -68,20 +71,11 @@ class RestaurantList extends React.Component {
     );
 
     return (
-      <div className="">
-        <div className="">
-          <div className="">
-            <span className="">search</span>
-          </div>
-          <input 
-            type="text"
-            placeholder="search"
-            value={this.state.query}
-            onChange={this.handleQueryInputChange}
-            className=""
-          />
-        </div>
-
+      <div className="restaurant-list-container">
+        <RestaurantListFilter 
+          handleQueryInputChange={this.handleQueryInputChange}
+          query={this.state.query}
+        />
         <div className="">
           {items}
         </div>

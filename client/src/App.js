@@ -1,5 +1,5 @@
 import React from 'react';
-import RestaurantList from './components/RestaurantList/RestaurantList';
+import RestaurantList from './components/RestaurantListContainer/RestaurantListContainer';
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
 
