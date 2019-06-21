@@ -5,7 +5,8 @@ const googlePlacesApiService = require('./googlePlacesApiService');
  * Get details of a given restaurant id
  * 
  * @param {number} id
- * @return {Promise<Object>} - details
+ * @return {Promise<Object>}formatted_address, permanently_closed, international_phone_number,
+ * opening_hours & website(url)
  */
 exports.getDetails = async (id) => {
   try {

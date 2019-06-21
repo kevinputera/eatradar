@@ -74,6 +74,40 @@ exports.getReviews = async (params) => {
   }
 }
 
+
+/**
+ * Get Google Places' Details(formatted_address, permananetly_closed, international phone number,
+ * opening hours & website url) of a restaurant
+ * 
+ * @param {Object} params
+ * @param {string} params.placeId
+ * @param {language} [params.language]
+ * @return {Promise<Object>} - formatted_address, permanently_closed, international_phone_number,
+ * opening_hours & website(url)
+ */
+exports.getDetails = async (params) => {
+  try {
+    const res = await placesClient.place({
+      placeid: params.placeId,
+      language: params.language || 'en',
+      fields: [
+          'formatted_address', 
+          'permanently_closed',
+          'international_phone_number',
+          'opening_hours',
+          'website'
+      ]
+    }).asPromise();
+    return res.json.result;
+  } catch (e) {
+    const message = `googlePlacesApiService.js: error in getDetails\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
+}
+
+
+
 /**
  * Get Google Places' place_id of a location
  * 
