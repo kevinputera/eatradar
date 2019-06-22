@@ -4,14 +4,14 @@ import { ButtonGroup, Button, Divider } from '@blueprintjs/core';
 import './RestaurantListContent.css';
 
 function RestaurantListContent(props) {
-  const contents = props.contents.map((content, index) => {
+  const contents = props.contents.map(content => {
     return (
-      <div key={content.name + index} className="content-button-wrapper">
+      <div key={content.id} className="content-button-wrapper">
         <Button
           alignText="left"
           style={{ height: '90px', borderRadius: 0 }}
-          active={index === props.activeRestaurantIndex}
-          onClick={() => props.handleRestaurantContentClick(index)}
+          active={content.id === props.restaurantSelection}
+          onClick={() => props.updateRestaurantSelection(content.id)}
         >
           <div className="content-button-detail-wrapper bp3-running-text">
             <section className="restaurant-identity">
