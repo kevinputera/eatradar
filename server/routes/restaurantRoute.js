@@ -1,6 +1,7 @@
 const express = require('express');
 const restaurantService = require('../service/restaurantService');
 const router = express.Router();
+const response = require('../utils/response');
 
 /**
  * Get closest restaurants
@@ -15,29 +16,34 @@ router.get('/', async (req,res) => {
   };
 
   if (!params.longitude || !params.latitude) {
-    res.status(400).send(
+    response.sendBadRequest(
+        res,
         `Both longitude and latitude must be appended 
-         to the URI as query parameters`);
+        to the URI as query parameters`);
     return;
   }
 
   if (params.page <= 0) {
-    res.status(400).send(
-        'Page query parameter[p] must be greater than zero');
+    response.sendBadRequest(
+      res,
+      'Page query parameter[p] must be greater than zero'
+    );
     return;
   }
 
   if (params.pageSize < 10) {
-    res.status(400).send(
-        'Page size must be greater than 10');
+    response.sendBadRequest(
+      res,
+      'Page size must be greater than 10'
+    );
     return;
   }
 
   try {
     const result = await restaurantService.getClosestRestaurants(params);
-    res.status(200).json(result);
+    response.sendOk(res, result);
   } catch (e) {
-    res.status(500).send(e.message);
+    response.sendInternalError(res, e.message);
   }
 });
 
