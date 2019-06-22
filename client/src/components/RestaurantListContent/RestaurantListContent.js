@@ -18,7 +18,7 @@ function RestaurantListContent(props) {
               <div>{content.name}</div>
               <span>{content.block ? `${content.block} ` : ''}</span>
               <span>{content.street}</span>
-              <span>{content.unit ? `#${content.unit} ` : ''}</span>
+              <span>{content.unit ? ` #${content.unit} ` : ''}</span>
             </section>
             <div className="restaurant-distance-wrapper">
               <div className="restaurant-distance">
