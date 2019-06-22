@@ -74,7 +74,6 @@ exports.getReviews = async (params) => {
   }
 }
 
-
 /**
  * Get Google Places' place_id of a location
  * 
