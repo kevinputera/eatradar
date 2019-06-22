@@ -1,6 +1,6 @@
 import React from 'react';
-import RestaurantList from './components/RestaurantListContainer/RestaurantListContainer';
-import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
+import RestaurantListContainer from './components/RestaurantListContainer/RestaurantListContainer';
+import RestaurantDetailContainer from './components/RestaurantDetailContainer/RestaurantDetailContainer';
 import Map from './components/Map/Map';
 
 import './AppContainer.css';
@@ -62,7 +62,7 @@ class App extends React.Component {
         </div>
         <div className="restaurant-list-detail-wrapper">
           <div className="restaurant-card-wrapper">
-            <RestaurantList 
+            <RestaurantListContainer 
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               handleRefreshButtonClick={this.handleRefreshButtonClick}
@@ -70,7 +70,7 @@ class App extends React.Component {
             />
           </div>
           <div className="restaurant-card-wrapper">
-            <RestaurantDetails />
+            <RestaurantDetailContainer />
           </div>
         </div>
       </div>
