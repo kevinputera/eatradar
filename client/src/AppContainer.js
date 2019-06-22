@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { getRestaurants } from './api/restaurantApi';
 
 import RestaurantListContainer from './components/RestaurantListContainer/RestaurantListContainer';
@@ -16,7 +17,7 @@ class App extends React.Component {
       restaurantSelection: null,
       page: 1,
       pageSize: 10,
-      contents: [],
+      contents: Immutable.List(),
     };
   }
 
@@ -71,10 +72,12 @@ class App extends React.Component {
     }
 
     const restaurants = await getRestaurants(params);
-    this.setState({
-      contents: restaurants,
-    });
-    this.clearRestaurantSelection();
+    if (!Immutable.is(restaurants, this.state.contents)) {
+      this.setState({
+        contents: restaurants,
+      });
+      this.clearRestaurantSelection();
+    }
   }
 
   updateRestaurantSelection = id => {
@@ -90,6 +93,16 @@ class App extends React.Component {
   };
 
   render() {
+    const restaurantDetailContainer = this.state.restaurantSelection 
+        ? <div className="restaurant-card-wrapper">
+            <RestaurantDetailContainer
+              contents={this.state.contents}
+              restaurantSelection={this.state.restaurantSelection}
+              clearRestaurantSelection={this.clearRestaurantSelection}
+            />
+          </div>
+        : null;
+
     return (
       <div className="app">
         <div className="map-wrapper">
@@ -107,9 +120,7 @@ class App extends React.Component {
               getAndUpdateRestaurants={this.getAndUpdateRestaurants}
             />
           </div>
-          <div className="restaurant-card-wrapper">
-            <RestaurantDetailContainer />
-          </div>
+          {restaurantDetailContainer} 
         </div>
       </div>
     );

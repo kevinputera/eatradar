@@ -1,4 +1,4 @@
-exports.get = async (resource, params) => {
+export const get = async (resource, params) => {
   const endpoint = new URL(`http://localhost:5000${resource}`);
   Object.keys(params).forEach(key => 
     endpoint.searchParams.append(key, params[key])

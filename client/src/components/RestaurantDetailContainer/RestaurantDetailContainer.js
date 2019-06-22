@@ -12,6 +12,7 @@ class RestaurantDetailContainer extends React.Component {
             large
             minimal
             icon="cross"
+            onClick={this.props.clearRestaurantSelection}
             style={{ borderRadius: '20px' }}
           />
         </div>
