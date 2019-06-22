@@ -1,0 +1,29 @@
+.content-button-detail-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.restaurant-identity {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.restaurant-distance-wrapper {
+  display: flex;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  width: 4.5rem;
+  height: 4.5rem;
+
+  font-size: 1.3rem;
+}
+
+.restaurant-distance {
+  align-self: center;
+  margin: auto;
+
+  color: #394B59;
+}
