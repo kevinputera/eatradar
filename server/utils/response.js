@@ -1,6 +1,6 @@
 function responseObject(params) {
     return {
-        status: params.status || '',
+        status: params.status || 200,
         message: params.message || '',
         data: params.data || {},
     };
@@ -16,14 +16,14 @@ exports.sendOk = (res,body) => {
 exports.sendBadRequest = (res,message) => {
     res.status(400).send(responseObject({
         status: 400,
-        message: 'Bad Request ' + message,
+        message: message,
     }));
 }
 
 exports.sendInternalError = (res,message) => {
     res.status(500).send(responseObject({
         status: 500,
-        message: 'Internal Error ' + message,
+        message: message,
     }));
 }
 
