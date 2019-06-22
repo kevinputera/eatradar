@@ -120,6 +120,7 @@ class App extends React.Component {
               getAndUpdateRestaurants={this.getAndUpdateRestaurants}
             />
           </div>
+
           {restaurantDetailContainer} 
         </div>
       </div>

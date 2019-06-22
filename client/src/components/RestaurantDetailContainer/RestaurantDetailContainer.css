@@ -1,9 +1,10 @@
 .restaurant-detail-container {
-  position: relative;
+  height: 100%;
+
+  padding: 10px 10px;
+  overflow: hidden;
 }
 
-.close-button-wrapper {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.restaurant-detail-heading {
+  margin: 10px 10px;
 }

@@ -13,6 +13,8 @@
   height: 100%;
   width: 100%;
   z-index: 0;
+
+  background-color: #f9f9f9;
 }
 
 .restaurant-list-detail-wrapper {
@@ -20,8 +22,9 @@
   right: 0;
 
   display: flex;
+  flex-direction: row-reverse;
 
-  padding-right: 3px;
+  padding-right: 5px;
 
   height: 100%;  
   width: 60%;
@@ -29,10 +32,9 @@
 }
 
 .restaurant-card-wrapper {
-  flex-basis: 28%;
-  flex-grow: 1;
+  flex-basis: 47%;
 
-  margin: 10px 3px;
+  margin: 10px 5px;
 
   overflow-y: scroll;
   overflow-x: hidden;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonGroup, Button, Divider } from '@blueprintjs/core';
+import { getDistanceString } from '../../utils/conversion';
 
 import './RestaurantListContent.css';
 
@@ -22,7 +23,7 @@ function RestaurantListContent(props) {
             </section>
             <div className="restaurant-distance-wrapper">
               <div className="restaurant-distance">
-                {Math.round(content.dist)}m
+                {getDistanceString(Math.round(content.dist))}
               </div>
             </div>
           </div>
