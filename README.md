@@ -2,7 +2,7 @@
 
 ## Setup
 
-### Posgres and pgweb(Postgres web viewer)
+### postgres and pgweb(Postgres web viewer)
 
 Ensure Docker is installed and `docker-compose` is working.
 
