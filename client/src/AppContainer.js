@@ -2,7 +2,6 @@ import React from 'react';
 import RestaurantList from './components/RestaurantListContainer/RestaurantListContainer';
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
-import { Card } from '@blueprintjs/core'
 
 import './AppContainer.css';
 

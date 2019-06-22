@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonGroup, Button, Divider, H3 } from '@blueprintjs/core';
+import { ButtonGroup, Button, Divider } from '@blueprintjs/core';
 
 import './RestaurantListContent.css';
 
