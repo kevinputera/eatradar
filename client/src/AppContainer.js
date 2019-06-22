@@ -2,6 +2,7 @@ import React from 'react';
 import RestaurantList from './components/RestaurantListContainer/RestaurantListContainer';
 import RestaurantDetails from './components/RestaurantDetails/RestaurantDetails';
 import Map from './components/Map/Map';
+import { Card } from '@blueprintjs/core'
 
 import './AppContainer.css';
 
@@ -57,19 +58,21 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <div className="map-column">
+        <div className="map-wrapper">
           <Map />
         </div>
-        <div className="restaurant-list-column">
-          <RestaurantList 
-            latitude={this.state.latitude}
-            longitude={this.state.longitude}
-            handleRefreshButtonClick={this.handleRefreshButtonClick}
-            ref={this.restaurantListRef}
-          />
-        </div>
-        <div className="restaurant-detail-column">
-          <RestaurantDetails />
+        <div className="restaurant-list-detail-wrapper">
+          <div className="restaurant-card-wrapper">
+            <RestaurantList 
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              handleRefreshButtonClick={this.handleRefreshButtonClick}
+              ref={this.restaurantListRef}
+            />
+          </div>
+          <div className="restaurant-card-wrapper">
+            <RestaurantDetails />
+          </div>
         </div>
       </div>
     );
