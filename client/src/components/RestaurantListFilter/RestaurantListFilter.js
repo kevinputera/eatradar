@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputGroup, Button } from '@blueprintjs/core';
+import { InputGroup, Button, Tooltip } from '@blueprintjs/core';
 
 import './RestaurantListFilter.css';
 
@@ -17,13 +17,18 @@ function RestaurantListFilter(props) {
         />
       </div>
       <div className="refresh-button-wrapper">
-        <Button
-          large
-          minimal
-          icon="refresh"
-          onClick={props.handleRefreshButtonClick}
-          style={{ borderRadius: '20px' }}
-        />
+        <Tooltip 
+          position="bottom"
+          content="Update your location"
+        >
+          <Button
+            large
+            minimal
+            icon="refresh"
+            onClick={props.handleRefreshButtonClick}
+            style={{ borderRadius: '20px' }}
+          />
+        </Tooltip>
       </div>
     </div>
   )

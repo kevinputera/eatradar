@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonGroup, Button, MenuItem } from '@blueprintjs/core';
+import { ButtonGroup, Button, MenuItem, Tooltip } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/select';
 
 import './RestaurantListNavigation.css'
@@ -21,14 +21,24 @@ function RestaurantListNavigation(props) {
     <div className="restaurant-list-navigation">
       <div className="navigation-button">
         <ButtonGroup>
-          <Button 
-            icon="chevron-left"
-            onClick={props.handlePagePrev}
-          />
+          <Tooltip
+            position="top"
+            content="Previous page"
+          >
+            <Button 
+              icon="chevron-left"
+              onClick={props.handlePagePrev}
+            />
+          </Tooltip>
+          <Tooltip
+            position="top"
+            content="Next page"
+          >
           <Button 
             icon="chevron-right"
             onClick={props.handlePageNext}
           />
+          </Tooltip>
         </ButtonGroup>
       </div>
       <div className="navigation-selector">
@@ -39,10 +49,15 @@ function RestaurantListNavigation(props) {
           activeItem={props.pageSize}
           onItemSelect={props.handlePageSizeChange}
         >
-          <Button
-            text={props.pageSize}
-            rightIcon="double-caret-vertical"
-          />
+          <Tooltip
+            position="left"
+            content="Restaurants per page"
+          >
+            <Button
+              text={props.pageSize}
+              rightIcon="double-caret-vertical"
+            />
+          </Tooltip>
         </Select>
       </div>
     </div>
