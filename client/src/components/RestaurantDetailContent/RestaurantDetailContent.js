@@ -5,13 +5,11 @@ import './RestaurantDetailContent.css';
 function RestaurantDetailContent(props) {
   let phone;
   let website;
-  let hours;
-  let photos;
   if (props.details) {
     phone = props.details.phone_number;
     website = props.details.website;
-    hours = props.details.opening_hours;
-    photos = props.details.photos;
+    // hours = props.details.opening_hours;
+    // photos = props.details.photos;
   }
   const content = (
     <Fragment>
