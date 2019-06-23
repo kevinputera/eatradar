@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Card, H5, Elevation } from '@blueprintjs/core';
+import { Button, H5 } from '@blueprintjs/core';
+
+import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';
 
 import './RestaurantDetailContainer.css';
 
@@ -16,14 +18,15 @@ class RestaurantDetailContainer extends React.Component {
             style={{ borderRadius: '20px' }}
           />
         </div>
-        <div className="restaurant-detail-heading">
-          <Card 
-            elevation={Elevation.ONE}
-            style={{ borderRadius: '10px' }}
-          >
-            <H5>{restaurant ? restaurant.name : null}</H5>
-          </Card>
-        </div>
+        <RestaurantDetailCard className="summary-card">
+          <H5>{restaurant ? restaurant.name : null}</H5>
+        </RestaurantDetailCard>
+        <RestaurantDetailCard className="details-card">
+        </RestaurantDetailCard>
+        <RestaurantDetailCard className="review-card">
+        </RestaurantDetailCard>
+        <RestaurantDetailCard className="blogpost-card">
+        </RestaurantDetailCard>
       </div>
     );
   }
