@@ -28,7 +28,8 @@ class App extends React.Component {
         const coords = res.coords;
         await this.updateLocationAndRefreshRestaurants(coords);
       },
-      error => console.log(error.message) // TODO: update this
+      error => console.log(error.message), // TODO: update this
+      { enableHighAccuracy: true, maximumAge: 10000 }
     );
 
     await this.getAndUpdateRestaurants();
@@ -48,7 +49,7 @@ class App extends React.Component {
         console.log("manual trigger successful");
       },
       error => console.log(error.message),
-      { timeout: 10000 },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 },
     )
   };
 
