@@ -144,6 +144,8 @@ exports.getGooglePlacesId = async (id) => {
     const message = `restaurantService.js: error in getGooglePlacesId\n${e}`;
     console.log(message);
     throw new Error(message);
+  } finally {
+    await pgClient.release();
   }
 }
 
