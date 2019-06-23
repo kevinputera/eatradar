@@ -45,7 +45,8 @@ export const getDetails = async id => {
       photos: photos,
       website: raw.website,
     });
+
   } catch (e) {
-    return null;
+    return detail();
   }
 };
