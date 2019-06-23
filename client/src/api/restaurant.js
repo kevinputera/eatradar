@@ -2,11 +2,11 @@ import Immutable from 'immutable';
 
 export const restaurant = Immutable.Record({
   id: null,
-  name: '',
-  block: '',
-  street: '',
-  unit: '',
-  level: '',
-  postcode: '',
-  dist: 0,
+  name: null,
+  block: null,
+  street: null,
+  unit: null,
+  level: null,
+  postcode: null,
+  dist: null,
 });

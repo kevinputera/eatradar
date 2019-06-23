@@ -1,3 +1,7 @@
+.content-button-wrapper {
+  overflow: hidden;
+}
+
 .content-button-detail-wrapper {
   display: flex;
   flex-flow: row nowrap;

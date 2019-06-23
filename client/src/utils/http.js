@@ -1,8 +1,10 @@
 export const get = async (resource, params) => {
   const endpoint = new URL(`http://localhost:5000${resource}`);
-  Object.keys(params).forEach(key => 
-    endpoint.searchParams.append(key, params[key])
-  );
+  if (params) {
+    Object.keys(params).forEach(key => 
+      endpoint.searchParams.append(key, params[key])
+    );
+  }
 
   const headers = {
     'Content-Type': 'application/json',
@@ -17,7 +19,7 @@ export const get = async (resource, params) => {
 
   if (!res.ok) {
     throw new Error(`
-      GET request to ${resource} failed, 
+      GET request to ${resource} failed,\n 
       status: ${json.status}, message: ${json.message}`
     );
   }

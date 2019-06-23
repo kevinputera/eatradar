@@ -37,7 +37,6 @@ function RestaurantDetailSummary(props) {
       </div>
     );
   }
-  console.log(props.restaurant);
 
   return summary;
 }

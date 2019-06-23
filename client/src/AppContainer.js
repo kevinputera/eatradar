@@ -15,6 +15,7 @@ class App extends React.Component {
       restaurantSelection: null,
     };
     this.restaurantListRef = React.createRef();
+    this.restaurantDetailRef = React.createRef();
   }
 
   async componentDidMount() {
@@ -47,10 +48,11 @@ class App extends React.Component {
     )
   };
 
-  updateRestaurantSelection = restaurant => {
-    this.setState({
-      restaurantSelection: restaurant,
-    });
+  updateRestaurantSelection = async restaurant => {
+    this.setState(
+      { restaurantSelection: restaurant },
+      async () => await this.restaurantDetailRef.current.getAndUpdateDetails()
+    );
   };
 
   clearRestaurantSelection = () => {
@@ -73,6 +75,7 @@ class App extends React.Component {
             <RestaurantDetailContainer
               restaurantSelection={this.state.restaurantSelection}
               clearRestaurantSelection={this.clearRestaurantSelection}
+              ref={this.restaurantDetailRef}
             />
           </div>
         : null;

@@ -1,15 +1,36 @@
 import React from 'react';
+import { getDetails } from '../../api/detailApi';
 import { Button } from '@blueprintjs/core';
 
 import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';
 import RestaurantDetailSummary from '../RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from '../RestaurantDetailContent/RestaurantDetailContent';
-
-import './RestaurantDetailContainer.css';
 import RestaurantDetailReview from '../RestaurantDetailReview/RestaurantDetailReview';
 import RestaurantDetailBlogpost from '../RestaurantDetailBlogpost/RestaurantDetailBlogpost';
 
+import './RestaurantDetailContainer.css';
+
 class RestaurantDetailContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // details
+      details: null,
+
+      // reviews
+    };
+  }
+
+  async componentDidMount() {
+    await this.getAndUpdateDetails();
+  }
+
+  getAndUpdateDetails = async () => {
+    const id = this.props.restaurantSelection.id;
+    const details = await getDetails(id);
+    this.setState({ details: details });
+  }
+
   render() {
     return (
       <div className="restaurant-detail-container">
@@ -30,7 +51,7 @@ class RestaurantDetailContainer extends React.Component {
 
         <RestaurantDetailCard className="details-card">
           <RestaurantDetailContent
-            id={this.props.restaurantSelection.id}
+            details={this.state.details}
           />
         </RestaurantDetailCard>
 
