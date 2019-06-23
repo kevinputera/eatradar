@@ -21,18 +21,21 @@ exports.getDetails = async (params) => {
       ]
     }).asPromise();
 
-    const photos = res.json.result.photos
-        .map(photo => {
-          const url = this.getPhotoUrl({
-            photoReference: photo.photo_reference,
-            maxWidth: 400,
-            maxHeight: 400
+    let photos = [];
+    if (res.json.result.photos) {
+      photos = res.json.result.photos
+          .map(photo => {
+            const url = this.getPhotoUrl({
+              photoReference: photo.photo_reference,
+              maxWidth: 400,
+              maxHeight: 400
+            });
+            return {
+              html_attributions: photo.html_attributions,
+              url
+            };
           });
-          return {
-            html_attributions: photo.html_attributions,
-            url
-          };
-        });
+    }
 
     return {
       phone_number: res.json.result.international_phone_number,
