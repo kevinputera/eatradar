@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 
 import RestaurantListContainer from './components/RestaurantListContainer/RestaurantListContainer';
 import RestaurantDetailContainer from './components/RestaurantDetailContainer/RestaurantDetailContainer';
@@ -49,28 +50,34 @@ class App extends React.Component {
   };
 
   updateRestaurantSelection = async restaurant => {
-    this.setState(
-      { restaurantSelection: restaurant },
-      async () => 
-        await Promise.all([
-          this.restaurantDetailRef.current.getAndUpdateDetails(),
-          this.restaurantDetailRef.current.getAndUpdateReviews(),
-        ])
-    );
+    if (!Immutable.is(this.state.restaurantSelection, restaurant)) {
+      this.setState(
+        { restaurantSelection: restaurant },
+        async () => 
+          await Promise.all([
+            this.restaurantDetailRef.current.getAndUpdateDetails(),
+            this.restaurantDetailRef.current.getAndUpdateReviews(),
+          ])
+      );
+    }
   };
 
   clearRestaurantSelection = () => {
-    this.setState({
-      restaurantSelection: null,
-    });
+    if (this.state.restaurantSelection != null) {
+      this.setState({
+        restaurantSelection: null,
+      });
+    }
   };
 
   updateLocationAndRefreshRestaurantList = async ({ latitude, longitude }) => {
-    this.setState({
-      latitude,
-      longitude 
-    });
-    await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants();
+    if (this.state.latitude !== latitude || this.state.longitude !== longitude) {
+      this.setState({
+        latitude,
+        longitude 
+      });
+      await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants();
+    }
   };
 
   render() {
