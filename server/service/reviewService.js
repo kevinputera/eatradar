@@ -7,7 +7,7 @@ const googlePlacesApiService = require('./googlePlacesApiService');
  * @param {number} id
  * @return {Promise<Object>} - reviews
  */
-exports.getReviews = async (id) => {
+exports.getReviews = async id => {
   try {
     const placeId = await restaurantService.getGooglePlacesId(id);
     const reviews = await googlePlacesApiService.getReviews({

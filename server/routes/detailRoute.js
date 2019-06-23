@@ -3,20 +3,29 @@ const router = express.Router();
 const detailService = require('../service/detailService');
 const response = require('../utils/response');
 
+/**
+ * Get restaurant details
+ */
+router.get('/:id', async(req,res) => {
+  let id;
+  try {
+    id = parseInt(req.params.id);
+  } catch (e) {
+    response.sendBadRequest(res, 'Id must be of type number')
+    return;
+  }
 
-// TODO: create route for detail requests
-router.get('/', async(req,res) => {
-    let id = req.query.id;
-    if(!id || id < 0){
-      response.sendBadRequest(res, 'A correct id must be appended to the URI as request parameters');
-      return;
-      }
-    try {
-        const result = await detailService.getDetails(id);
-        response.sendOk(res, result);
-      } catch (e) {
-        response.sendBadRequest(res, e.message);
-    }    
+  if(!id || id < 0){
+    response.sendBadRequest(res, 'A correct id must be included in the request URI');
+    return;
+  }
+
+  try {
+    const result = await detailService.getDetails(id);
+    response.sendOk(res, result);
+  } catch (e) {
+    response.sendBadRequest(res, e.message);
+  }
 });
 
 module.exports = router
