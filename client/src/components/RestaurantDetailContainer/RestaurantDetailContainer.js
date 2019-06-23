@@ -5,10 +5,7 @@ import './RestaurantDetailContainer.css';
 
 class RestaurantDetailContainer extends React.Component {
   render() {
-    const restaurant = this.props.contents.find(content => 
-      content.id === this.props.restaurantSelection
-    );
-
+    const restaurant = this.props.restaurantSelection;
     return (
       <div className="restaurant-detail-container">
         <div className="close-button-wrapper">

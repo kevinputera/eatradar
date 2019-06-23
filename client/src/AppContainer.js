@@ -1,6 +1,4 @@
 import React from 'react';
-import Immutable from 'immutable';
-import { getRestaurants } from './api/restaurantApi';
 
 import RestaurantListContainer from './components/RestaurantListContainer/RestaurantListContainer';
 import RestaurantDetailContainer from './components/RestaurantDetailContainer/RestaurantDetailContainer';
@@ -15,10 +13,8 @@ class App extends React.Component {
       latitude: 1.3033702, // set default to point to the center of Singapore
       longitude: 103.8283541, // set default to point to the center of Singapore
       restaurantSelection: null,
-      page: 1,
-      pageSize: 10,
-      contents: Immutable.List(),
     };
+    this.restaurantListRef = React.createRef();
   }
 
   async componentDidMount() {
@@ -26,13 +22,11 @@ class App extends React.Component {
     this.watchPositionCallback = navigator.geolocation.watchPosition(
       async res => {
         const coords = res.coords;
-        await this.updateLocationAndRefreshRestaurants(coords);
+        await this.updateLocationAndRefreshRestaurantList(coords);
       },
       error => console.log(error.message), // TODO: update this
       { enableHighAccuracy: true, maximumAge: 10000 }
     );
-
-    await this.getAndUpdateRestaurants();
   }
 
   componentWillUnmount() {
@@ -45,7 +39,7 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(
       async res => {
         const coords = res.coords;
-        await this.updateLocationAndRefreshRestaurants(coords);
+        await this.updateLocationAndRefreshRestaurantList(coords);
         console.log("manual trigger successful");
       },
       error => console.log(error.message),
@@ -53,37 +47,9 @@ class App extends React.Component {
     )
   };
 
-  updateLocationAndRefreshRestaurants = async ({ latitude, longitude }) => {
+  updateRestaurantSelection = restaurant => {
     this.setState({
-      latitude,
-      longitude 
-    });
-    await this.getAndUpdateRestaurants();
-  };
-
-  getAndUpdateRestaurants = async query => {
-    let params = {
-      lat: this.state.latitude,
-      lng: this.state.longitude,
-      page: this.state.page,
-      pageSize: this.state.pageSize,
-    };
-    if (query) {
-      params = { ...params, q: query };
-    }
-
-    const restaurants = await getRestaurants(params);
-    if (!Immutable.is(restaurants, this.state.contents)) {
-      this.setState({
-        contents: restaurants,
-      });
-      this.clearRestaurantSelection();
-    }
-  }
-
-  updateRestaurantSelection = id => {
-    this.setState({
-      restaurantSelection: id,
+      restaurantSelection: restaurant,
     });
   };
 
@@ -93,11 +59,18 @@ class App extends React.Component {
     });
   };
 
+  updateLocationAndRefreshRestaurantList = async ({ latitude, longitude }) => {
+    this.setState({
+      latitude,
+      longitude 
+    });
+    await this.restaurantListRef.current.getAndUpdateRestaurants();
+  };
+
   render() {
     const restaurantDetailContainer = this.state.restaurantSelection 
         ? <div className="restaurant-card-wrapper">
             <RestaurantDetailContainer
-              contents={this.state.contents}
               restaurantSelection={this.state.restaurantSelection}
               clearRestaurantSelection={this.clearRestaurantSelection}
             />
@@ -112,13 +85,13 @@ class App extends React.Component {
         <div className="restaurant-list-detail-wrapper">
           <div className="restaurant-card-wrapper">
             <RestaurantListContainer 
-              contents={this.state.contents}
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               restaurantSelection={this.state.restaurantSelection}
               handleRefreshButtonClick={this.handleRefreshButtonClick}
               updateRestaurantSelection={this.updateRestaurantSelection}
-              getAndUpdateRestaurants={this.getAndUpdateRestaurants}
+              clearRestaurantSelection={this.clearRestaurantSelection}
+              ref={this.restaurantListRef}
             />
           </div>
 

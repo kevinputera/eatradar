@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { ButtonGroup, Button, Divider } from '@blueprintjs/core';
 import { getDistanceString } from '../../utils/conversion';
 
@@ -11,8 +12,8 @@ function RestaurantListContent(props) {
         <Button
           alignText="left"
           style={{ height: '90px', borderRadius: 0 }}
-          active={content.id === props.restaurantSelection}
-          onClick={() => props.updateRestaurantSelection(content.id)}
+          active={Immutable.is(content, props.restaurantSelection)}
+          onClick={() => props.updateRestaurantSelection(content)}
         >
           <div className="content-button-detail-wrapper bp3-running-text">
             <section className="restaurant-identity">
