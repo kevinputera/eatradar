@@ -9,8 +9,18 @@ export const get = async (resource, params) => {
     'Accept': 'application/json'
   };
 
-  return await fetch(endpoint, {
+  const res = await fetch(endpoint, {
     method: 'GET',
     headers: headers,
   });
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw new Error(`
+      GET request to ${resource} failed, 
+      status: ${json.status}, message: ${json.message}`
+    );
+  }
+
+  return json;
 };
