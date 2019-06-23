@@ -5,6 +5,7 @@ import { getRestaurants } from '../../api/restaurantApi';
 
 import RestaurantListFilter from '../RestaurantListFilter/RestaurantListFilter';
 import RestaurantListContent from '../RestaurantListContent/RestaurantListContent';
+import RestaurantListNavigation from '../RestaurantListNavigation/RestaurantListNavigation';
 
 import './RestaurantListContainer.css';
 
@@ -25,23 +26,41 @@ class RestaurantListContainer extends React.Component {
   }
 
   handleQueryInputChange = async e => {
-    this.setState({
-      query: e.target.value,
-    });
-    await this.debouncedGetAndUpdateRestaurants(e.target.value);
+    this.setState(
+      { query: e.target.value }, 
+      async () => await this.debouncedGetAndUpdateRestaurants()
+    );
+  };
+
+  handlePageSizeChange = size => {
+    this.setState(
+      { pageSize: size },
+      async () => await this.debouncedGetAndUpdateRestaurants()
+    );
+  };
+
+  handlePageNext = () => {
+    this.setState(
+      state => { return { page: state.page + 1 }; },
+      async () => await this.debouncedGetAndUpdateRestaurants()
+    );
   }
 
-  getAndUpdateRestaurants = async query => {
+  handlePagePrev = () => {
+    this.setState(
+      state => { return { page: state.page > 1 ? state.page - 1 : 1}; },
+      async () => await this.debouncedGetAndUpdateRestaurants()
+    );
+  }
+
+  getAndUpdateRestaurants = async () => {
     let params = {
       lat: this.props.latitude,
       lng: this.props.longitude,
-      page: this.state.page,
-      pageSize: this.state.pageSize,
+      p: this.state.page,
+      ps: this.state.pageSize,
       q: this.state.query, 
     };
-    if (query) {
-      params.q = query;
-    }
 
     const restaurants = await getRestaurants(params);
     if (!Immutable.is(restaurants, this.state.contents)) {
@@ -50,20 +69,26 @@ class RestaurantListContainer extends React.Component {
       });
       this.props.clearRestaurantSelection();
     }
-  }
+  };
 
   render() {
     return (
       <div className="restaurant-list-container">
         <RestaurantListFilter 
+          query={this.state.query}
           handleQueryInputChange={this.handleQueryInputChange}
           handleRefreshButtonClick={this.props.handleRefreshButtonClick}
-          query={this.state.query}
         />
         <RestaurantListContent
-          updateRestaurantSelection={this.props.updateRestaurantSelection}
-          restaurantSelection={this.props.restaurantSelection}
           contents={this.state.contents}
+          restaurantSelection={this.props.restaurantSelection}
+          updateRestaurantSelection={this.props.updateRestaurantSelection}
+        />
+        <RestaurantListNavigation
+          pageSize={this.state.pageSize}
+          handlePageSizeChange={this.handlePageSizeChange}
+          handlePageNext={this.handlePageNext}
+          handlePagePrev={this.handlePagePrev}
         />
       </div>
     );

@@ -1,0 +1,9 @@
+.restaurant-list-navigation {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 10px 20px;
+}
+
+.navigation-selector {
+  margin-right: 10px;
+}
