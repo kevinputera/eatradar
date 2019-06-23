@@ -1,6 +1,7 @@
 export const getDistanceString = dist => {
-  if (dist < 1000) {
-    return `${dist}m`;
+  const round = Math.round(dist);
+  if (round < 1000) {
+    return `${round}m`;
   }
-  return `${Math.round(dist / 1000)}km`
+  return `${Math.round(round / 1000)}km`
 };

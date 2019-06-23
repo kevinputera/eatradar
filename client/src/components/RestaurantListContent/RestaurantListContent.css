@@ -4,14 +4,22 @@
   align-items: center;
 }
 
-.restaurant-identity {
+.restaurant-list-identity {
   flex-grow: 1;
   flex-shrink: 1;
 
   margin-left: 5px;
 }
 
-.restaurant-distance-wrapper {
+.restaurant-list-name {
+  font-size: 1.1em;
+}
+
+.restaurant-list-address {
+  color: #394B59;
+}
+
+.restaurant-list-distance-wrapper {
   display: flex;
 
   flex-grow: 0;
@@ -19,13 +27,12 @@
 
   width: 4.5rem;
   height: 4.5rem;
+  margin-left: 5px;
 
   font-size: 1.3rem;
 }
 
-.restaurant-distance {
+.restaurant-list-distance {
   align-self: center;
   margin: auto;
-
-  color: #394B59;
 }

@@ -16,15 +16,18 @@ function RestaurantListContent(props) {
           onClick={() => props.updateRestaurantSelection(content)}
         >
           <div className="content-button-detail-wrapper bp3-running-text">
-            <section className="restaurant-identity">
-              <div>{content.name}</div>
-              <span>{content.block ? `${content.block} ` : ''}</span>
-              <span>{content.street}</span>
-              <span>{content.unit ? ` #${content.unit} ` : ''}</span>
+            <section className="restaurant-list-identity">
+              <div className="restaurant-list-name">
+                {content.name}
+              </div>
+              <div className="restaurant-list-address">
+                <span>{content.block ? `${content.block} ` : ''}</span>
+                <span>{content.street}</span>
+              </div>
             </section>
-            <div className="restaurant-distance-wrapper">
-              <div className="restaurant-distance">
-                {getDistanceString(Math.round(content.dist))}
+            <div className="restaurant-list-distance-wrapper">
+              <div className="restaurant-list-distance">
+                {getDistanceString(content.dist)}
               </div>
             </div>
           </div>
