@@ -64,7 +64,7 @@ class App extends React.Component {
       latitude,
       longitude 
     });
-    await this.restaurantListRef.current.getAndUpdateRestaurants();
+    await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants();
   };
 
   render() {
