@@ -51,7 +51,11 @@ class App extends React.Component {
   updateRestaurantSelection = async restaurant => {
     this.setState(
       { restaurantSelection: restaurant },
-      async () => await this.restaurantDetailRef.current.getAndUpdateDetails()
+      async () => 
+        await Promise.all([
+          this.restaurantDetailRef.current.getAndUpdateDetails(),
+          this.restaurantDetailRef.current.getAndUpdateReviews(),
+        ])
     );
   };
 

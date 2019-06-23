@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { get } from '../utils/http';
-import { detail, openingHours, period, photo } from './detail';
+import { details, openingHours, period, photo } from './details';
 
 /**
  * Get the details of a restaurant
@@ -39,14 +39,13 @@ export const getDetails = async id => {
       }));
     }
 
-    return detail({
+    return details({
       opening_hours: hours,
       phone_number: raw.phone_number,
       photos: photos,
       website: raw.website,
     });
-
   } catch (e) {
-    return detail();
+    return details();
   }
 };

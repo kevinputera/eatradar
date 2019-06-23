@@ -16,9 +16,7 @@ import { restaurant } from './restaurant';
 export const getRestaurants = async params => {
   try {
     const json = await get('/restaurants', params);
-    return Immutable.List(
-      json.data.map(item => restaurant(item))
-    );
+    return Immutable.List(json.data.map(r => restaurant(r)));
   } catch (e) {
     return Immutable.List();
   }

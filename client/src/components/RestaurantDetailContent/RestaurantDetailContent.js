@@ -29,13 +29,14 @@ function RestaurantDetailContent(props) {
   );
 
   let empty = false;
-  if (!phone && !website && !hours && !photos) {
+  if (!phone && !website) {
     empty = true;
   }
 
   return (
     <div className="restaurant-detail-content">
-      {!empty ? content : 'Sorry, we can\'t find details for this restaurant'}
+      {!empty ? content : 
+        `Sorry, we can't find any details for this restaurant`}
     </div>
   );
 }

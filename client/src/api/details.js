@@ -16,7 +16,7 @@ export const photo = Immutable.Record({
   url: null,
 });
 
-export const detail = Immutable.Record({
+export const details = Immutable.Record({
   opening_hours: null,
   phone_number: null,
   photos: null,

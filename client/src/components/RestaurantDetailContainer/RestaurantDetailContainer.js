@@ -1,5 +1,7 @@
 import React from 'react';
 import { getDetails } from '../../api/detailApi';
+import { getReviews } from '../../api/reviewApi';
+import { details } from '../../api/details';
 import { Button } from '@blueprintjs/core';
 
 import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';
@@ -14,21 +16,28 @@ class RestaurantDetailContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // details
-      details: null,
-
-      // reviews
+      details: details(),
+      reviews: null, 
     };
   }
 
   async componentDidMount() {
-    await this.getAndUpdateDetails();
+    await Promise.all([
+      this.getAndUpdateDetails(),
+      this.getAndUpdateReviews(),
+    ]);
   }
 
   getAndUpdateDetails = async () => {
     const id = this.props.restaurantSelection.id;
     const details = await getDetails(id);
-    this.setState({ details: details });
+    this.setState({ details });
+  }
+
+  getAndUpdateReviews = async () => {
+    const id = this.props.restaurantSelection.id;
+    const reviews = await getReviews(id);
+    this.setState({ reviews });
   }
 
   render() {
@@ -57,7 +66,7 @@ class RestaurantDetailContainer extends React.Component {
 
         <RestaurantDetailCard className="review-card">
           <RestaurantDetailReview 
-            id={this.props.restaurantSelection.id}
+            reviews={this.state.reviews}
           />
         </RestaurantDetailCard>
 
