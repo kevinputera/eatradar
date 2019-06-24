@@ -6,20 +6,21 @@ const response = require('../utils/response');
 /**
  * Get closest restaurants
  */
-router.get('/', async (req,res) => {
+router.get('/', async (req, res) => {
   const params = {
     longitude: req.query.lng,
     latitude: req.query.lat,
     page: req.query.p || 1,
     pageSize: req.query.ps || 10,
-    q: req.query.q || null
+    q: req.query.q || null,
   };
 
   if (!params.longitude || !params.latitude) {
     response.sendBadRequest(
-        res,
-        `Both longitude and latitude must be appended 
-        to the URI as query parameters`);
+      res,
+      `Both longitude and latitude must be appended 
+        to the URI as query parameters`
+    );
     return;
   }
 
@@ -32,10 +33,7 @@ router.get('/', async (req,res) => {
   }
 
   if (params.pageSize < 10) {
-    response.sendBadRequest(
-      res,
-      'Page size must be greater than 10'
-    );
+    response.sendBadRequest(res, 'Page size must be greater than 10');
     return;
   }
 
@@ -51,8 +49,8 @@ router.get('/', async (req,res) => {
  * Get single restaurant based on id
  */
 router.get('/:id', (req, res) => {
-  // res.json(restaurants.filter(restaurant => 
-      // restaurant.id === parseInt(req.params.id)));
+  // res.json(restaurants.filter(restaurant =>
+  // restaurant.id === parseInt(req.params.id)));
 });
 
-module.exports =  router;
+module.exports = router;

@@ -7,7 +7,7 @@ function RestaurantListFilter(props) {
   return (
     <div className="restaurant-list-filter">
       <div className="search-input-wrapper">
-        <InputGroup 
+        <InputGroup
           large
           type="search"
           leftIcon="search"
@@ -17,10 +17,7 @@ function RestaurantListFilter(props) {
         />
       </div>
       <div className="refresh-button-wrapper">
-        <Tooltip 
-          position="bottom"
-          content="Update your location"
-        >
+        <Tooltip position="bottom" content="Update your location">
           <Button
             large
             minimal
@@ -31,7 +28,7 @@ function RestaurantListFilter(props) {
         </Tooltip>
       </div>
     </div>
-  )
+  );
 }
 
 export default RestaurantListFilter;

@@ -3,7 +3,7 @@ const googlePlacesApiService = require('./googlePlacesApiService');
 
 /**
  * Get reviews of a given restaurant id
- * 
+ *
  * @param {number} id
  * @return {Promise<Object>} - reviews
  */
@@ -12,7 +12,7 @@ exports.getReviews = async id => {
     const placeId = await restaurantService.getGooglePlacesId(id);
     const reviews = await googlePlacesApiService.getReviews({
       placeId: placeId,
-      language: 'en'
+      language: 'en',
     });
 
     return { google: reviews };
@@ -21,4 +21,4 @@ exports.getReviews = async id => {
     console.log(message);
     throw new Error(message);
   }
-}
+};

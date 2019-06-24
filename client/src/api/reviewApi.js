@@ -1,10 +1,10 @@
-import Immutable from 'immutable';
-import { get } from '../utils/http';
-import { review, reviews } from './reviews';
+import Immutable from "immutable";
+import { get } from "../utils/http";
+import { review, reviews } from "./reviews";
 
 /**
  * Get the ratings and reviews of a restaurant
- * 
+ *
  * @param {number} id
  * @return {Immutable.Record} - ratings and reviews of a restaurant
  */

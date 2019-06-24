@@ -1,11 +1,11 @@
-import Immutable from 'immutable';
-import { get } from '../utils/http';
-import { restaurant } from './restaurant';
+import Immutable from "immutable";
+import { get } from "../utils/http";
+import { restaurant } from "./restaurant";
 
 /**
  * Get closest restaurants to a point, filter by params
- * 
- * @param {Object} params 
+ *
+ * @param {Object} params
  * @param {number} params.lat
  * @param {number} params.lng
  * @param {number} [params.page]
@@ -15,7 +15,7 @@ import { restaurant } from './restaurant';
  */
 export const getRestaurants = async params => {
   try {
-    const json = await get('/restaurants', params);
+    const json = await get("/restaurants", params);
     return Immutable.List(json.data.map(r => restaurant(r)));
   } catch (e) {
     return Immutable.List();

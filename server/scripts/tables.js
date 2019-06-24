@@ -1,9 +1,9 @@
-const { pgPool } = require("../config/dbConfig");
+const { pgPool } = require('../config/dbConfig');
 
 (async () => {
   const pgClient = await pgPool.connect();
 
-  const dropQuery = /* sql */`
+  const dropQuery = /* sql */ `
     DROP TABLE IF EXISTS restaurant_cuisine;
     DROP TABLE IF EXISTS restaurant;
     DROP TABLE IF EXISTS cuisine;
@@ -12,7 +12,7 @@ const { pgPool } = require("../config/dbConfig");
     DROP EXTENSION IF EXISTS pg_trgm;
   `;
 
-  const createQuery = /* sql */`
+  const createQuery = /* sql */ `
     CREATE EXTENSION pg_trgm;
 
     CREATE TABLE street (
@@ -37,7 +37,7 @@ const { pgPool } = require("../config/dbConfig");
     CREATE INDEX name_ts_idx ON restaurant USING GIN (to_tsvector('simple', name));
   `;
 
-    /* CREATE TABLE cuisine (
+  /* CREATE TABLE cuisine (
       id SERIAL PRIMARY KEY,
       name VARCHAR(50) UNIQUE NOT NULL
     );
@@ -52,7 +52,7 @@ const { pgPool } = require("../config/dbConfig");
         ON UPDATE CASCADE ON DELETE CASCADE
     );
   `; */
-  
+
   try {
     await pgClient.query(dropQuery);
   } catch (e) {
@@ -60,7 +60,7 @@ const { pgPool } = require("../config/dbConfig");
     await pgClient.end();
     process.exit(1);
   }
-  
+
   try {
     await pgClient.query(createQuery);
   } catch (e) {
@@ -69,8 +69,7 @@ const { pgPool } = require("../config/dbConfig");
   } finally {
     await pgClient.release();
   }
-
 })().then(() => {
-  console.log("tables.js: tables created!");
+  console.log('tables.js: tables created!');
   process.exit(0);
 });

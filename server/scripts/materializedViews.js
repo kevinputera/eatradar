@@ -1,13 +1,13 @@
-const { pgPool } = require("../config/dbConfig");
+const { pgPool } = require('../config/dbConfig');
 
 (async () => {
   const pgClient = await pgPool.connect();
 
-  const dropQuery = /* sql */`
+  const dropQuery = /* sql */ `
     DROP MATERIALIZED VIEW IF EXISTS lexeme;
   `;
 
-  const createQuery = /* sql */`
+  const createQuery = /* sql */ `
     CREATE MATERIALIZED VIEW lexeme AS
     SELECT word 
     FROM ts_stat(
@@ -32,8 +32,7 @@ const { pgPool } = require("../config/dbConfig");
     await pgClient.end();
     process.exit(1);
   }
-  
 })().then(() => {
-  console.log("materializedViews.js: views created!");
+  console.log('materializedViews.js: views created!');
   process.exit(0);
 });

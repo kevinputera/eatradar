@@ -6,17 +6,20 @@ const response = require('../utils/response');
 /**
  * Get restaurant details
  */
-router.get('/:id', async(req,res) => {
+router.get('/:id', async (req, res) => {
   let id;
   try {
     id = parseInt(req.params.id);
   } catch (e) {
-    response.sendBadRequest(res, 'Id must be of type number')
+    response.sendBadRequest(res, 'Id must be of type number');
     return;
   }
 
-  if(!id || id < 0){
-    response.sendBadRequest(res, 'A correct id must be included in the request URI');
+  if (!id || id < 0) {
+    response.sendBadRequest(
+      res,
+      'A correct id must be included in the request URI'
+    );
     return;
   }
 
@@ -28,4 +31,4 @@ router.get('/:id', async(req,res) => {
   }
 });
 
-module.exports = router
+module.exports = router;

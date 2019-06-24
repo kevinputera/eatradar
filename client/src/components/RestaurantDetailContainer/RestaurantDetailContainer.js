@@ -17,28 +17,25 @@ class RestaurantDetailContainer extends React.Component {
     super(props);
     this.state = {
       details: details(),
-      reviews: null, 
+      reviews: null,
     };
   }
 
   async componentDidMount() {
-    await Promise.all([
-      this.getAndUpdateDetails(),
-      this.getAndUpdateReviews(),
-    ]);
+    await Promise.all([this.getAndUpdateDetails(), this.getAndUpdateReviews()]);
   }
 
   getAndUpdateDetails = async () => {
     const id = this.props.restaurantSelection.id;
     const details = await getDetails(id);
     this.setState({ details });
-  }
+  };
 
   getAndUpdateReviews = async () => {
     const id = this.props.restaurantSelection.id;
     const reviews = await getReviews(id);
     this.setState({ reviews });
-  }
+  };
 
   render() {
     return (
@@ -53,27 +50,21 @@ class RestaurantDetailContainer extends React.Component {
         </div>
 
         <RestaurantDetailCard className="summary-card">
-          <RestaurantDetailSummary 
+          <RestaurantDetailSummary
             restaurant={this.props.restaurantSelection}
           />
         </RestaurantDetailCard>
 
         <RestaurantDetailCard className="details-card">
-          <RestaurantDetailContent
-            details={this.state.details}
-          />
+          <RestaurantDetailContent details={this.state.details} />
         </RestaurantDetailCard>
 
         <RestaurantDetailCard className="review-card">
-          <RestaurantDetailReview 
-            reviews={this.state.reviews}
-          />
+          <RestaurantDetailReview reviews={this.state.reviews} />
         </RestaurantDetailCard>
 
         <RestaurantDetailCard className="blogpost-card">
-          <RestaurantDetailBlogpost
-            id={this.props.restaurantSelection.id}
-          />
+          <RestaurantDetailBlogpost id={this.props.restaurantSelection.id} />
         </RestaurantDetailCard>
       </div>
     );

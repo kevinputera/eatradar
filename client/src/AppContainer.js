@@ -42,18 +42,18 @@ class App extends React.Component {
       async res => {
         const coords = res.coords;
         await this.updateLocationAndRefreshRestaurantList(coords);
-        console.log("manual trigger successful");
+        console.log('manual trigger successful');
       },
       error => console.log(error.message),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 },
-    )
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 }
+    );
   };
 
   updateRestaurantSelection = async restaurant => {
     if (!Immutable.is(this.state.restaurantSelection, restaurant)) {
       this.setState(
         { restaurantSelection: restaurant },
-        async () => 
+        async () =>
           await Promise.all([
             this.restaurantDetailRef.current.getAndUpdateDetails(),
             this.restaurantDetailRef.current.getAndUpdateReviews(),
@@ -71,25 +71,28 @@ class App extends React.Component {
   };
 
   updateLocationAndRefreshRestaurantList = async ({ latitude, longitude }) => {
-    if (this.state.latitude !== latitude || this.state.longitude !== longitude) {
+    if (
+      this.state.latitude !== latitude ||
+      this.state.longitude !== longitude
+    ) {
       this.setState({
         latitude,
-        longitude 
+        longitude,
       });
       await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants();
     }
   };
 
   render() {
-    const restaurantDetailContainer = this.state.restaurantSelection 
-        ? <div className="restaurant-card-wrapper">
-            <RestaurantDetailContainer
-              restaurantSelection={this.state.restaurantSelection}
-              clearRestaurantSelection={this.clearRestaurantSelection}
-              ref={this.restaurantDetailRef}
-            />
-          </div>
-        : null;
+    const restaurantDetailContainer = this.state.restaurantSelection ? (
+      <div className="restaurant-card-wrapper">
+        <RestaurantDetailContainer
+          restaurantSelection={this.state.restaurantSelection}
+          clearRestaurantSelection={this.clearRestaurantSelection}
+          ref={this.restaurantDetailRef}
+        />
+      </div>
+    ) : null;
 
     return (
       <div className="app">
@@ -98,7 +101,7 @@ class App extends React.Component {
         </div>
         <div className="restaurant-list-detail-wrapper">
           <div className="restaurant-card-wrapper">
-            <RestaurantListContainer 
+            <RestaurantListContainer
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               restaurantSelection={this.state.restaurantSelection}
@@ -109,7 +112,7 @@ class App extends React.Component {
             />
           </div>
 
-          {restaurantDetailContainer} 
+          {restaurantDetailContainer}
         </div>
       </div>
     );

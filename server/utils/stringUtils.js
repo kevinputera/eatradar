@@ -6,16 +6,16 @@ exports.capitalize = (string, neglectAllUppercased = true) => {
   const tokens = string.split(' ');
 
   return tokens
-      .map(token => {
-        if (neglectAllUppercased && token.toUpperCase() === token) {
-          return token;
-        }
-        return token.charAt(0).toUpperCase() + token.toLowerCase().slice(1);
-      })
-      .join(' ');
-}
+    .map(token => {
+      if (neglectAllUppercased && token.toUpperCase() === token) {
+        return token;
+      }
+      return token.charAt(0).toUpperCase() + token.toLowerCase().slice(1);
+    })
+    .join(' ');
+};
 
-const isString = (string) => {
+const isString = string => {
   if (typeof string !== 'string') {
     return false;
   }

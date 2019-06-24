@@ -3,7 +3,7 @@ const reviewService = require('../service/reviewService');
 const router = express.Router();
 const response = require('../utils/response');
 
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   let id;
   try {
     id = parseInt(req.params.id);
@@ -12,8 +12,11 @@ router.get('/:id', async(req, res) => {
     return;
   }
 
-  if(!id || id < 0){
-    response.sendBadRequest(res, 'A correct id must be included in the request URI');
+  if (!id || id < 0) {
+    response.sendBadRequest(
+      res,
+      'A correct id must be included in the request URI'
+    );
     return;
   }
   try {
@@ -21,7 +24,7 @@ router.get('/:id', async(req, res) => {
     response.sendOk(res, result);
   } catch (e) {
     response.sendInternalError(res, e.message);
-  }    
+  }
 });
 
-module.exports =  router;
+module.exports = router;

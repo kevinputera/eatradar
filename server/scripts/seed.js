@@ -14,7 +14,7 @@ const json = JSON.parse(raw);
   'Italian'
 ]; */
 
-// let cuisinePks = [];  
+// let cuisinePks = [];
 let restaurantPks = [];
 
 (async () => {
@@ -42,27 +42,27 @@ let restaurantPks = [];
   // populate street + restaurant table with real data
   for (let entry of json) {
     const findStreetPkQuery = {
-      text: /* sql */`
+      text: /* sql */ `
         SELECT street.id 
         FROM street 
         WHERE name = $1;
       `,
-      values: [entry.street]
-    }
+      values: [entry.street],
+    };
 
     let streetPk;
     try {
       const findStreetPkResult = await pgClient.query(findStreetPkQuery);
-      
+
       if (findStreetPkResult.rows.length == 0) {
         const insertStreetQuery = {
-          text: /* sql */`
+          text: /* sql */ `
             INSERT INTO street(name) 
             VALUES ($1) 
             RETURNING id;
           `,
-          values: [entry.street]
-        }
+          values: [entry.street],
+        };
 
         streetPk = (await pgClient.query(insertStreetQuery)).rows[0].id;
       } else {
@@ -73,7 +73,7 @@ let restaurantPks = [];
     }
 
     const insertRestaurantQuery = {
-      text: /* sql */`
+      text: /* sql */ `
         INSERT INTO restaurant(
             name, 
             block, 
@@ -87,14 +87,16 @@ let restaurantPks = [];
       `,
       values: [
         capitalize(entry.name),
-        entry.block === "" ? null : entry.block,
-        entry.postcode === "" ? null : entry.postcode,
-        entry.unit === "" ? null : entry.unit,
-        entry.level === "" ? null : entry.level,
-        `Point(${entry.geometry.coordinates[0]} ${entry.geometry.coordinates[1]})`,
-        streetPk
-      ]
-    }
+        entry.block === '' ? null : entry.block,
+        entry.postcode === '' ? null : entry.postcode,
+        entry.unit === '' ? null : entry.unit,
+        entry.level === '' ? null : entry.level,
+        `Point(${entry.geometry.coordinates[0]} ${
+          entry.geometry.coordinates[1]
+        })`,
+        streetPk,
+      ],
+    };
 
     try {
       const id = (await pgClient.query(insertRestaurantQuery)).rows[0].id;
@@ -127,8 +129,7 @@ let restaurantPks = [];
   } */
 
   await pgClient.release();
-
 })().then(() => {
   console.log('seed.js: seeding finished!');
   process.exit(0);
-});       
+});

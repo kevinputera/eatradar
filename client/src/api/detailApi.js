@@ -1,10 +1,10 @@
-import Immutable from 'immutable';
-import { get } from '../utils/http';
-import { details, openingHours, period, photo } from './details';
+import Immutable from "immutable";
+import { get } from "../utils/http";
+import { details, openingHours, period, photo } from "./details";
 
 /**
  * Get the details of a restaurant
- * 
+ *
  * @param {number} id
  * @return {Immutable.Record} - details of a restaurant
  */
@@ -16,7 +16,9 @@ export const getDetails = async id => {
     let hours;
     if (raw.opening_hours) {
       const now = raw.opening_hours.open_now;
-      const periods = Immutable.List(raw.opening_hours.periods.map(p => period(p)));
+      const periods = Immutable.List(
+        raw.opening_hours.periods.map(p => period(p))
+      );
       const text = Immutable.List(raw.opening_hours.weekday_text);
       hours = openingHours({
         open_now: now,
@@ -27,16 +29,18 @@ export const getDetails = async id => {
 
     let photos;
     if (raw.photos) {
-      photos = Immutable.List(raw.photos.map(p => {
-        let attributions;
-        if (p.html_attributions) {
-          attributions = Immutable.List(p.html_attributions);
-        }
-        return photo({
-          html_attributions: attributions,
-          url: p.url,
-        });
-      }));
+      photos = Immutable.List(
+        raw.photos.map(p => {
+          let attributions;
+          if (p.html_attributions) {
+            attributions = Immutable.List(p.html_attributions);
+          }
+          return photo({
+            html_attributions: attributions,
+            url: p.url,
+          });
+        })
+      );
     }
 
     return details({

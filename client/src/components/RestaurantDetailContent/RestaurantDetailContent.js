@@ -13,16 +13,10 @@ function RestaurantDetailContent(props) {
   }
   const content = (
     <Fragment>
-      <div className="detail-phone-number">
-        {phone}
-      </div>
-      <div className="detail-website">
-        {website}
-      </div>
-      <div className="detail-opening-hours">
-      </div>
-      <div className="detail-photos">
-      </div>
+      <div className="detail-phone-number">{phone}</div>
+      <div className="detail-website">{website}</div>
+      <div className="detail-opening-hours"></div>
+      <div className="detail-photos"></div>
     </Fragment>
   );
 
@@ -33,8 +27,9 @@ function RestaurantDetailContent(props) {
 
   return (
     <div className="restaurant-detail-content">
-      {!empty ? content : 
-        `Sorry, we can't find any details for this restaurant`}
+      {!empty
+        ? content
+        : `Sorry, we can't find any details for this restaurant`}
     </div>
   );
 }

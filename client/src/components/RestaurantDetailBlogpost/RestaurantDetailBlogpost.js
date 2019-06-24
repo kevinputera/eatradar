@@ -4,9 +4,7 @@ import './RestaurantDetailBlogpost.css';
 
 class RestaurantDetailBlogpost extends React.Component {
   render() {
-    return (
-      <div>Blogposts that feature {this.props.id}</div>
-    );
+    return <div>Blogposts that feature {this.props.id}</div>;
   }
 }
 

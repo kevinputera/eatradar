@@ -18,7 +18,10 @@ class RestaurantListContainer extends React.Component {
       pageSize: 10,
       contents: Immutable.List(),
     };
-    this.debouncedGetAndUpdateRestaurants = _.debounce(this.getAndUpdateRestaurants, 300);
+    this.debouncedGetAndUpdateRestaurants = _.debounce(
+      this.getAndUpdateRestaurants,
+      300
+    );
   }
 
   async componentDidMount() {
@@ -27,7 +30,7 @@ class RestaurantListContainer extends React.Component {
 
   handleQueryInputChange = async e => {
     this.setState(
-      { query: e.target.value }, 
+      { query: e.target.value },
       async () => await this.debouncedGetAndUpdateRestaurants()
     );
   };
@@ -41,17 +44,21 @@ class RestaurantListContainer extends React.Component {
 
   handlePageNext = () => {
     this.setState(
-      state => { return { page: state.page + 1 }; },
+      state => {
+        return { page: state.page + 1 };
+      },
       async () => await this.debouncedGetAndUpdateRestaurants()
     );
-  }
+  };
 
   handlePagePrev = () => {
     this.setState(
-      state => { return { page: state.page > 1 ? state.page - 1 : 1}; },
+      state => {
+        return { page: state.page > 1 ? state.page - 1 : 1 };
+      },
       async () => await this.debouncedGetAndUpdateRestaurants()
     );
-  }
+  };
 
   getAndUpdateRestaurants = async () => {
     let params = {
@@ -59,7 +66,7 @@ class RestaurantListContainer extends React.Component {
       lng: this.props.longitude,
       p: this.state.page,
       ps: this.state.pageSize,
-      q: this.state.query, 
+      q: this.state.query,
     };
 
     const restaurants = await getRestaurants(params);
@@ -74,7 +81,7 @@ class RestaurantListContainer extends React.Component {
   render() {
     return (
       <div className="restaurant-list-container">
-        <RestaurantListFilter 
+        <RestaurantListFilter
           query={this.state.query}
           handleQueryInputChange={this.handleQueryInputChange}
           handleRefreshButtonClick={this.props.handleRefreshButtonClick}

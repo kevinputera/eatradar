@@ -17,9 +17,7 @@ function RestaurantListContent(props) {
         >
           <div className="content-button-detail-wrapper bp3-running-text">
             <section className="restaurant-list-identity">
-              <div className="restaurant-list-name">
-                {content.name}
-              </div>
+              <div className="restaurant-list-name">{content.name}</div>
               <div className="restaurant-list-address">
                 <span>{content.block ? `${content.block} ` : ''}</span>
                 <span>{content.street}</span>
@@ -32,19 +30,13 @@ function RestaurantListContent(props) {
             </div>
           </div>
         </Button>
-        <Divider style={{ margin: 0 }}/>
+        <Divider style={{ margin: 0 }} />
       </div>
     );
   });
-   
+
   return (
-    <ButtonGroup 
-      fill
-      large
-      minimal
-      vertical
-      className="contents-wrapper"
-    >
+    <ButtonGroup fill large minimal vertical className="contents-wrapper">
       {contents}
     </ButtonGroup>
   );

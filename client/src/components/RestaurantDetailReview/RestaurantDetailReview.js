@@ -11,11 +11,8 @@ function RestaurantDetailReview(props) {
   }
   const content = (
     <Fragment>
-      <div className="review-rating">
-        {rating}
-      </div>
-      <div className="review-reviews">
-      </div>
+      <div className="review-rating">{rating}</div>
+      <div className="review-reviews"></div>
     </Fragment>
   );
 
@@ -26,8 +23,9 @@ function RestaurantDetailReview(props) {
 
   return (
     <div className="restaurant-detail-review">
-      {!empty ? content :
-        `Sorry, we can't find any rating nor reviews for this restaurant`}
+      {!empty
+        ? content
+        : `Sorry, we can't find any rating nor reviews for this restaurant`}
     </div>
   );
 }

@@ -9,20 +9,18 @@ function RestaurantDetailSummary(props) {
     summary = (
       <div className="restaurant-detail-summary">
         <section className="restaurant-detail-identity">
-          <div className="restaurant-detail-name">
-            {props.restaurant.name}
-          </div>
+          <div className="restaurant-detail-name">{props.restaurant.name}</div>
           <div className="restaurant-detail-address">
             <span>{props.restaurant.block} </span>
             <span>{props.restaurant.street}</span>
           </div>
           <div className="restaurant-detail-address">
-            {props.restaurant.level && props.restaurant.unit
-              ? <Fragment> 
-                  <span>#{props.restaurant.level}-</span>
-                  <span>{props.restaurant.unit}, </span>
-                </Fragment>
-              : null}
+            {props.restaurant.level && props.restaurant.unit ? (
+              <Fragment>
+                <span>#{props.restaurant.level}-</span>
+                <span>{props.restaurant.unit}, </span>
+              </Fragment>
+            ) : null}
             <span>{props.restaurant.postcode}</span>
           </div>
         </section>
@@ -30,9 +28,7 @@ function RestaurantDetailSummary(props) {
           <div className="restaurant-detail-distance">
             {getDistanceString(props.restaurant.dist)}
           </div>
-          <div className="restaurant-detail-distance-text">
-            away
-          </div>
+          <div className="restaurant-detail-distance-text">away</div>
         </div>
       </div>
     );
