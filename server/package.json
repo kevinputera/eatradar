@@ -19,7 +19,8 @@
   },
   "devDependencies": {
     "faker": "^4.1.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2"
   },
   "repository": {
     "type": "git",
