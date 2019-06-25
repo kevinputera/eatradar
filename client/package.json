@@ -15,8 +15,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "check-format": "node_modules/prettier/bin-prettier.js --check src/**/**/* public/*",
-    "format": "node_modules/prettier/bin-prettier.js --write src/**/**/* public/*"
+    "prettier": "prettier --write src/* src/**/* src/**/**/* public/*"
   },
   "eslintConfig": {
     "extends": "react-app"

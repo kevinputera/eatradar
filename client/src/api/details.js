@@ -1,4 +1,4 @@
-import Immutable from "immutable";
+import Immutable from 'immutable';
 
 export const openingHours = Immutable.Record({
   open_now: null,
