@@ -7,12 +7,12 @@ export const get = async (resource, params) => {
   }
 
   const headers = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   };
 
   const res = await fetch(endpoint, {
-    method: "GET",
+    method: 'GET',
     headers: headers,
   });
   const json = await res.json();
