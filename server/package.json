@@ -5,12 +5,11 @@
   "main": "app.js",
   "scripts": {
     "start": "node -r dotenv/config app.js dotenv_config_path=../.env",
-    "start-dev": "nodemon -r dotenv/config app.js dotenv_config_path=../.env",
+    "dev": "nodemon -r dotenv/config app.js dotenv_config_path=../.env",
     "table": "node -r dotenv/config scripts/tables.js dotenv_config_path=../.env",
     "view": "node -r dotenv/config scripts/materializedViews.js dotenv_config_path=../.env",
     "seed": "node -r dotenv/config scripts/seed.js dotenv_config_path=../.env",
-    "check-format": "node_modules/prettier/bin-prettier.js --check *.js **/*.js",
-    "format": "node_modules/prettier/bin-prettier.js --write *.js **/*.js"
+    "prettier": "prettier --write *.js **/*.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.1.0",
