@@ -1,10 +1,10 @@
 import React from 'react';
 import Immutable from 'immutable';
-import { getDetails } from '../../api/detailApi';
-import { getReviews } from '../../api/reviewApi';
-import { getBlogPosts, getBlogPostsCount } from '../../api/blogPostApi';
-import { details } from '../../entity/details';
-import { reviews } from '../../entity/reviews';
+import { getDetails } from '../../../api/detailApi';
+import { getReviews } from '../../../api/reviewApi';
+import { getBlogPosts, getBlogPostsCount } from '../../../api/blogPostApi';
+import { details } from '../../../entity/details';
+import { reviews } from '../../../entity/reviews';
 import { Button } from '@blueprintjs/core';
 
 import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';

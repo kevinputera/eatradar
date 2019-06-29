@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Elevation, Divider } from '@blueprintjs/core';
-import { getSummary } from '../../utils/stringUtils';
+import { getSummary } from '../../../utils/stringUtils';
 
 import './ExtendableContent.css';
 
@@ -27,6 +27,7 @@ function ExtendableContent(props) {
               className="extendable-content-link"
               href={props.link}
               target="_blank"
+              rel="noopener noreferrer"
             >
               Read more
             </a>

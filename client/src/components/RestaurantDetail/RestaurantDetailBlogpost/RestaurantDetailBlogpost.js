@@ -1,6 +1,6 @@
 import React from 'react';
-import NavigationButtons from '../NavigationButtons/NavigationButtons';
-import ExtendableContent from '../ExtendableContent/ExtendableContent';
+import NavigationButtons from '../../shared/NavigationButtons/NavigationButtons';
+import ExtendableContent from '../../shared/ExtendableContent/ExtendableContent';
 
 import './RestaurantDetailBlogpost.css';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDistanceString } from '../../utils/conversion';
+import { getDistanceString } from '../../../utils/conversion';
 
 import './RestaurantDetailSummary.css';
 

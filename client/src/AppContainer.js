@@ -1,8 +1,8 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import RestaurantListContainer from './components/RestaurantListContainer/RestaurantListContainer';
-import RestaurantDetailContainer from './components/RestaurantDetailContainer/RestaurantDetailContainer';
+import RestaurantListContainer from './components/RestaurantList/RestaurantListContainer/RestaurantListContainer';
+import RestaurantDetailContainer from './components/RestaurantDetail/RestaurantDetailContainer/RestaurantDetailContainer';
 import Map from './components/Map/Map';
 
 import './AppContainer.css';

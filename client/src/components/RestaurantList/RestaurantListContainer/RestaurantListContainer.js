@@ -1,7 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import _ from 'lodash';
-import { getRestaurants } from '../../api/restaurantApi';
+import { getRestaurants } from '../../../api/restaurantApi';
 
 import RestaurantListFilter from '../RestaurantListFilter/RestaurantListFilter';
 import RestaurantListContent from '../RestaurantListContent/RestaurantListContent';

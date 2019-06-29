@@ -1,0 +1,19 @@
+.field-content {
+  display: flex;
+  flex-flow: row nowrap;
+
+  margin: 8px 1px;
+  padding: 6px 12px;
+
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #ced9e0;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field-content-title {
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid #ced9e0;
+}
