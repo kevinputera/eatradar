@@ -12,9 +12,20 @@ import { blogPost } from '../entity/blogPost';
  * @return {Immutable.List<Immutable.Record>} - a list of blog posts
  */
 export const getBlogPosts = async params => {
+  const reqParams = {};
+  if (params.page) {
+    reqParams.p = params.page;
+  }
+  if (params.pageSize) {
+    reqParams.ps = params.pageSize;
+  }
+
   try {
-    const json = await get(`/blogposts/${params.id}`);
-    return Immutable.List(json.data.map(bp => blogPost(bp._source)));
+    const json = await get(`/blogposts/${params.id}`, reqParams);
+    console.log(json);
+    return Immutable.List(
+      json.data.map(bp => blogPost({ id: bp._id, ...bp._source }))
+    );
   } catch (e) {
     return Immutable.List();
   }
@@ -31,6 +42,6 @@ export const getBlogPostsCount = async id => {
     const json = await get(`/blogposts/${id}/count`);
     return json.data.count;
   } catch (e) {
-    return -1;
+    return 0;
   }
 };
