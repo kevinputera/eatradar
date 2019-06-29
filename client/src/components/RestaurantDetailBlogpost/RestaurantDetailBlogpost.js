@@ -7,6 +7,7 @@ import './RestaurantDetailBlogpost.css';
 function RestaurantDetailBlogpost(props) {
   const blogposts = props.blogPosts.map(blogPost => (
     <ExtendableContent
+      key={blogPost.id}
       title={blogPost.title}
       body={blogPost.post}
       link={blogPost.link}
