@@ -1,35 +1,17 @@
 import React from 'react';
-import { Card, Elevation } from '@blueprintjs/core';
 import NavigationButtons from '../NavigationButtons/NavigationButtons';
+import ExtendableContent from '../ExtendableContent/ExtendableContent';
 
 import './RestaurantDetailBlogpost.css';
 
-function Blogpost(props) {
-  return (
-    <div className="blogpost">
-      <Card elevation={Elevation.ONE}>
-        <div className="blogpost-content blogpost-title">
-          <strong>{props.title}</strong>
-        </div>
-        <div className="blogpost-content blogpost-body">
-          {props.body}
-        </div>
-        <div className="blogpost-content blogpost-link">
-          {props.link}
-        </div>
-      </Card>
-    </div>
-  )
-}
-
 function RestaurantDetailBlogpost(props) {
-  const blogposts = props.blogPosts.map(blogPost => 
-    <Blogpost 
+  const blogposts = props.blogPosts.map(blogPost => (
+    <ExtendableContent
       title={blogPost.title}
       body={blogPost.post}
       link={blogPost.link}
     />
-  );
+  ));
 
   return (
     <div className="restaurant-detail-blogpost">
@@ -42,14 +24,9 @@ function RestaurantDetailBlogpost(props) {
           <div className="detail-header">
             Blog posts you might find interesting
           </div>
-          <div className="blogposts-wrapper">
-            {blogposts}
-          </div>
+          <div className="blogposts-wrapper">{blogposts}</div>
           <div className="detail-navigation">
-            <NavigationButtons 
-              handlePagePrev={true} 
-              handlePageNext={true}
-            />
+            <NavigationButtons handlePagePrev={true} handlePageNext={true} />
           </div>
         </>
       )}
