@@ -13,7 +13,7 @@ import { blogPost } from '../entity/blogPost';
  */
 export const getBlogPosts = async params => {
   try {
-    const json = await get(`/blogposts/${params.id}`, params);
+    const json = await get(`/blogposts/${params.id}`);
     return Immutable.List(json.data.map(bp => blogPost(bp._source)));
   } catch (e) {
     return Immutable.List();
@@ -22,7 +22,7 @@ export const getBlogPosts = async params => {
 
 /**
  * Get the number of blog posts of a restaurant
- * 
+ *
  * @param {number} id
  * @return {number} - the number of blog posts, -1 if not found
  */
@@ -33,4 +33,4 @@ export const getBlogPostsCount = async id => {
   } catch (e) {
     return -1;
   }
-}
+};
