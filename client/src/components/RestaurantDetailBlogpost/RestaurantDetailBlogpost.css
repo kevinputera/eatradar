@@ -1,0 +1,15 @@
+.blogposts-wrapper {
+  margin: 15px 0px;
+}
+
+.blogpost {
+  margin: 5px 1px;
+}
+
+.blogpost-title {
+  font-style: italic;
+}
+
+.blogpost-content {
+  margin-bottom: 5px;
+}

@@ -1,3 +1,16 @@
 .restaurant-detail-container {
   padding: 10px 10px;
 }
+
+.detail-header {
+  margin-bottom: 7px;
+}
+
+.detail-not-found {
+  font-style: italic;
+}
+
+.detail-navigation {
+  display: flex;
+  justify-content: flex-end;
+}
