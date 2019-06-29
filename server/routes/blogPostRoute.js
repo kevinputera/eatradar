@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
   const params = {
     id,
     page: req.query.p || 1,
-    pageSize: req.query.ps || 5,
+    pageSize: req.query.ps || 3,
   };
 
   if (!params.id || params.id < 0) {
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
   }
 
   if (params.pageSize < 5) {
-    response.sendBadRequest(res, 'Page size must be greater than 5');
+    response.sendBadRequest(res, 'Page size must be greater than 3');
     return;
   }
 
