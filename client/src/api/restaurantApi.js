@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { get } from '../utils/http';
-import { restaurant } from './restaurant';
+import { restaurant } from '../entity/restaurant';
 
 /**
  * Get closest restaurants to a point, filter by params

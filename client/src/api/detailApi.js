@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { get } from '../utils/http';
-import { details, openingHours, period, photo } from './details';
+import { details, openingHours, period, photo } from '../entity/details';
 
 /**
  * Get the details of a restaurant
