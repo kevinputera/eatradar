@@ -77,11 +77,11 @@ class App extends React.Component {
       this.state.latitude !== latitude ||
       this.state.longitude !== longitude
     ) {
-      this.setState({
-        latitude,
-        longitude,
-      });
-      await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants();
+      this.setState(
+        { latitude, longitude },
+        async () =>
+          await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants()
+      );
     }
   };
 

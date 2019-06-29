@@ -23,7 +23,13 @@ function ExtendableContent(props) {
             {isExtended ? 'Hide' : 'Extend'}
           </span>
           {isExtended && (
-            <a className="extendable-content-link" href={props.link} target="_blank">Read more</a>
+            <a
+              className="extendable-content-link"
+              href={props.link}
+              target="_blank"
+            >
+              Read more
+            </a>
           )}
         </div>
       </Card>

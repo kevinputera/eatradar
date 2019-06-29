@@ -27,7 +27,10 @@ function RestaurantDetailBlogpost(props) {
           </div>
           <div className="blogposts-wrapper">{blogposts}</div>
           <div className="detail-navigation">
-            <NavigationButtons handlePagePrev={true} handlePageNext={true} />
+            <NavigationButtons
+              handlePagePrev={props.handleBlogpostPagePrev}
+              handlePageNext={props.handleBlogpostPageNext}
+            />
           </div>
         </>
       )}

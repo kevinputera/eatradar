@@ -22,7 +22,9 @@ class RestaurantDetailContainer extends React.Component {
       details: details(),
       reviews: reviews(),
       blogPosts: Immutable.List(),
-      blogPostsCount: -1,
+      blogPostsCount: 0,
+      blogPostPage: 1,
+      blogPostPageSize: 3,
     };
   }
 
@@ -39,9 +41,9 @@ class RestaurantDetailContainer extends React.Component {
   };
 
   getAndUpdateBlogPosts = async () => {
-    // TODO: Add page and pageSize
     const params = {
       id: this.props.restaurantSelection.id,
+      page: this.state.blogPostPage,
     };
     const blogPosts = await getBlogPosts(params);
     this.setState({ blogPosts });
@@ -51,6 +53,29 @@ class RestaurantDetailContainer extends React.Component {
     const id = this.props.restaurantSelection.id;
     const blogPostsCount = await getBlogPostsCount(id);
     this.setState({ blogPostsCount });
+  };
+
+  handleBlogpostPagePrev = () => {
+    const prevPage = this.state.blogPostPage - 1;
+    if (prevPage < 1) {
+      return;
+    }
+    this.setState(
+      { blogPostPage: prevPage },
+      async () => await this.getAndUpdateBlogPosts()
+    );
+  };
+
+  handleBlogpostPageNext = () => {
+    const capacity = this.state.blogPostPage * this.state.blogPostPageSize;
+    if (capacity >= this.state.blogPostsCount) {
+      return;
+    }
+    const nextPage = this.state.blogPostPage + 1;
+    this.setState(
+      { blogPostPage: nextPage },
+      async () => await this.getAndUpdateBlogPosts()
+    );
   };
 
   render() {
@@ -83,6 +108,8 @@ class RestaurantDetailContainer extends React.Component {
           <RestaurantDetailBlogpost
             blogPosts={this.state.blogPosts}
             blogPostsCount={this.state.blogPostsCount}
+            handleBlogpostPagePrev={this.handleBlogpostPagePrev}
+            handleBlogpostPageNext={this.handleBlogpostPageNext}
           />
         </RestaurantDetailCard>
       </div>

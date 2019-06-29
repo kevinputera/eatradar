@@ -22,7 +22,6 @@ export const getBlogPosts = async params => {
 
   try {
     const json = await get(`/blogposts/${params.id}`, reqParams);
-    console.log(json);
     return Immutable.List(
       json.data.map(bp => blogPost({ id: bp._id, ...bp._source }))
     );
