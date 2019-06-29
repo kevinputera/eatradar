@@ -1,7 +1,10 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { getDetails } from '../../api/detailApi';
 import { getReviews } from '../../api/reviewApi';
+import { getBlogPosts, getBlogPostsCount } from '../../api/blogPostApi';
 import { details } from '../../entity/details';
+import { reviews } from '../../entity/reviews';
 import { Button } from '@blueprintjs/core';
 
 import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';
@@ -17,12 +20,10 @@ class RestaurantDetailContainer extends React.Component {
     super(props);
     this.state = {
       details: details(),
-      reviews: null,
+      reviews: reviews(),
+      blogPosts: Immutable.List(),
+      blogPostsCount: -1,
     };
-  }
-
-  async componentDidMount() {
-    await Promise.all([this.getAndUpdateDetails(), this.getAndUpdateReviews()]);
   }
 
   getAndUpdateDetails = async () => {
@@ -34,13 +35,22 @@ class RestaurantDetailContainer extends React.Component {
   getAndUpdateReviews = async () => {
     const id = this.props.restaurantSelection.id;
     const reviews = await getReviews(id);
-    console.log(this.props.restaurantSelection.id);
     this.setState({ reviews });
   };
 
-  getAndUpdateBlogposts = async() => {
-    const id = this.props.restaurantSelection.id;
+  getAndUpdateBlogPosts = async () => {
+    // TODO: Add page and pageSize
+    const params = {
+      id: this.props.restaurantSelection.id,
+    };
+    const blogPosts = await getBlogPosts(params);
+    this.setState({ blogPosts })
+  }
 
+  getAndUpdateBlogPostsCount = async () => {
+    const id = this.props.restaurantSelection.id;
+    const blogPostsCount = await getBlogPostsCount(id);
+    this.setState({ blogPostsCount });
   }
 
   render() {

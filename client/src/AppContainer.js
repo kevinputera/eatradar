@@ -57,6 +57,8 @@ class App extends React.Component {
           await Promise.all([
             this.restaurantDetailRef.current.getAndUpdateDetails(),
             this.restaurantDetailRef.current.getAndUpdateReviews(),
+            this.restaurantDetailRef.current.getAndUpdateBlogPosts(),
+            this.restaurantDetailRef.current.getAndUpdateBlogPostsCount(),
           ])
       );
     }
