@@ -10,7 +10,7 @@ const restaurantService = require('./restaurantService');
  * @param {number} params.pageSize
  * @return {Promise<Object>}
  */
-exports.getAllBlogPosts = async params => {
+exports.getBlogPosts = async params => {
   const name = await restaurantService.getRestaurant(params.id).name;
   const res = await esClient.search({
     index: 'blogpost',

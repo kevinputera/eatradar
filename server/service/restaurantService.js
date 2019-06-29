@@ -2,7 +2,7 @@ const { pgPool } = require('../config/dbConfig');
 const googlePlacesApiService = require('./googlePlacesApiService');
 
 // TODO: Get all restaurants, useful for map
-exports.getAllRestaurants = async () => {};
+exports.getRestaurants = async () => {};
 
 /**
  * Get list of restaurants closest to longitude, latitude
