@@ -28,7 +28,8 @@ export const getBlogPosts = async params => {
  */
 export const getBlogPostsCount = async id => {
   try {
-    return await get(`/blogposts/${id}/count`);
+    const json = await get(`/blogposts/${id}/count`);
+    return json.data.count;
   } catch (e) {
     return -1;
   }

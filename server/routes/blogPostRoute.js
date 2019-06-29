@@ -72,7 +72,7 @@ router.get('/:id/count', async (req, res) => {
 
   try {
     const result = await blogPostService.getBlogPostsCount(id);
-    response.sendOk(res, result);
+    response.sendOk(res, { count: result });
   } catch (e) {
     response.sendInternalError(res, e.message);
   } 

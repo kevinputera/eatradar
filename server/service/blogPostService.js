@@ -15,6 +15,7 @@ exports.getBlogPosts = async params => {
   const res = await esClient.search({
     index: 'blogpost',
     body: {
+      min_score: 1,
       query: {
         multi_match: {
           query: restaurant.name,
@@ -37,8 +38,9 @@ exports.getBlogPosts = async params => {
  */
 exports.getBlogPostsCount = async id => {
   const restaurant = await restaurantService.getRestaurant(id);
-  const res = await esClient.search({
+  const res = await esClient.count({
     index: 'blogpost',
+    min_score: 1,
     body: {
       query: {
         multi_match: {
@@ -49,5 +51,5 @@ exports.getBlogPostsCount = async id => {
       },
     },
   });
-  return res.body.hits.total.value;
+  return res.body.count;
 }
