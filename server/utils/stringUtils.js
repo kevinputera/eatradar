@@ -1,4 +1,4 @@
-exports.capitalize = (string, neglectAllUppercased = true) => {
+exports.capitalize = string => {
   if (!isString(string)) {
     throw new Error('Input is not a string');
   }
@@ -6,12 +6,7 @@ exports.capitalize = (string, neglectAllUppercased = true) => {
   const tokens = string.split(' ');
 
   return tokens
-    .map(token => {
-      if (neglectAllUppercased && token.toUpperCase() === token) {
-        return token;
-      }
-      return token.charAt(0).toUpperCase() + token.toLowerCase().slice(1);
-    })
+    .map(token => token.charAt(0).toUpperCase() + token.toLowerCase().slice(1))
     .join(' ');
 };
 
