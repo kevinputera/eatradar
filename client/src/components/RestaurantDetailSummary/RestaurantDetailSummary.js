@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { getDistanceString } from '../../utils/conversion';
 
 import './RestaurantDetailSummary.css';
@@ -16,10 +16,10 @@ function RestaurantDetailSummary(props) {
           </div>
           <div className="restaurant-detail-address">
             {props.restaurant.level && props.restaurant.unit ? (
-              <Fragment>
+              <>
                 <span>#{props.restaurant.level}-</span>
                 <span>{props.restaurant.unit}, </span>
-              </Fragment>
+              </>
             ) : null}
             <span>{props.restaurant.postcode}</span>
           </div>

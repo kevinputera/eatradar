@@ -44,14 +44,14 @@ class RestaurantDetailContainer extends React.Component {
       id: this.props.restaurantSelection.id,
     };
     const blogPosts = await getBlogPosts(params);
-    this.setState({ blogPosts })
-  }
+    this.setState({ blogPosts });
+  };
 
   getAndUpdateBlogPostsCount = async () => {
     const id = this.props.restaurantSelection.id;
     const blogPostsCount = await getBlogPostsCount(id);
     this.setState({ blogPostsCount });
-  }
+  };
 
   render() {
     return (
@@ -80,7 +80,10 @@ class RestaurantDetailContainer extends React.Component {
         </RestaurantDetailCard>
 
         <RestaurantDetailCard className="blogpost-card">
-          <RestaurantDetailBlogpost id={this.props.restaurantSelection.id} />
+          <RestaurantDetailBlogpost
+            blogPosts={this.state.blogPosts}
+            blogPostsCount={this.state.blogPostsCount}
+          />
         </RestaurantDetailCard>
       </div>
     );

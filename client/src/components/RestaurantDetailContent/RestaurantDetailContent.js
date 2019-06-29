@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import './RestaurantDetailContent.css';
 
@@ -11,14 +11,6 @@ function RestaurantDetailContent(props) {
     // hours = props.details.opening_hours;
     // photos = props.details.photos;
   }
-  const content = (
-    <Fragment>
-      <div className="detail-phone-number">{phone}</div>
-      <div className="detail-website">{website}</div>
-      <div className="detail-opening-hours"></div>
-      <div className="detail-photos"></div>
-    </Fragment>
-  );
 
   let empty = false;
   if (!phone && !website) {
@@ -27,9 +19,19 @@ function RestaurantDetailContent(props) {
 
   return (
     <div className="restaurant-detail-content">
-      {!empty
-        ? content
-        : `Sorry, we can't find any details for this restaurant`}
+      {empty ? (
+        <div className="detail-not-found">
+          Sorry, we can't find any details for this restaurant
+        </div>
+      ) : (
+        <>
+          <div className="detail-header">Details</div>
+          <div className="detail-phone-number">{phone}</div>
+          <div className="detail-website">{website}</div>
+          <div className="detail-opening-hours"></div>
+          <div className="detail-photos"></div>
+        </>
+      )}
     </div>
   );
 }
