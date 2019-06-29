@@ -4,7 +4,7 @@ const detailService = require('../service/detailService');
 const response = require('../utils/response');
 
 /**
- * Get restaurant details
+ * Get restaurant details based on id.
  */
 router.get('/:id', async (req, res) => {
   let id;

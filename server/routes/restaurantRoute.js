@@ -1,10 +1,10 @@
 const express = require('express');
-const restaurantService = require('../service/restaurantService');
 const router = express.Router();
+const restaurantService = require('../service/restaurantService');
 const response = require('../utils/response');
 
 /**
- * Get closest restaurants
+ * Get closest restaurants based on location.
  */
 router.get('/', async (req, res) => {
   const params = {
@@ -43,14 +43,6 @@ router.get('/', async (req, res) => {
   } catch (e) {
     response.sendInternalError(res, e.message);
   }
-});
-
-/**
- * Get single restaurant based on id
- */
-router.get('/:id', (req, res) => {
-  // res.json(restaurants.filter(restaurant =>
-  // restaurant.id === parseInt(req.params.id)));
 });
 
 module.exports = router;

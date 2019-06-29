@@ -1,8 +1,11 @@
 const express = require('express');
-const reviewService = require('../service/reviewService');
 const router = express.Router();
+const reviewService = require('../service/reviewService');
 const response = require('../utils/response');
 
+/**
+ * Get reviews of a restaurant based on id.
+ */
 router.get('/:id', async (req, res) => {
   let id;
   try {
