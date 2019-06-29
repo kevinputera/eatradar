@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
     const result = await detailService.getDetails(id);
     response.sendOk(res, result);
   } catch (e) {
-    response.sendBadRequest(res, e.message);
+    response.sendInternalError(res, e.message);
   }
 });
 
