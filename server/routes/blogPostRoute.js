@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
     return;
   }
 
-  if (params.pageSize < 5) {
+  if (params.pageSize < 3) {
     response.sendBadRequest(res, 'Page size must be greater than 3');
     return;
   }
