@@ -11,13 +11,14 @@ const restaurantService = require('./restaurantService');
  * @return {Promise<Object>}
  */
 exports.getBlogPosts = async params => {
-  const name = await restaurantService.getRestaurant(params.id).name;
+  console.log(params);
+  const restaurant = await restaurantService.getRestaurant(params.id);
   const res = await esClient.search({
     index: 'blogpost',
     body: {
       query: {
         multi_match: {
-          query: name,
+          query: restaurant.name,
           fuzziness: 1,
           fields: ['title^2', 'post'],
         },
