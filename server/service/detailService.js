@@ -10,12 +10,14 @@ const googlePlacesApiService = require('./googlePlacesApiService');
 exports.getDetails = async id => {
   try {
     const placeId = await restaurantService.getGooglePlacesId(id);
-    const details = await googlePlacesApiService.getDetails({
-      placeId: placeId,
-      language: 'en',
-    });
-
-    return { google: details };
+    if (placeId) {
+      const details = await googlePlacesApiService.getDetails({
+        placeId: placeId,
+        language: 'en',
+      });
+      return { google: details };
+    }
+    return {};
   } catch (e) {
     const message = `detailService.js: error in getDetails\n${e}`;
     console.log(message);

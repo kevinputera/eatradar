@@ -100,7 +100,10 @@ exports.getPlaceId = async params => {
       })
       .asPromise();
 
-    return res.json.candidates[0].place_id;
+    if (res.json.candidates.length) {
+      return res.json.candidates[0].place_id;
+    }
+    return null;
   } catch (e) {
     const message = `googlePlacesApiService.js: error in getPlaceId\n${e}`;
     console.log(message);

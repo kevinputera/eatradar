@@ -10,12 +10,14 @@ const googlePlacesApiService = require('./googlePlacesApiService');
 exports.getReviews = async id => {
   try {
     const placeId = await restaurantService.getGooglePlacesId(id);
-    const reviews = await googlePlacesApiService.getReviews({
-      placeId: placeId,
-      language: 'en',
-    });
-
-    return { google: reviews };
+    if (placeId) {
+      const reviews = await googlePlacesApiService.getReviews({
+        placeId: placeId,
+        language: 'en',
+      });
+      return { google: reviews };
+    }
+    return {};
   } catch (e) {
     const message = `reviewService.js: error in getReviews\n${e}`;
     console.log(message);
