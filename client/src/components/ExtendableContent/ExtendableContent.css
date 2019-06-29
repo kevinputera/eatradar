@@ -6,14 +6,16 @@
   margin-bottom: 5px;
 }
 
-.extendable-content-title {
-  font-style: italic;
-}
-
-.extendable-content-body {
-
-}
-
 .extendable-content-link {
-  
+  margin-left: 5px;
+}
+
+.toggle-extended {
+  margin-left: 5px;
+  color: #0e5a8a;
+}
+
+.toggle-extended:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }

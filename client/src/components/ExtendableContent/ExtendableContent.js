@@ -1,27 +1,34 @@
-import React from 'react';
-import { Card, Elevation } from '@blueprintjs/core';
+import React, { useState } from 'react';
+import { Card, Elevation, Divider } from '@blueprintjs/core';
+import { getSummary } from '../../utils/stringUtils';
 
 import './ExtendableContent.css';
 
-class ExtendableContent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function ExtendableContent(props) {
+  const [isExtended, setExtended] = useState(false);
 
-  render() {
-    return (
-      <div className="extendable-content">
-        <Card elevation={Elevation.ONE}>
-          <div className="extendable-content-c extendable-content-title">
-            <strong>{this.props.title}</strong>
-          </div>
-          <div className="extendable-content-c extendable-content-body">{this.props.body}</div>
-          <div className="extendable-content-c extendable-content-link">{this.props.link}</div>
-        </Card>
-      </div>
-    );
-  }
+  return (
+    <div className="extendable-content">
+      <Card elevation={Elevation.ONE}>
+        <div className="extendable-content-c extendable-content-title">
+          <strong>{props.title}</strong>
+        </div>
+        <Divider />
+        <div className="extendable-content-c extendable-content-body">
+          {isExtended ? props.body : getSummary(props.body, 20)}
+          <span
+            className="toggle-extended"
+            onClick={() => setExtended(!isExtended)}
+          >
+            {isExtended ? 'Hide' : 'Extend'}
+          </span>
+          {isExtended && (
+            <a className="extendable-content-link" href={props.link} target="_blank">Read more</a>
+          )}
+        </div>
+      </Card>
+    </div>
+  );
 }
 
 export default ExtendableContent;
