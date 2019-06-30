@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Elevation, Divider } from '@blueprintjs/core';
-import { getSummary } from '../../../utils/stringUtils';
+import { getSummary, isSummarizable } from '../../../utils/stringUtils';
 
 import './ExtendableContent.css';
 
@@ -14,17 +14,22 @@ function ExtendableContent(props) {
     </>
   );
 
-  const content = props.extendable
-    ? isExtended
-      ? props.body
-      : getSummary(props.body, 20)
-    : props.body;
+  const content =
+    props.extendable && isSummarizable(props.body, props.count)
+      ? isExtended
+        ? props.body
+        : getSummary(props.body, props.count)
+      : props.body;
 
-  const extendBtn = props.extendable && (
-    <span className="toggle-extended" onClick={() => setExtended(!isExtended)}>
-      {isExtended ? 'Hide' : 'Extend'}
-    </span>
-  );
+  const extendBtn = props.extendable &&
+    isSummarizable(props.body, props.count) && (
+      <span
+        className="toggle-extended"
+        onClick={() => setExtended(!isExtended)}
+      >
+        {isExtended ? 'Hide' : 'Extend'}
+      </span>
+    );
 
   const link = props.link && isExtended && (
     <a
@@ -39,7 +44,7 @@ function ExtendableContent(props) {
 
   return (
     <div className="extendable-content">
-      <Card elevation={Elevation.ONE} style={{ padding: '12px 23px' }}>
+      <Card elevation={Elevation.ONE} style={{ padding: '5px 15px' }}>
         <div className="extendable-content-c extendable-content-title">
           {title}
         </div>

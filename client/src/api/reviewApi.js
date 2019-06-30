@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { get } from '../utils/http';
-import { review, reviews } from '../entity/reviews';
+import { review, reviews, reviewsAgg } from '../entity/reviews';
 
 /**
  * Get the ratings and reviews of a restaurant
@@ -11,17 +11,24 @@ import { review, reviews } from '../entity/reviews';
 export const getReviews = async id => {
   try {
     const json = await get(`/reviews/${id}`);
-    const raw = json.data.google;
+    const raw = json.data;
 
-    let revs;
-    if (raw.reviews) {
-      revs = Immutable.List(raw.reviews.map(r => review(r)));
+    const reviewsObj = {};
+    for (let brand of Object.keys(raw)) {
+      let revs;
+      if (raw[brand].reviews) {
+        revs = Immutable.List(raw[brand].reviews.map(r => review(r)));
+      } else {
+        revs = Immutable.List();
+      }
+
+      reviewsObj[brand] = reviews({
+        rating: raw[brand].rating,
+        reviews: revs,
+      });
     }
 
-    return reviews({
-      rating: raw.rating,
-      reviews: revs,
-    });
+    return reviewsAgg(reviewsObj);
   } catch (e) {
     return reviews();
   }

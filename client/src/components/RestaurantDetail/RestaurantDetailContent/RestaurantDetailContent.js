@@ -3,7 +3,7 @@ import FieldContent from '../../shared/FieldContent/FieldContent';
 // import CircularOpeningIndicator from '../../shared/CircularOpeningIndicator/CircularOpeningIndicator';
 
 import './RestaurantDetailContent.css';
-import poweredByGoogle from './powered_by_google_on_white_hdpi.png';
+import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
 
 function RestaurantDetailContent(props) {
   const empty =

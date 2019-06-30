@@ -1,9 +1,13 @@
 .extendable-content {
-  margin: 5px 1px;
+  margin: 8px 8px;
 }
 
 .extendable-content-c {
   margin-bottom: 5px;
+}
+
+.extendable-content-title {
+  margin-top: 10px;
 }
 
 .extendable-content-link {

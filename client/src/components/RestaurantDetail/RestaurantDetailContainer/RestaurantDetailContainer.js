@@ -21,6 +21,7 @@ class RestaurantDetailContainer extends React.Component {
     this.state = {
       details: details(),
       reviews: reviews(),
+      reviewsSelected: null,
       blogPosts: Immutable.List(),
       blogPostsCount: 0,
       blogPostPage: 1,
@@ -78,6 +79,13 @@ class RestaurantDetailContainer extends React.Component {
     );
   };
 
+  handleReviewSelect = brand => {
+    console.log(brand);
+    this.setState({
+      reviewsSelected: brand,
+    });
+  };
+
   render() {
     return (
       <div className="restaurant-detail-container">
@@ -106,7 +114,11 @@ class RestaurantDetailContainer extends React.Component {
 
         <div className="container-wrapper">
           <RoundBorderCard className="review-card" radius="10px">
-            <RestaurantDetailReview reviews={this.state.reviews} />
+            <RestaurantDetailReview
+              reviews={this.state.reviews}
+              reviewsSelected={this.state.reviewsSelected}
+              handleReviewSelect={this.handleReviewSelect}
+            />
           </RoundBorderCard>
         </div>
 

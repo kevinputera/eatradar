@@ -11,6 +11,7 @@ function RestaurantDetailBlogpost(props) {
       key={blogPost.id}
       title={blogPost.title}
       body={blogPost.post}
+      count={20}
       link={blogPost.link}
       footer={blogPost.author}
     />

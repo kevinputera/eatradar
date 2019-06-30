@@ -15,3 +15,8 @@ export const reviews = Immutable.Record({
   rating: null,
   reviews: null,
 });
+
+export const reviewsAgg = Immutable.Record({
+  google: null,
+  yelp: null,
+});
