@@ -6,4 +6,5 @@ export const blogPost = Immutable.Record({
   post: null,
   link: null,
   content: null,
+  author: null,
 });

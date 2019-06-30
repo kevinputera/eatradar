@@ -7,10 +7,12 @@ import './RestaurantDetailBlogpost.css';
 function RestaurantDetailBlogpost(props) {
   const blogposts = props.blogPosts.map(blogPost => (
     <ExtendableContent
+      extendable
       key={blogPost.id}
       title={blogPost.title}
       body={blogPost.post}
       link={blogPost.link}
+      footer={blogPost.author}
     />
   ));
 
