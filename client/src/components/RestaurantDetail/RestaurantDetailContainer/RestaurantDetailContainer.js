@@ -7,7 +7,7 @@ import { details } from '../../../entity/details';
 import { reviews } from '../../../entity/reviews';
 import { Button } from '@blueprintjs/core';
 
-import RestaurantDetailCard from '../RestaurantDetailCard/RestaurantDetailCard';
+import RoundBorderCard from '../../shared/RoundBorderCard/RoundBorderCard';
 import RestaurantDetailSummary from '../RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from '../RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from '../RestaurantDetailReview/RestaurantDetailReview';
@@ -90,28 +90,36 @@ class RestaurantDetailContainer extends React.Component {
           />
         </div>
 
-        <RestaurantDetailCard className="summary-card">
-          <RestaurantDetailSummary
-            restaurant={this.props.restaurantSelection}
-          />
-        </RestaurantDetailCard>
+        <div className="container-wrapper">
+          <RoundBorderCard className="summary-card" radius="10px">
+            <RestaurantDetailSummary
+              restaurant={this.props.restaurantSelection}
+            />
+          </RoundBorderCard>
+        </div>
 
-        <RestaurantDetailCard className="details-card">
-          <RestaurantDetailContent details={this.state.details} />
-        </RestaurantDetailCard>
+        <div className="container-wrapper">
+          <RoundBorderCard className="details-card" radius="10px">
+            <RestaurantDetailContent details={this.state.details} />
+          </RoundBorderCard>
+        </div>
 
-        <RestaurantDetailCard className="review-card">
-          <RestaurantDetailReview reviews={this.state.reviews} />
-        </RestaurantDetailCard>
+        <div className="container-wrapper">
+          <RoundBorderCard className="review-card" radius="10px">
+            <RestaurantDetailReview reviews={this.state.reviews} />
+          </RoundBorderCard>
+        </div>
 
-        <RestaurantDetailCard className="blogpost-card">
-          <RestaurantDetailBlogpost
-            blogPosts={this.state.blogPosts}
-            blogPostsCount={this.state.blogPostsCount}
-            handleBlogpostPagePrev={this.handleBlogpostPagePrev}
-            handleBlogpostPageNext={this.handleBlogpostPageNext}
-          />
-        </RestaurantDetailCard>
+        <div className="container-wrapper">
+          <RoundBorderCard className="blogpost-card" radius="10px">
+            <RestaurantDetailBlogpost
+              blogPosts={this.state.blogPosts}
+              blogPostsCount={this.state.blogPostsCount}
+              handleBlogpostPagePrev={this.handleBlogpostPagePrev}
+              handleBlogpostPageNext={this.handleBlogpostPageNext}
+            />
+          </RoundBorderCard>
+        </div>
       </div>
     );
   }
