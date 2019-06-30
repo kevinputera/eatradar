@@ -14,6 +14,12 @@ function ExtendableContent(props) {
     </>
   );
 
+  const content = props.extendable
+    ? isExtended
+      ? props.body
+      : getSummary(props.body, 20)
+    : props.body;
+
   const extendBtn = props.extendable && (
     <span className="toggle-extended" onClick={() => setExtended(!isExtended)}>
       {isExtended ? 'Hide' : 'Extend'}
@@ -31,15 +37,9 @@ function ExtendableContent(props) {
     </a>
   );
 
-  const content = props.extendable
-    ? isExtended
-      ? props.body
-      : getSummary(props.body, 20)
-    : props.body;
-
   return (
     <div className="extendable-content">
-      <Card elevation={Elevation.ONE}>
+      <Card elevation={Elevation.ONE} style={{ padding: '12px 23px' }}>
         <div className="extendable-content-c extendable-content-title">
           {title}
         </div>
@@ -47,6 +47,9 @@ function ExtendableContent(props) {
           {content}
           {extendBtn}
           {link}
+        </div>
+        <div className="extendable-content-c extendable-content-footer">
+          {props.footer && `- ${props.footer}`}
         </div>
       </Card>
     </div>

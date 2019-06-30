@@ -19,3 +19,10 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.extendable-content-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  font-style: italic;
+}
