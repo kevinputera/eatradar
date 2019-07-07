@@ -4,9 +4,21 @@ const restaurantService = require('../service/restaurantService');
 const response = require('../utils/response');
 
 /**
- * Get closest restaurants based on location.
+ * Get all restaurants in Singapore in the form of GeoJSON data
  */
 router.get('/', async (req, res) => {
+  try {
+    const result = await restaurantService.getRestaurants();
+    response.sendOk(res, result);
+  } catch (e) {
+    response.sendInternalError(res, e.message);
+  }
+});
+
+/**
+ * Get closest restaurants based on location.
+ */
+router.get('/closest', async (req, res) => {
   const params = {
     longitude: req.query.lng,
     latitude: req.query.lat,

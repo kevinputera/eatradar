@@ -1,8 +1,45 @@
 const { pgPool } = require('../config/dbConfig');
 const googlePlacesApiService = require('./googlePlacesApiService');
 
-// TODO: Get all restaurants, useful for map
-exports.getRestaurants = async () => {};
+/**
+ * Get list of all restaurants id and location in GeoJSON format.
+ *
+ * @return {Promise<Object[]>} - list of restaurants
+ */
+exports.getRestaurants = async () => {
+  const query = {
+    text: /* sql */ `
+      SELECT restaurant.id AS id,
+          ST_X(restaurant.location::geometry) AS lng,
+          ST_Y(restaurant.location::geometry) AS lat
+      FROM restaurant;
+    `,
+  };
+
+  const pgClient = await pgPool.connect();
+  try {
+    const res = await pgClient.query(query);
+    return {
+      type: 'FeatureCollection',
+      features: res.rows.map(r => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [r.lng, r.lat],
+        },
+        properties: {
+          id: r.id,
+        },
+      })),
+    };
+  } catch (e) {
+    const message = `restaurantService.js: error in getRestaurants\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  } finally {
+    await pgClient.release();
+  }
+};
 
 /**
  * Get list of restaurants closest to longitude, latitude
