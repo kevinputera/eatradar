@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import { useFetchServer } from './apiHooks';
 
 /**
  * Custom hook to initialize a map using Mapbox GL JS.
@@ -40,4 +41,36 @@ export const useMap = (secret, params) => {
   }, [secret, center, params.container, params.style, params.zoom]);
 
   return map;
+};
+
+/**
+ * Custom hook to plot markers on a Mapbox GL JS map.
+ *
+ * @param {string} secret Mapbox access key
+ * @param {mapboxgl.Map} map The Mapbox GL JS map object to plot in
+ * @param {string} resource Server resource locator to get the GeoJSON data from
+ */
+export const useFeatureCollectionMarkers = (secret, map, resource) => {
+  const [markers, setMarkers] = useState([]);
+  const data = useFetchServer('/restaurants', { method: 'GET' });
+
+  useEffect(() => {
+    if (map && data) {
+      mapboxgl.accessToken = secret;
+      map.addLayer({
+        id: 'restaurants',
+        type: 'circle',
+        source: {
+          type: 'geojson',
+          data,
+        },
+        paint: {
+          'circle-radius': 2,
+          'circle-color': '#00aa00',
+        },
+      });
+    }
+  }, [secret, map, data]);
+
+  return markers;
 };
