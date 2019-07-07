@@ -88,6 +88,7 @@ export const useRestaurantMarkers = (secret, map) => {
  */
 export const useRestaurantSelection = (secret, map, params) => {
   const id = params.id;
+  const zoom = params.zoom;
   const geojson = params.geojson;
 
   useEffect(() => {
@@ -113,7 +114,7 @@ export const useRestaurantSelection = (secret, map, params) => {
         });
 
         // pan to selected restaurant
-        map.setZoom(params.zoom || 12);
+        map.setZoom(zoom || 12);
         const center = map.project(single.geometry.coordinates);
         const offsetX = window.innerWidth / 4;
         const offsetY = 0;
@@ -122,7 +123,7 @@ export const useRestaurantSelection = (secret, map, params) => {
         removeLayerIfExists(map, 'restaurant-selection');
       }
     }
-  }, [secret, map, id, geojson]);
+  }, [secret, map, zoom, id, geojson]);
 };
 
 function removeLayerIfExists(map, id) {
