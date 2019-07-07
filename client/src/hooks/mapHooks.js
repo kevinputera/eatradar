@@ -98,6 +98,7 @@ export const useRestaurantSelection = (secret, map, params) => {
 
         removeLayerIfExists(map, 'restaurant-selection');
 
+        // highlight selection
         map.addLayer({
           id: 'restaurant-selection',
           type: 'circle',
@@ -110,6 +111,13 @@ export const useRestaurantSelection = (secret, map, params) => {
             'circle-color': '#ff0000',
           },
         });
+
+        // pan to selected restaurant
+        map.setZoom(12);
+        const center = map.project(single.geometry.coordinates);
+        const offsetX = window.innerWidth / 4;
+        const offsetY = 0;
+        map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
       } else {
         removeLayerIfExists(map, 'restaurant-selection');
       }
