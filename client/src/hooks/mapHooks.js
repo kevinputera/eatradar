@@ -44,25 +44,27 @@ export const useMap = (secret, params) => {
 };
 
 /**
- * Custom hook to plot markers on a Mapbox GL JS map.
+ * Custom hook to plot restaurant locations on a Mapbox GL JS map.
  *
  * @param {string} secret Mapbox access key
  * @param {mapboxgl.Map} map The Mapbox GL JS map object to plot in
- * @param {string} resource Server resource locator to get the GeoJSON data from
+ * @return {Object} The geojson object of restaurant locations fetched from the server
  */
-export const useFeatureCollectionMarkers = (secret, map, resource) => {
-  const [markers, setMarkers] = useState([]);
-  const data = useFetchServer('/restaurants', { method: 'GET' });
+export const useRestaurantMarkers = (secret, map) => {
+  const geojson = useFetchServer('/restaurants', { method: 'GET' });
 
   useEffect(() => {
-    if (map && data) {
+    if (map && geojson) {
       mapboxgl.accessToken = secret;
+
+      removeLayerIfExists(map, 'restaurant-markers');
+
       map.addLayer({
-        id: 'restaurants',
+        id: 'restaurant-markers',
         type: 'circle',
         source: {
           type: 'geojson',
-          data,
+          data: geojson,
         },
         paint: {
           'circle-radius': 2,
@@ -70,7 +72,54 @@ export const useFeatureCollectionMarkers = (secret, map, resource) => {
         },
       });
     }
-  }, [secret, map, data]);
+  }, [secret, map, geojson]);
 
-  return markers;
+  return geojson;
 };
+
+/**
+ * Custom hook to highlight a restaurant that is selected.
+ *
+ * @param {string} secret Mapbox access key
+ * @param {mapboxgl.Map} map The Mapbox GL JS map object to plot in
+ * @param {Object} params
+ * @param {number} params.id The id of the selected restaurant
+ * @param {Object} params.geojson The geojson object of all restaurants
+ */
+export const useRestaurantSelection = (secret, map, params) => {
+  const id = params.id;
+  const geojson = params.geojson;
+
+  useEffect(() => {
+    if (map && geojson) {
+      if (id) {
+        mapboxgl.accessToken = secret;
+        const single = geojson.features.find(g => g.properties.id === id);
+
+        removeLayerIfExists(map, 'restaurant-selection');
+
+        map.addLayer({
+          id: 'restaurant-selection',
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: single,
+          },
+          paint: {
+            'circle-radius': 7,
+            'circle-color': '#ff0000',
+          },
+        });
+      } else {
+        removeLayerIfExists(map, 'restaurant-selection');
+      }
+    }
+  }, [secret, map, id, geojson]);
+};
+
+function removeLayerIfExists(map, id) {
+  if (map.getLayer(id)) {
+    map.removeLayer(id);
+    map.removeSource(id);
+  }
+}
