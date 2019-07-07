@@ -113,7 +113,7 @@ export const useRestaurantSelection = (secret, map, params) => {
         });
 
         // pan to selected restaurant
-        map.setZoom(12);
+        map.setZoom(params.zoom || 12);
         const center = map.project(single.geometry.coordinates);
         const offsetX = window.innerWidth / 4;
         const offsetY = 0;
