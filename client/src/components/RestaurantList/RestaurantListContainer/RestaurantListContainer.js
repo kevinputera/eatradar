@@ -1,7 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import _ from 'lodash';
-import { getRestaurants } from '../../../api/restaurantApi';
+import { getClosestRestaurants } from '../../../api/restaurantApi';
 
 import RestaurantListFilter from '../RestaurantListFilter/RestaurantListFilter';
 import RestaurantListContent from '../RestaurantListContent/RestaurantListContent';
@@ -69,7 +69,7 @@ class RestaurantListContainer extends React.Component {
       q: this.state.query,
     };
 
-    const restaurants = await getRestaurants(params);
+    const restaurants = await getClosestRestaurants(params);
     if (!Immutable.is(restaurants, this.state.contents)) {
       this.setState({
         contents: restaurants,

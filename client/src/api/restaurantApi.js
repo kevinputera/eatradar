@@ -13,9 +13,9 @@ import { restaurant } from '../entity/restaurant';
  * @param {string} [params.q]
  * @return {Immutable.List<Immutable.Record>} - a list of restaurants
  */
-export const getRestaurants = async params => {
+export const getClosestRestaurants = async params => {
   try {
-    const json = await get('/restaurants', params);
+    const json = await get('/restaurants/closest', params);
     return Immutable.List(json.data.map(r => restaurant(r)));
   } catch (e) {
     return Immutable.List();
