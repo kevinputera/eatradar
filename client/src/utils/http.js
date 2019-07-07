@@ -1,5 +1,5 @@
 export const get = async (resource, params) => {
-  const endpoint = new URL(`http://localhost:5000${resource}`);
+  const endpoint = new URL(`${process.env.REACT_APP_SERVER_URL}${resource}`);
   if (params) {
     Object.keys(params).forEach(key =>
       endpoint.searchParams.append(key, params[key])
