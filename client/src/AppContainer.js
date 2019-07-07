@@ -89,7 +89,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <div className="map-wrapper">
-          <Map />
+          <Map restaurantSelection={this.state.restaurantSelection} />
         </div>
         <div className="restaurant-list-wrapper card-wrapper">
           <RestaurantListContainer

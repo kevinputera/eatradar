@@ -1,5 +1,9 @@
 import React from 'react';
-import { useMap, useFeatureCollectionMarkers } from '../../hooks/mapHooks';
+import {
+  useMap,
+  useRestaurantMarkers,
+  useRestaurantSelection,
+} from '../../hooks/mapHooks';
 
 import './Map.css';
 
@@ -13,7 +17,12 @@ function Map(props) {
     zoom: 10.5,
   });
 
-  useFeatureCollectionMarkers(secret, map, '/restaurants');
+  const geojson = useRestaurantMarkers(secret, map);
+
+  useRestaurantSelection(secret, map, {
+    id: props.restaurantSelection && props.restaurantSelection.id,
+    geojson,
+  });
 
   return <div id="map" />;
 }
