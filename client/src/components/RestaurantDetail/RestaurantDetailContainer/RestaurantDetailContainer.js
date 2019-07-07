@@ -80,7 +80,6 @@ class RestaurantDetailContainer extends React.Component {
   };
 
   handleReviewSelect = brand => {
-    console.log(brand);
     this.setState({
       reviewsSelected: brand,
     });
