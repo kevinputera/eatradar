@@ -15,7 +15,10 @@ import { restaurant } from '../entity/restaurant';
  */
 export const getClosestRestaurants = async params => {
   try {
-    const json = await get('/restaurants/closest', params);
+    const json = await get(
+      `${process.env.REACT_APP_SERVER_URL}/restaurants/closest`,
+      { qs: params }
+    );
     return Immutable.List(json.data.map(r => restaurant(r)));
   } catch (e) {
     return Immutable.List();

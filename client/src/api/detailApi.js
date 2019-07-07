@@ -10,7 +10,7 @@ import { details, openingHours, period, photo } from '../entity/details';
  */
 export const getDetails = async id => {
   try {
-    const json = await get(`/details/${id}`);
+    const json = await get(`${process.env.REACT_APP_SERVER_URL}/details/${id}`);
     const raw = json.data.google;
 
     let hours;

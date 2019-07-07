@@ -12,16 +12,19 @@ import { blogPost } from '../entity/blogPost';
  * @return {Immutable.List<Immutable.Record>} - a list of blog posts
  */
 export const getBlogPosts = async params => {
-  const reqParams = {};
+  const qs = {};
   if (params.page) {
-    reqParams.p = params.page;
+    qs.p = params.page;
   }
   if (params.pageSize) {
-    reqParams.ps = params.pageSize;
+    qs.ps = params.pageSize;
   }
 
   try {
-    const json = await get(`/blogposts/${params.id}`, reqParams);
+    const json = await get(
+      `${process.env.REACT_APP_SERVER_URL}/blogposts/${params.id}`,
+      { qs }
+    );
     return Immutable.List(
       json.data.map(bp => blogPost({ id: bp._id, ...bp._source }))
     );
@@ -38,7 +41,9 @@ export const getBlogPosts = async params => {
  */
 export const getBlogPostsCount = async id => {
   try {
-    const json = await get(`/blogposts/${id}/count`);
+    const json = await get(
+      `${process.env.REACT_APP_SERVER_URL}/blogposts/${id}/count`
+    );
     return json.data.count;
   } catch (e) {
     return 0;

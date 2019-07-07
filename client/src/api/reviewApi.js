@@ -10,7 +10,7 @@ import { review, reviews, reviewsAgg } from '../entity/reviews';
  */
 export const getReviews = async id => {
   try {
-    const json = await get(`/reviews/${id}`);
+    const json = await get(`${process.env.REACT_APP_SERVER_URL}/reviews/${id}`);
     const raw = json.data;
 
     const reviewsObj = {};
