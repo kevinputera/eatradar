@@ -86,36 +86,31 @@ class App extends React.Component {
   };
 
   render() {
-    const restaurantDetailContainer = this.state.restaurantSelection ? (
-      <div className="restaurant-card-wrapper">
-        <RestaurantDetailContainer
-          restaurantSelection={this.state.restaurantSelection}
-          clearRestaurantSelection={this.clearRestaurantSelection}
-          ref={this.restaurantDetailRef}
-        />
-      </div>
-    ) : null;
-
     return (
       <div className="app">
         <div className="map-wrapper">
           <Map />
         </div>
-        <div className="restaurant-list-detail-wrapper">
-          <div className="restaurant-card-wrapper">
-            <RestaurantListContainer
-              latitude={this.state.latitude}
-              longitude={this.state.longitude}
+        <div className="restaurant-list-wrapper card-wrapper">
+          <RestaurantListContainer
+            latitude={this.state.latitude}
+            longitude={this.state.longitude}
+            restaurantSelection={this.state.restaurantSelection}
+            handleRefreshButtonClick={this.handleRefreshButtonClick}
+            updateRestaurantSelection={this.updateRestaurantSelection}
+            clearRestaurantSelection={this.clearRestaurantSelection}
+            ref={this.restaurantListRef}
+          />
+        </div>
+        {this.state.restaurantSelection && (
+          <div className="restaurant-detail-wrapper card-wrapper">
+            <RestaurantDetailContainer
               restaurantSelection={this.state.restaurantSelection}
-              handleRefreshButtonClick={this.handleRefreshButtonClick}
-              updateRestaurantSelection={this.updateRestaurantSelection}
               clearRestaurantSelection={this.clearRestaurantSelection}
-              ref={this.restaurantListRef}
+              ref={this.restaurantDetailRef}
             />
           </div>
-
-          {restaurantDetailContainer}
-        </div>
+        )}
       </div>
     );
   }
