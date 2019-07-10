@@ -5,7 +5,7 @@ const inputStream = fs.createReadStream(
   'eating-establishments-geojson.geojson',
   { encoding: 'utf-8' }
 );
-const outputStream = fs.createWriteStream('foodEstablishmentsParsed.txt');
+const outputStream = fs.createWriteStream('foodEstablishmentsParsed.json');
 
 const reader = readline.createInterface({
   input: inputStream,
