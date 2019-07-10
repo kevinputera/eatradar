@@ -51,7 +51,7 @@ export const useMap = (secret, params) => {
  * @return {Object} The geojson object of restaurant locations fetched from the server
  */
 export const useRestaurantMarkers = (secret, map) => {
-  const geojson = useFetchServer('/restaurants', { method: 'GET' });
+  const geojson = useFetchServer('/restaurant-locations', { method: 'GET' });
 
   useEffect(() => {
     if (map && geojson) {
