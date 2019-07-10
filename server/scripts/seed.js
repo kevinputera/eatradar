@@ -1,46 +1,18 @@
 const fs = require('fs');
 const { pgPool } = require('../config/dbConfig');
+const { esClient } = require('../config/elasticsearchConfig');
 const { capitalize } = require('../utils/stringUtils');
 
-const raw = fs.readFileSync('scripts/foodEstablishmentsParsed.txt');
-const json = JSON.parse(raw);
+const rjson = require('./foodEstablishmentsParsed.json');
+const bjson = require('./blogposts.json');
 
-/* const cuisines = [
-  'Chinese', 
-  'Japanese', 
-  'American', 
-  'Indian', 
-  'Korean', 
-  'Italian'
-]; */
-
-// let cuisinePks = [];
 let restaurantPks = [];
 
-(async () => {
+const r = (async () => {
   const pgClient = await pgPool.connect();
 
-  // populate cuisine table with random data
-  /* for (let cuisine of cuisines) {
-    const query = {
-      text: /* sql `
-        INSERT INTO cuisine(name) 
-        VALUES ($1) 
-        RETURNING id;
-      `,
-      values: [cuisine]
-    }
-    
-    try {
-      const id = (await pgClient.query(query)).rows[0].id;
-      cuisinePks.push(id);
-    } catch (e) {
-      console.log(`seed.js: error in inserting cuisine\n${e}`);
-    }
-  } */
-
-  // populate street + restaurant table with real data
-  for (let entry of json) {
+  // populate street table, restaurant table, and elasticsearch restaurants index with real data
+  for (const entry of rjson) {
     const findStreetPkQuery = {
       text: /* sql */ `
         SELECT street.id 
@@ -104,32 +76,43 @@ let restaurantPks = [];
     } catch (e) {
       console.log(`seed.js: error in inserting into restaurant\n${e}`);
     }
+
+    // populate elasticsearch restaurants index
+    try {
+      await esClient.index({
+        index: 'restaurant-name',
+        body: {
+          id: restaurantPks[restaurantPks.length - 1],
+          name: capitalize(entry.name),
+        },
+      });
+    } catch (e) {
+      console.log(
+        `seed.js: error in inserting into restaurant-name in elasticsearch\n${e}`
+      );
+    }
   }
 
-  // populate restaurant_cuisine table
-  /* for (let i = 0; i < 200; i++) {
-    const restaurantId = restaurantPks[Math.floor(Math.random() * restaurantPks.length)];
-    const cuisineId = cuisinePks[Math.floor(Math.random() * cuisinePks.length)];
-    const query = {
-      text: /* sql `
-        INSERT INTO restaurant_cuisine(restaurant_id, cuisine_id) 
-        VALUES ($1, $2);
-      `,
-      values:[
-          restaurantId,
-          cuisineId
-      ]
-    }
-
-    try {
-      await pgClient.query(query);
-    } catch (e) {
-      console.log(`seed.js: error in inserting into restaurant_cuisine\n${e}`);
-    }
-  } */
-
   await pgClient.release();
-})().then(() => {
+})();
+
+const b = (async () => {
+  // populate elasticsearch blogposts index
+  for (const entry of bjson) {
+    try {
+      await esClient.index({
+        index: 'blogpost',
+        body: entry,
+      });
+    } catch (e) {
+      console.log(
+        `seed.js: error in inserting into blogpost in elasticsearch\n${e}`
+      );
+    }
+  }
+})();
+
+Promise.all([r, b]).then(() => {
   console.log('seed.js: seeding finished!');
   process.exit(0);
 });
