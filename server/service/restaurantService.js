@@ -1,48 +1,71 @@
 const { pgPool } = require('../config/dbConfig');
+const { esClient } = require('../config/elasticsearchConfig');
 const googlePlacesApiService = require('./googlePlacesApiService');
 
 /**
- * Get list of all restaurants id and location in GeoJSON format.
+ * Get a list of all restaurant ids and locations in GeoJSON format, filtered by name
  *
- * @return {Promise<Object[]>} - list of restaurants
+ * @param {string} q The name filter
+ * @return {Promise<Object[]>} - list of restaurant ids and locations in GeoJSON format
  */
-exports.getRestaurants = async () => {
-  const query = {
-    text: /* sql */ `
-      SELECT restaurant.id AS id,
-          ST_X(restaurant.location::geometry) AS lng,
-          ST_Y(restaurant.location::geometry) AS lat
-      FROM restaurant;
-    `,
-  };
-
-  const pgClient = await pgPool.connect();
+exports.getRestaurantLocationsGeoJSON = async q => {
   try {
-    const res = await pgClient.query(query);
+    const res = await exports.getRestaurantNamesAndLocations(q);
     return {
       type: 'FeatureCollection',
-      features: res.rows.map(r => ({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [r.lng, r.lat],
-        },
-        properties: {
-          id: r.id,
-        },
-      })),
+      features: res
+        .map(r => r._source)
+        .map(r => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [r.location[0], r.location[1]],
+          },
+          properties: {
+            id: r.id,
+          },
+        })),
     };
   } catch (e) {
-    const message = `restaurantService.js: error in getRestaurants\n${e}`;
+    const message = `restaurantService.js: error in getRestaurantLocationsGeoJSON\n${e}`;
     console.log(message);
     throw new Error(message);
-  } finally {
-    await pgClient.release();
   }
 };
 
 /**
- * Get list of restaurants closest to longitude, latitude
+ * Get a list of all restaurant ids, names and locations, filtered by name
+ *
+ * @param {string} q The name filter
+ * @return {Promise<Object[]>} - list of restaurant ids, names and locations
+ */
+exports.getRestaurantNamesAndLocations = async q => {
+  try {
+    const res = await esClient.search({
+      index: 'restaurant',
+      body: {
+        min_score: 9,
+        query: {
+          multi_match: {
+            query: q,
+            fuzziness: 2,
+            fields: ['name^2', 'street'],
+          },
+        },
+      },
+      size: 10000,
+    });
+
+    return res.body.hits.hits;
+  } catch (e) {
+    const message = `restaurantService.js: error in getRestaurantNamesAndLocations\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
+};
+
+/**
+ * Get list of restaurants with filters applied.
  *
  * @param {Object} params
  * @param {number} params.longitude
@@ -52,7 +75,7 @@ exports.getRestaurants = async () => {
  * @param {string} params.q
  * @return {Promise<Object[]>} - list of restaurants
  */
-exports.getClosestRestaurants = async params => {
+exports.getRestaurants = async params => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
   const pgClient = await pgPool.connect();
 
@@ -180,7 +203,7 @@ exports.getGooglePlacesId = async id => {
   const pgClient = await pgPool.connect();
   try {
     const res = await pgClient.query(query);
-    return this.processGooglePlacesId(id, res.rows[0].google_places_id);
+    return exports.processGooglePlacesId(id, res.rows[0].google_places_id);
   } catch (e) {
     const message = `restaurantService.js: error in getGooglePlacesId\n${e}`;
     console.log(message);
@@ -233,7 +256,7 @@ exports.processGooglePlacesId = async (id, googlePlacesId) => {
   // TODO: refresh google places id if too old
   if (googlePlacesId === null) {
     try {
-      const detail = await this.getRestaurant(id);
+      const detail = await exports.getRestaurant(id);
       const retrievedPlaceId = await googlePlacesApiService.getPlaceId({
         input: detail.name,
         latitude: detail.lat,
@@ -241,7 +264,7 @@ exports.processGooglePlacesId = async (id, googlePlacesId) => {
         language: 'en',
       });
 
-      await this.updateGooglePlacesId(id, retrievedPlaceId);
+      await exports.updateGooglePlacesId(id, retrievedPlaceId);
       return retrievedPlaceId;
     } catch (e) {
       const message = `restaurantService.js: error in processGooglePlacesId\n${e}`;
