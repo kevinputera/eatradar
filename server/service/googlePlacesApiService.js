@@ -26,7 +26,7 @@ exports.getDetails = async params => {
     let photos = [];
     if (res.json.result.photos) {
       photos = res.json.result.photos.map(photo => {
-        const url = this.getPhotoUrl({
+        const url = exports.getPhotoUrl({
           photoReference: photo.photo_reference,
           maxWidth: 400,
           maxHeight: 400,
