@@ -80,15 +80,18 @@ const r = (async () => {
     // populate elasticsearch restaurants index
     try {
       await esClient.index({
-        index: 'restaurant-name',
+        index: 'restaurant',
         body: {
           id: restaurantPks[restaurantPks.length - 1],
           name: capitalize(entry.name),
+          street: entry.street,
+          lng: entry.geometry.coordinates[0],
+          lat: entry.geometry.coordinates[1],
         },
       });
     } catch (e) {
       console.log(
-        `seed.js: error in inserting into restaurant-name in elasticsearch\n${e}`
+        `seed.js: error in inserting into restaurant in elasticsearch\n${e}`
       );
     }
   }

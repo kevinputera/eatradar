@@ -72,15 +72,15 @@ const es = (async () => {
 
   try {
     const exists = await esClient.indices.exists({
-      index: 'restaurant-name',
+      index: 'restaurant',
     });
     if (exists.body) {
       await esClient.indices.delete({
-        index: 'restaurant-name',
+        index: 'restaurant',
       });
     }
   } catch (e) {
-    console.log(`tables.js: error during restaurant-name index deletion`);
+    console.log(`tables.js: error during restaurant index deletion`);
   }
 })();
 
