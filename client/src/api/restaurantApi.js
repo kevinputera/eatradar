@@ -3,7 +3,7 @@ import { get } from '../utils/http';
 import { restaurant } from '../entity/restaurant';
 
 /**
- * Get closest restaurants to a point, filter by params
+ * Get restaurants, filter by params
  *
  * @param {Object} params
  * @param {number} params.lat
@@ -13,12 +13,11 @@ import { restaurant } from '../entity/restaurant';
  * @param {string} [params.q]
  * @return {Immutable.List<Immutable.Record>} - a list of restaurants
  */
-export const getClosestRestaurants = async params => {
+export const getRestaurants = async params => {
   try {
-    const json = await get(
-      `${process.env.REACT_APP_SERVER_URL}/restaurants/closest`,
-      { qs: params }
-    );
+    const json = await get(`${process.env.REACT_APP_SERVER_URL}/restaurants`, {
+      qs: params,
+    });
     return Immutable.List(json.data.map(r => restaurant(r)));
   } catch (e) {
     return Immutable.List();
