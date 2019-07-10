@@ -34,7 +34,7 @@ exports.getBlogPosts = async params => {
  * Get the number of blog posts blog posts of a restaurant
  *
  * @param {number} id
- * @return {Promise<number>} 
+ * @return {Promise<number>}
  */
 exports.getBlogPostsCount = async id => {
   const restaurant = await restaurantService.getRestaurant(id);
@@ -52,4 +52,4 @@ exports.getBlogPostsCount = async id => {
     },
   });
   return res.body.count;
-}
+};

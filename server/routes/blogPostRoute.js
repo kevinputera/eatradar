@@ -68,14 +68,14 @@ router.get('/:id/count', async (req, res) => {
       'A correct id must be included in the request URI'
     );
     return;
-  } 
+  }
 
   try {
     const result = await blogPostService.getBlogPostsCount(id);
     response.sendOk(res, { count: result });
   } catch (e) {
     response.sendInternalError(res, e.message);
-  } 
+  }
 });
 
 module.exports = router;
