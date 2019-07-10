@@ -1,6 +1,7 @@
 const { pgPool } = require('../config/dbConfig');
+const { esClient } = require('../config/elasticsearchConfig');
 
-(async () => {
+const sql = (async () => {
   const pgClient = await pgPool.connect();
 
   const dropQuery = /* sql */ `
@@ -19,7 +20,7 @@ const { pgPool } = require('../config/dbConfig');
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) UNIQUE NOT NULL
     );
- 
+
     CREATE TABLE restaurant (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) NOT NULL,
@@ -37,22 +38,6 @@ const { pgPool } = require('../config/dbConfig');
     CREATE INDEX name_ts_idx ON restaurant USING GIN (to_tsvector('simple', name));
   `;
 
-  /* CREATE TABLE cuisine (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(50) UNIQUE NOT NULL
-    );
- 
-    CREATE TABLE restaurant_cuisine (
-      id SERIAL PRIMARY KEY,
-      restaurant_id INTEGER NOT NULL,
-      cuisine_id INTEGER NOT NULL,
-      FOREIGN KEY (restaurant_id) REFERENCES restaurant(id)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-      FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)
-        ON UPDATE CASCADE ON DELETE CASCADE
-    );
-  `; */
-
   try {
     await pgClient.query(dropQuery);
   } catch (e) {
@@ -69,7 +54,37 @@ const { pgPool } = require('../config/dbConfig');
   } finally {
     await pgClient.release();
   }
-})().then(() => {
+})();
+
+const es = (async () => {
+  try {
+    const exists = await esClient.indices.exists({
+      index: 'blogpost',
+    });
+    if (exists.body) {
+      await esClient.indices.delete({
+        index: 'blogpost',
+      });
+    }
+  } catch (e) {
+    console.log(`tables.js: error during blogpost index deletion`);
+  }
+
+  try {
+    const exists = await esClient.indices.exists({
+      index: 'restaurant-name',
+    });
+    if (exists.body) {
+      await esClient.indices.delete({
+        index: 'restaurant-name',
+      });
+    }
+  } catch (e) {
+    console.log(`tables.js: error during restaurant-name index deletion`);
+  }
+})();
+
+Promise.all([sql, es]).then(() => {
   console.log('tables.js: tables created!');
   process.exit(0);
 });
