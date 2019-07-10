@@ -1,14 +1,17 @@
 const express = require('express');
-const router = express.Router();
+const restaurantRoute = express.Router();
+const restaurantLocationRoute = express.Router();
 const restaurantService = require('../service/restaurantService');
 const response = require('../utils/response');
 
 /**
  * Get all restaurants in Singapore in the form of GeoJSON data
  */
-router.get('/', async (req, res) => {
+restaurantLocationRoute.get('/', async (req, res) => {
   try {
-    const result = await restaurantService.getRestaurants();
+    const result = await restaurantService.getRestaurantLocationsGeoJSON(
+      req.query.q
+    );
     response.sendOk(res, result);
   } catch (e) {
     response.sendInternalError(res, e.message);
@@ -18,7 +21,7 @@ router.get('/', async (req, res) => {
 /**
  * Get closest restaurants based on location.
  */
-router.get('/closest', async (req, res) => {
+restaurantRoute.get('/', async (req, res) => {
   const params = {
     longitude: req.query.lng,
     latitude: req.query.lat,
@@ -30,8 +33,7 @@ router.get('/closest', async (req, res) => {
   if (!params.longitude || !params.latitude) {
     response.sendBadRequest(
       res,
-      `Both longitude and latitude must be appended 
-        to the URI as query parameters`
+      `Both lng and lat must be appended to the URI as query parameters`
     );
     return;
   }
@@ -50,11 +52,14 @@ router.get('/closest', async (req, res) => {
   }
 
   try {
-    const result = await restaurantService.getClosestRestaurants(params);
+    const result = await restaurantService.getRestaurants(params);
     response.sendOk(res, result);
   } catch (e) {
     response.sendInternalError(res, e.message);
   }
 });
 
-module.exports = router;
+module.exports = {
+  restaurantLocationRoute,
+  restaurantRoute,
+};

@@ -2,7 +2,10 @@ const express = require('express');
 
 const { enableCors } = require('./middlewares/corsMiddleware');
 
-const restaurantRoute = require('./routes/restaurantRoute');
+const {
+  restaurantLocationRoute,
+  restaurantRoute,
+} = require('./routes/restaurantRoute');
 const detailRoute = require('./routes/detailRoute');
 const reviewRoute = require('./routes/reviewRoute');
 const blogPostRoute = require('./routes/blogPostRoute');
@@ -13,6 +16,7 @@ const app = express();
 app.use(enableCors);
 
 // Use routes
+app.use('/restaurant-locations', restaurantLocationRoute);
 app.use('/restaurants', restaurantRoute);
 app.use('/details', detailRoute);
 app.use('/reviews', reviewRoute);
