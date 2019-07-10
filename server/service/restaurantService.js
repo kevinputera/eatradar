@@ -5,33 +5,56 @@ const googlePlacesApiService = require('./googlePlacesApiService');
 /**
  * Get a list of all restaurant ids and locations in GeoJSON format, filtered by name
  *
- * @param {string} q The name filter
- * @return {Promise<Object[]>} - list of restaurant ids and locations in GeoJSON format
+ * @param {string} [q] The name filter
+ * @return {Promise<Object>} - list of restaurant ids and locations in GeoJSON format
  */
 exports.getRestaurantLocationsGeoJSON = async q => {
   try {
-    const res = await exports.getRestaurantNamesAndLocations(q);
-    return {
-      type: 'FeatureCollection',
-      features: res
-        .map(r => r._source)
-        .map(r => ({
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [r.location[0], r.location[1]],
-          },
-          properties: {
-            id: r.id,
-          },
-        })),
-    };
+    if (q) {
+      const res = await exports.getRestaurantNamesAndLocations(q);
+      return convertToGeoJSON(res.map(r => r._source));
+    } else {
+      const query = {
+        text: /* sql */ `
+          SELECT restaurant.id AS id,
+              ST_X(restaurant.location::geometry) AS lng,
+              ST_Y(restaurant.location::geometry) AS lat
+          FROM restaurant;
+        `,
+      };
+      const pgClient = await pgPool.connect();
+      const res = await pgClient.query(query);
+      return convertToGeoJSON(res.rows);
+    }
   } catch (e) {
     const message = `restaurantService.js: error in getRestaurantLocationsGeoJSON\n${e}`;
     console.log(message);
     throw new Error(message);
   }
 };
+
+/**
+ * Helper function to convert rows data from getRestaurantLocationsGeoJSON
+ * to GeoJSON format.
+ *
+ * @param {Object[]} rows
+ * @return {Object} - the GeoJSON data
+ */
+function convertToGeoJSON(rows) {
+  return {
+    type: 'FeatureCollection',
+    features: rows.map(row => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [row.lng, row.lat],
+      },
+      properties: {
+        id: row.id,
+      },
+    })),
+  };
+}
 
 /**
  * Get a list of all restaurant ids, names and locations, filtered by name
@@ -48,7 +71,7 @@ exports.getRestaurantNamesAndLocations = async q => {
         query: {
           multi_match: {
             query: q,
-            fuzziness: 2,
+            fuzziness: 1,
             fields: ['name^2', 'street'],
           },
         },
@@ -79,35 +102,22 @@ exports.getRestaurants = async params => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
   const pgClient = await pgPool.connect();
 
-  let q;
+  let ids;
   if (params.q) {
-    const query = {
-      text: /* sql */ `
-        SELECT word
-        FROM lexeme
-        WHERE similarity(word, $1) > 0.3
-        ORDER BY word <-> $1
-        LIMIT 1;
-      `,
-      values: [params.q],
-    };
-
     try {
-      const res = await pgClient.query(query);
-      if (res.rows[0]) {
-        q = res.rows[0].word;
-      }
+      ids = await exports.getRestaurantNamesAndLocations(params.q);
     } catch (e) {
       const message = `restaurantService.js: error in getClosestRestaurant\n${e}`;
       console.log(message);
-      q = null;
+      ids = null;
     }
   }
 
   let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
-  if (q) {
-    values.push(`${q}:*`); // startswith 'q', i.e. match apple and app for query app
+  if (ids) {
+    values = [...values, ...ids.map(i => i._source.id)];
   }
+
   const query = {
     text: /* sql */ `
       SELECT restaurant.id AS id, 
@@ -122,8 +132,10 @@ exports.getRestaurants = async params => {
       INNER JOIN street
           ON restaurant.street_id = street.id
       ${
-        q
-          ? /* sql */ `WHERE to_tsvector('simple', restaurant.name) @@ to_tsquery($4)`
+        ids
+          ? /* sql */ `WHERE restaurant.id IN (${ids
+              .map((_, idx) => '$' + (idx + 4))
+              .join(',')})`
           : ''
       }
       ORDER BY restaurant.location <-> $1 ASC
@@ -137,7 +149,7 @@ exports.getRestaurants = async params => {
     const res = await pgClient.query(query);
     return res.rows;
   } catch (e) {
-    const message = `restaurantService.js: error in getClosestRestaurants\n${e}`;
+    const message = `restaurantService.js: error in getRestaurants\n${e}`;
     console.log(message);
     throw new Error(message);
   } finally {
