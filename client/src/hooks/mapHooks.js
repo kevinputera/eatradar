@@ -65,12 +65,7 @@ export const useRestaurantMarkers = (secret, params) => {
   const { map, qs } = params;
 
   const reqParams = { method: 'GET' };
-  const qsMemo = useMemo(
-    () => ({
-      q: qs,
-    }),
-    [qs]
-  );
+  const qsMemo = useMemo(() => ({ q: qs }), [qs]);
   if (qs) {
     reqParams.qs = qsMemo;
   }
