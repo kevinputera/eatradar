@@ -11,6 +11,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      query: '',
       latitude: 1.3033702, // set default to point to the center of Singapore
       longitude: 103.8283541, // set default to point to the center of Singapore
       restaurantSelection: null,
@@ -33,6 +34,10 @@ class App extends React.Component {
     // clear position tracking
     navigator.geolocation.clearWatch(this.watchPositionCallback);
   }
+
+  handleQueryInputChange = e => {
+    this.setState({ query: e.target.value });
+  };
 
   handleRefreshButtonClick = async () => {
     // manual get position trigger
@@ -73,9 +78,11 @@ class App extends React.Component {
         </div>
         <div className="restaurant-list-wrapper card-wrapper">
           <RestaurantListContainer
+            query={this.state.query}
             latitude={this.state.latitude}
             longitude={this.state.longitude}
             restaurantSelection={this.state.restaurantSelection}
+            handleQueryInputChange={this.handleQueryInputChange}
             handleRefreshButtonClick={this.handleRefreshButtonClick}
             updateRestaurantSelection={this.updateRestaurantSelection}
             clearRestaurantSelection={this.clearRestaurantSelection}

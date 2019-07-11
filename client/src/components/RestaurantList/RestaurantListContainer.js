@@ -13,7 +13,6 @@ class RestaurantListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: '',
       page: 1,
       pageSize: 10,
       contents: Immutable.List(),
@@ -39,14 +38,10 @@ class RestaurantListContainer extends React.Component {
       this.getAndUpdateRestaurants();
     }
 
-    if (this.state.query !== prevState.query) {
+    if (this.props.query !== prevProps.query) {
       this.throttledGetAndUpdateRestaurants();
     }
   }
-
-  handleQueryInputChange = async e => {
-    this.setState({ query: e.target.value });
-  };
 
   handlePageSizeChange = size => {
     this.setState({ pageSize: size });
@@ -70,7 +65,7 @@ class RestaurantListContainer extends React.Component {
       lng: this.props.longitude,
       p: this.state.page,
       ps: this.state.pageSize,
-      q: this.state.query,
+      q: this.props.query,
     };
 
     const restaurants = await getRestaurants(params);
@@ -86,8 +81,8 @@ class RestaurantListContainer extends React.Component {
     return (
       <div className="restaurant-list-container">
         <RestaurantListFilter
-          query={this.state.query}
-          handleQueryInputChange={this.handleQueryInputChange}
+          query={this.props.query}
+          handleQueryInputChange={this.props.handleQueryInputChange}
           handleRefreshButtonClick={this.props.handleRefreshButtonClick}
         />
         <RestaurantListContent
