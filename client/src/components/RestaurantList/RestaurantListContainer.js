@@ -18,46 +18,50 @@ class RestaurantListContainer extends React.Component {
       pageSize: 10,
       contents: Immutable.List(),
     };
-    this.debouncedGetAndUpdateRestaurants = _.debounce(
+
+    this.throttledGetAndUpdateRestaurants = _.throttle(
       this.getAndUpdateRestaurants,
-      300
+      200
     );
   }
 
-  async componentDidMount() {
-    await this.getAndUpdateRestaurants();
+  componentDidMount() {
+    this.getAndUpdateRestaurants();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.latitude !== prevProps.latitude ||
+      this.props.longitude !== prevProps.longitude ||
+      this.state.page !== prevState.page ||
+      this.state.pageSize !== prevState.pageSize
+    ) {
+      this.getAndUpdateRestaurants();
+    }
+
+    if (this.state.query !== prevState.query) {
+      this.throttledGetAndUpdateRestaurants();
+    }
   }
 
   handleQueryInputChange = async e => {
-    this.setState(
-      { query: e.target.value },
-      async () => await this.debouncedGetAndUpdateRestaurants()
-    );
+    this.setState({ query: e.target.value });
   };
 
   handlePageSizeChange = size => {
-    this.setState(
-      { pageSize: size },
-      async () => await this.debouncedGetAndUpdateRestaurants()
-    );
+    this.setState({ pageSize: size });
   };
 
   handlePageNext = () => {
-    this.setState(
-      state => {
-        return { page: state.page + 1 };
-      },
-      async () => await this.debouncedGetAndUpdateRestaurants()
-    );
+    this.setState(state => {
+      return { page: state.page + 1 };
+    });
   };
 
   handlePagePrev = () => {
-    this.setState(
-      state => {
-        return { page: state.page > 1 ? state.page - 1 : 1 };
-      },
-      async () => await this.debouncedGetAndUpdateRestaurants()
-    );
+    this.setState(state => {
+      return { page: state.page > 1 ? state.page - 1 : 1 };
+    });
   };
 
   getAndUpdateRestaurants = async () => {

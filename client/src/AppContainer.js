@@ -19,12 +19,12 @@ class App extends React.Component {
     this.restaurantDetailRef = React.createRef();
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     // enable position tracking, if available
     this.watchPositionCallback = navigator.geolocation.watchPosition(
-      async res => {
+      res => {
         const coords = res.coords;
-        await this.updateLocationAndRefreshRestaurantList(coords);
+        this.updateLocation(coords);
       },
       error => console.log(error.message), // TODO: update this
       { enableHighAccuracy: true, maximumAge: 10000 }
@@ -41,7 +41,7 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(
       async res => {
         const coords = res.coords;
-        await this.updateLocationAndRefreshRestaurantList(coords);
+        await this.updateLocation(coords);
         console.log('manual trigger successful');
       },
       error => console.log(error.message),
@@ -72,17 +72,8 @@ class App extends React.Component {
     }
   };
 
-  updateLocationAndRefreshRestaurantList = async ({ latitude, longitude }) => {
-    if (
-      this.state.latitude !== latitude ||
-      this.state.longitude !== longitude
-    ) {
-      this.setState(
-        { latitude, longitude },
-        async () =>
-          await this.restaurantListRef.current.debouncedGetAndUpdateRestaurants()
-      );
-    }
+  updateLocation = async ({ latitude, longitude }) => {
+    this.setState({ latitude, longitude });
   };
 
   render() {
