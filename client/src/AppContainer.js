@@ -15,8 +15,6 @@ class App extends React.Component {
       longitude: 103.8283541, // set default to point to the center of Singapore
       restaurantSelection: null,
     };
-    this.restaurantListRef = React.createRef();
-    this.restaurantDetailRef = React.createRef();
   }
 
   componentDidMount() {
@@ -51,16 +49,7 @@ class App extends React.Component {
 
   updateRestaurantSelection = async restaurant => {
     if (!Immutable.is(this.state.restaurantSelection, restaurant)) {
-      this.setState(
-        { restaurantSelection: restaurant },
-        async () =>
-          await Promise.all([
-            this.restaurantDetailRef.current.getAndUpdateDetails(),
-            this.restaurantDetailRef.current.getAndUpdateReviews(),
-            this.restaurantDetailRef.current.getAndUpdateBlogPosts(),
-            this.restaurantDetailRef.current.getAndUpdateBlogPostsCount(),
-          ])
-      );
+      this.setState({ restaurantSelection: restaurant });
     }
   };
 
@@ -90,7 +79,6 @@ class App extends React.Component {
             handleRefreshButtonClick={this.handleRefreshButtonClick}
             updateRestaurantSelection={this.updateRestaurantSelection}
             clearRestaurantSelection={this.clearRestaurantSelection}
-            ref={this.restaurantListRef}
           />
         </div>
         {this.state.restaurantSelection && (

@@ -29,6 +29,31 @@ class RestaurantDetailContainer extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.getAndUpdateDetails();
+    this.getAndUpdateReviews();
+    this.getAndUpdateBlogPosts();
+    this.getAndUpdateBlogPostsCount();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      !Immutable.is(
+        this.props.restaurantSelection,
+        prevProps.restaurantSelection
+      )
+    ) {
+      this.getAndUpdateDetails();
+      this.getAndUpdateReviews();
+      this.getAndUpdateBlogPosts();
+      this.getAndUpdateBlogPostsCount();
+    }
+
+    if (this.state.blogPostPage !== prevState.blogPostPage) {
+      this.getAndUpdateBlogPosts();
+    }
+  }
+
   getAndUpdateDetails = async () => {
     const id = this.props.restaurantSelection.id;
     const details = await getDetails(id);
@@ -61,10 +86,7 @@ class RestaurantDetailContainer extends React.Component {
     if (prevPage < 1) {
       return;
     }
-    this.setState(
-      { blogPostPage: prevPage },
-      async () => await this.getAndUpdateBlogPosts()
-    );
+    this.setState({ blogPostPage: prevPage });
   };
 
   handleBlogpostPageNext = () => {
@@ -73,10 +95,7 @@ class RestaurantDetailContainer extends React.Component {
       return;
     }
     const nextPage = this.state.blogPostPage + 1;
-    this.setState(
-      { blogPostPage: nextPage },
-      async () => await this.getAndUpdateBlogPosts()
-    );
+    this.setState({ blogPostPage: nextPage });
   };
 
   handleReviewSelect = brand => {
