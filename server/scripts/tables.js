@@ -82,6 +82,35 @@ const es = (async () => {
   } catch (e) {
     console.log(`tables.js: error during restaurant index deletion`);
   }
+
+  try {
+    await esClient.indices.create({
+      index: 'blogpost',
+      body: {
+        settings: {
+          number_of_shards: 1,
+          number_of_replicas: 0,
+        },
+      },
+    });
+  } catch (e) {
+    console.log(`tables.js: error during blogpost index creation`);
+  }
+
+  try {
+    await esClient.indices.create({
+      index: 'restaurant',
+      body: {
+        settings: {
+          number_of_shards: 1,
+          number_of_replicas: 0,
+          max_result_window: 40000,
+        },
+      },
+    });
+  } catch (e) {
+    console.log(`tables.js: error during restaurant index creation`);
+  }
 })();
 
 Promise.all([sql, es]).then(() => {
