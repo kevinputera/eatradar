@@ -1,17 +1,17 @@
 import React from 'react';
 import Immutable from 'immutable';
-import { getDetails } from '../../../api/detailApi';
-import { getReviews } from '../../../api/reviewApi';
-import { getBlogPosts, getBlogPostsCount } from '../../../api/blogPostApi';
-import { details } from '../../../entity/details';
-import { reviews } from '../../../entity/reviews';
+import { getDetails } from '../../api/detailApi';
+import { getReviews } from '../../api/reviewApi';
+import { getBlogPosts, getBlogPostsCount } from '../../api/blogPostApi';
+import { details } from '../../entity/details';
+import { reviews } from '../../entity/reviews';
 import { Button } from '@blueprintjs/core';
 
-import RoundBorderCard from '../../shared/RoundBorderCard/RoundBorderCard';
-import RestaurantDetailSummary from '../RestaurantDetailSummary/RestaurantDetailSummary';
-import RestaurantDetailContent from '../RestaurantDetailContent/RestaurantDetailContent';
-import RestaurantDetailReview from '../RestaurantDetailReview/RestaurantDetailReview';
-import RestaurantDetailBlogpost from '../RestaurantDetailBlogpost/RestaurantDetailBlogpost';
+import RoundBorderCard from '../shared/RoundBorderCard/RoundBorderCard';
+import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
+import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
+import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
+import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetailBlogpost';
 
 import './RestaurantDetailContainer.css';
 
