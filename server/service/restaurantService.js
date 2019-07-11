@@ -10,22 +10,22 @@ const googlePlacesApiService = require('./googlePlacesApiService');
  */
 exports.getRestaurantLocationsGeoJSON = async q => {
   try {
-    if (q) {
-      const res = await exports.getRestaurantNamesAndLocations(q);
-      return convertToGeoJSON(res.map(r => r._source));
-    } else {
-      const query = {
-        text: /* sql */ `
-          SELECT restaurant.id AS id,
-              ST_X(restaurant.location::geometry) AS lng,
-              ST_Y(restaurant.location::geometry) AS lat
-          FROM restaurant;
-        `,
-      };
-      const pgClient = await pgPool.connect();
-      const res = await pgClient.query(query);
-      return convertToGeoJSON(res.rows);
-    }
+    const res = await exports.getRestaurantNamesAndLocations(q);
+    return {
+      type: 'FeatureCollection',
+      features: res
+        .map(r => r._source)
+        .map(r => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [r.lng, r.lat],
+          },
+          properties: {
+            id: r.id,
+          },
+        })),
+    };
   } catch (e) {
     const message = `restaurantService.js: error in getRestaurantLocationsGeoJSON\n${e}`;
     console.log(message);
@@ -34,39 +34,16 @@ exports.getRestaurantLocationsGeoJSON = async q => {
 };
 
 /**
- * Helper function to convert rows data from getRestaurantLocationsGeoJSON
- * to GeoJSON format.
- *
- * @param {Object[]} rows
- * @return {Object} - the GeoJSON data
- */
-function convertToGeoJSON(rows) {
-  return {
-    type: 'FeatureCollection',
-    features: rows.map(row => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [row.lng, row.lat],
-      },
-      properties: {
-        id: row.id,
-      },
-    })),
-  };
-}
-
-/**
  * Get a list of all restaurant ids, names and locations, filtered by name
  *
- * @param {string} q The name filter
+ * @param {string} [q] The name filter
  * @return {Promise<Object[]>} - list of restaurant ids, names and locations
  */
 exports.getRestaurantNamesAndLocations = async q => {
   try {
-    const res = await esClient.search({
-      index: 'restaurant',
-      body: {
+    let body;
+    if (q) {
+      body = {
         min_score: 9,
         query: {
           multi_match: {
@@ -75,10 +52,20 @@ exports.getRestaurantNamesAndLocations = async q => {
             fields: ['name^2', 'street'],
           },
         },
-      },
-      size: 10000,
+      };
+    } else {
+      body = {
+        query: {
+          match_all: {},
+        },
+      };
+    }
+    const res = await esClient.search({
+      index: 'restaurant',
+      body: body,
+      size: 40000,
     });
-
+    console.log(res.body.hits.hits);
     return res.body.hits.hits;
   } catch (e) {
     const message = `restaurantService.js: error in getRestaurantNamesAndLocations\n${e}`;
@@ -95,7 +82,7 @@ exports.getRestaurantNamesAndLocations = async q => {
  * @param {number} params.latitude
  * @param {number} params.page
  * @param {number} params.pageSize
- * @param {string} params.q
+ * @param {string} [params.q]
  * @return {Promise<Object[]>} - list of restaurants
  */
 exports.getRestaurants = async params => {
