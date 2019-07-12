@@ -48,7 +48,7 @@ exports.getRestaurantNamesAndLocations = async q => {
         query: {
           multi_match: {
             query: q,
-            fuzziness: 1,
+            fuzziness: 2,
             fields: ['name^2', 'street'],
           },
         },
@@ -88,20 +88,28 @@ exports.getRestaurants = async params => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
   const pgClient = await pgPool.connect();
 
-  let ids;
+  let filter;
+  let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
+  console.log(params.q);
   if (params.q) {
     try {
-      ids = await exports.getRestaurantNamesAndLocations(params.q);
+      const ids = await exports.getRestaurantNamesAndLocations(params.q);
+      if (ids.length) {
+        filter = /* sql */ `WHERE restaurant.id IN (${ids
+          .map((_, idx) => '$' + (idx + 4))
+          .join(',')})`;
+        values = [...values, ...ids.map(i => i._source.id)];
+      } else {
+        // filter string returns no restaurant
+        pgClient.release();
+        return [];
+      }
     } catch (e) {
-      const message = `restaurantService.js: error in getClosestRestaurant\n${e}`;
+      pgClient.release();
+      const message = `restaurantService.js: error in getRestaurants\n${e}`;
       console.log(message);
-      ids = null;
+      throw new Error(message);
     }
-  }
-
-  let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
-  if (ids && ids.length) {
-    values = [...values, ...ids.map(i => i._source.id)];
   }
 
   const query = {
@@ -117,13 +125,7 @@ exports.getRestaurants = async params => {
       FROM restaurant
       INNER JOIN street
           ON restaurant.street_id = street.id
-      ${
-        ids && ids.length
-          ? /* sql */ `WHERE restaurant.id IN (${ids
-              .map((_, idx) => '$' + (idx + 4))
-              .join(',')})`
-          : ''
-      }
+      ${filter || ''}
       ORDER BY restaurant.location <-> $1 ASC
       OFFSET $2
       LIMIT $3;
