@@ -90,7 +90,6 @@ exports.getRestaurants = async params => {
 
   let filter;
   let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
-  console.log(params.q);
   if (params.q) {
     try {
       const ids = await exports.getRestaurantNamesAndLocations(params.q);
