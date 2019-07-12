@@ -59,20 +59,18 @@ export const useMap = (secret, params) => {
  * @param {Object} params The parameters to plot with
  * @param {mapboxgl.Map} params.map The Mapbox GL JS map object to plot in
  * @param {string} params.qs The query string used to filter the result
- * @return {Object} The geojson object of restaurant locations fetched from the server
+ * @return {Object} The GeoJSON object of all restaurant locations fetched from the server
  */
 export const useRestaurantMarkers = (secret, params) => {
   const { map, qs } = params;
 
-  const reqParams = { method: 'GET' };
-  const qsMemo = useMemo(() => ({ q: qs }), [qs]);
-  if (qs) {
-    reqParams.qs = qsMemo;
-  }
-  const geojson = useFetchServer('/restaurant-locations', reqParams);
+  const fullGeoJSON = useFetchServer('/restaurant-locations', {
+    method: 'GET',
+  });
 
+  // Get all the restaurants and plot in the map
   useEffect(() => {
-    if (map && geojson) {
+    if (map && fullGeoJSON) {
       mapboxgl.accessToken = secret;
 
       map.addLayer({
@@ -80,7 +78,7 @@ export const useRestaurantMarkers = (secret, params) => {
         type: 'circle',
         source: {
           type: 'geojson',
-          data: geojson,
+          data: fullGeoJSON,
         },
         paint: {
           'circle-radius': 2,
@@ -92,9 +90,25 @@ export const useRestaurantMarkers = (secret, params) => {
         removeLayerIfExists(map, 'restaurant-markers');
       };
     }
-  }, [secret, map, geojson]);
+  }, [secret, map, fullGeoJSON]);
 
-  return geojson;
+  const reqParams = { method: 'GET' };
+  const qsMemo = useMemo(() => ({ q: qs }), [qs]);
+  if (qs) {
+    reqParams.qs = qsMemo;
+  }
+  const filteredGeoJSON = useFetchServer('/restaurant-locations', reqParams);
+
+  // Filter out the restaurants based on the query
+  useEffect(() => {
+    if (map && filteredGeoJSON) {
+      mapboxgl.accessToken = secret;
+      const ids = filteredGeoJSON.features.map(g => g.properties.id);
+      map.setFilter('restaurant-markers', ['in', 'id', ...ids]);
+    }
+  }, [secret, map, filteredGeoJSON]);
+
+  return fullGeoJSON;
 };
 
 /**
@@ -104,16 +118,16 @@ export const useRestaurantMarkers = (secret, params) => {
  * @param {Object} params
  * @param {mapboxgl.Map} params.map The Mapbox GL JS map object to plot in
  * @param {number} params.id The id of the selected restaurant
- * @param {Object} params.geojson The geojson object of all restaurants
+ * @param {Object} params.geoJSON The GeoJSON object of restaurants
  */
 export const useRestaurantSelection = (secret, params) => {
-  const { id, zoom, geojson, map } = params;
+  const { id, zoom, geoJSON, map } = params;
 
   useEffect(() => {
-    if (map && geojson) {
+    if (map && geoJSON) {
       if (id) {
         mapboxgl.accessToken = secret;
-        const single = geojson.features.find(g => g.properties.id === id);
+        const single = geoJSON.features.find(g => g.properties.id === id);
 
         // highlight selection
         map.addLayer({
@@ -141,7 +155,7 @@ export const useRestaurantSelection = (secret, params) => {
         };
       }
     }
-  }, [secret, map, zoom, id, geojson]);
+  }, [secret, map, zoom, id, geoJSON]);
 };
 
 function removeLayerIfExists(map, id) {
