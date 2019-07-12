@@ -65,7 +65,6 @@ exports.getRestaurantNamesAndLocations = async q => {
       body: body,
       size: 40000,
     });
-    console.log(res.body.hits.hits);
     return res.body.hits.hits;
   } catch (e) {
     const message = `restaurantService.js: error in getRestaurantNamesAndLocations\n${e}`;
