@@ -121,7 +121,7 @@ export const useRestaurantMarkers = (secret, params) => {
  * @param {Object} params.geoJSON The GeoJSON object of restaurants
  */
 export const useRestaurantSelection = (secret, params) => {
-  const { id, zoom, geoJSON, map } = params;
+  const { id, geoJSON, map } = params;
 
   useEffect(() => {
     if (map && geoJSON) {
@@ -144,7 +144,6 @@ export const useRestaurantSelection = (secret, params) => {
         });
 
         // pan to selected restaurant
-        map.setZoom(zoom || 12);
         const center = map.project(single.geometry.coordinates);
         const offsetX = window.innerWidth / 4;
         const offsetY = 0;
@@ -155,7 +154,7 @@ export const useRestaurantSelection = (secret, params) => {
         };
       }
     }
-  }, [secret, map, zoom, id, geoJSON]);
+  }, [secret, map, id, geoJSON]);
 };
 
 function removeLayerIfExists(map, id) {
