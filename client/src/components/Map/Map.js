@@ -17,13 +17,13 @@ function Map(props) {
     zoom: 10.5,
   });
 
-  const geojson = useRestaurantMarkers(secret, { map, qs: props.query });
+  const geoJSON = useRestaurantMarkers(secret, { map, qs: props.query });
 
   useRestaurantSelection(secret, {
     map,
     id: props.restaurantSelection && props.restaurantSelection.id,
     zoom: 12.5,
-    geojson,
+    geoJSON,
   });
 
   return <div id="map" />;
