@@ -23,3 +23,14 @@ export const getRestaurants = async params => {
     return Immutable.List();
   }
 };
+
+export const getRestaurant = async id => {
+  try {
+    const json = await get(
+      `${process.env.REACT_APP_SERVER_URL}/restaurants/${id}`
+    );
+    return restaurant(json.data);
+  } catch (e) {
+    return restaurant();
+  }
+};
