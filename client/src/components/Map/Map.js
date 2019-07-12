@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   useMap,
   useRestaurantMarkers,
-  useRestaurantSelection,
+  useMarkerSelection,
+  useMarkerClickCallback,
 } from '../../hooks/mapHooks';
 
 import './Map.css';
@@ -17,13 +18,18 @@ function Map(props) {
     zoom: 10.5,
   });
 
-  const geoJSON = useRestaurantMarkers(secret, { map, qs: props.query });
-
-  useRestaurantSelection(secret, {
+  const [geoJSON, restaurantMarkersLayer] = useRestaurantMarkers({
     map,
-    id: props.restaurantSelection,
-    geoJSON,
+    qs: props.query,
   });
+
+  useMarkerClickCallback({
+    map,
+    layerId: restaurantMarkersLayer,
+    callback: props.updateRestaurantSelection,
+  });
+
+  useMarkerSelection({ map, id: props.restaurantSelection, geoJSON });
 
   return <div id="map" />;
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import Immutable from 'immutable';
 
 import RestaurantListContainer from './components/RestaurantList/RestaurantListContainer';
 import RestaurantDetailContainer from './components/RestaurantDetail/RestaurantDetailContainer';
@@ -71,6 +70,7 @@ class App extends React.Component {
           <Map
             query={this.state.query}
             restaurantSelection={this.state.restaurantSelection}
+            updateRestaurantSelection={this.updateRestaurantSelection}
           />
         </div>
         <div className="restaurant-list-wrapper card-wrapper">

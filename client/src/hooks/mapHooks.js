@@ -55,14 +55,15 @@ export const useMap = (secret, params) => {
 /**
  * Custom hook to plot restaurant locations on a Mapbox GL JS map.
  *
- * @param {string} secret Mapbox access key
  * @param {Object} params The parameters to plot with
  * @param {mapboxgl.Map} params.map The Mapbox GL JS map object to plot in
  * @param {string} params.qs The query string used to filter the result
- * @return {Object} The GeoJSON object of all restaurant locations fetched from the server
+ * @return {Object} A list of a GeoJSON object of all restaurant locations fetched from the server
+ * and the layer id where the restaurants are plot
  */
-export const useRestaurantMarkers = (secret, params) => {
+export const useRestaurantMarkers = params => {
   const { map, qs } = params;
+  const layerId = 'restaurant-markers';
 
   const fullGeoJSON = useFetchServer('/restaurant-locations', {
     method: 'GET',
@@ -71,10 +72,8 @@ export const useRestaurantMarkers = (secret, params) => {
   // Get all the restaurants and plot in the map
   useEffect(() => {
     if (map && fullGeoJSON) {
-      mapboxgl.accessToken = secret;
-
       map.addLayer({
-        id: 'restaurant-markers',
+        id: layerId,
         type: 'circle',
         source: {
           type: 'geojson',
@@ -87,10 +86,10 @@ export const useRestaurantMarkers = (secret, params) => {
       });
 
       return () => {
-        removeLayerIfExists(map, 'restaurant-markers');
+        removeLayerIfExists(map, layerId);
       };
     }
-  }, [secret, map, fullGeoJSON]);
+  }, [map, fullGeoJSON]);
 
   const reqParams = { method: 'GET' };
   const qsMemo = useMemo(() => ({ q: qs }), [qs]);
@@ -102,36 +101,32 @@ export const useRestaurantMarkers = (secret, params) => {
   // Filter out the restaurants based on the query
   useEffect(() => {
     if (map && filteredGeoJSON) {
-      mapboxgl.accessToken = secret;
       const ids = filteredGeoJSON.features.map(g => g.properties.id);
-      map.setFilter('restaurant-markers', ['in', 'id', ...ids]);
+      map.setFilter(layerId, ['in', 'id', ...ids]);
     }
-  }, [secret, map, filteredGeoJSON]);
+  }, [map, filteredGeoJSON]);
 
-  return fullGeoJSON;
+  return [fullGeoJSON, layerId];
 };
 
 /**
- * Custom hook to highlight a restaurant that is selected.
+ * Custom hook to highlight a marker that is selected.
  *
- * @param {string} secret Mapbox access key
- * @param {Object} params
+ * @param {Object} params Parameters
  * @param {mapboxgl.Map} params.map The Mapbox GL JS map object to plot in
- * @param {number} params.id The id of the selected restaurant
- * @param {Object} params.geoJSON The GeoJSON object of restaurants
+ * @param {number} params.id The id of the selected marker
+ * @param {Object} params.geoJSON The GeoJSON object of marker, with id field in its properties
  */
-export const useRestaurantSelection = (secret, params) => {
+export const useMarkerSelection = params => {
   const { id, geoJSON, map } = params;
-
   useEffect(() => {
     if (map && geoJSON) {
       if (id) {
-        mapboxgl.accessToken = secret;
         const single = geoJSON.features.find(g => g.properties.id === id);
 
         // highlight selection
         map.addLayer({
-          id: 'restaurant-selection',
+          id: 'marker-selection',
           type: 'circle',
           source: {
             type: 'geojson',
@@ -150,11 +145,42 @@ export const useRestaurantSelection = (secret, params) => {
         map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
 
         return () => {
-          removeLayerIfExists(map, 'restaurant-selection');
+          removeLayerIfExists(map, 'marker-selection');
         };
       }
     }
-  }, [secret, map, id, geoJSON]);
+  }, [map, id, geoJSON]);
+};
+
+/**
+ * Custom hook to register callback when a restaurant marker is clicked.
+ * Callback passed in must be stable, i.e. its identity don't change if
+ * it is the same function by value.
+ *
+ * @param {Object} params Parameters
+ * @param {mapboxgl.Map} params.map The Mapbox GL JS map object
+ * @param {string} params.layerId The layer id where the callback is to be registered
+ * @param {(id: number) => void} params.callback The callback to use when a marker is clicked
+ */
+export const useMarkerClickCallback = params => {
+  const { map, layerId, callback } = params;
+  useEffect(() => {
+    if (map && layerId) {
+      const clickHandler = e => callback(e.features[0].properties.id);
+      const setPointerCursor = () => (map.getCanvas().style.cursor = 'pointer');
+      const setGrabCursor = () => (map.getCanvas().style.cursor = 'grab');
+
+      map.on('click', layerId, clickHandler);
+      map.on('mouseenter', layerId, setPointerCursor);
+      map.on('mouseleave', layerId, setGrabCursor);
+
+      return () => {
+        map.off('click', layerId, clickHandler);
+        map.off('mouseover', layerId, setPointerCursor);
+        map.off('mouseleave', layerId, setGrabCursor);
+      };
+    }
+  }, [map, layerId, callback]);
 };
 
 function removeLayerIfExists(map, id) {
