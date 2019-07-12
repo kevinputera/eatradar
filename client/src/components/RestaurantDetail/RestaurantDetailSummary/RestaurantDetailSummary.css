@@ -1,9 +1,4 @@
 .restaurant-detail-summary {
-  display: flex;
-  align-items: center;
-}
-
-.restaurant-detail-identity {
   flex-grow: 1;
   margin-left: 5px;
 }
@@ -15,21 +10,4 @@
 
 .restaurant-detail-address {
   margin-top: 3px;
-}
-
-.restaurant-detail-distance-wrapper {
-  flex-grow: 0;
-  margin: 0 5px;
-
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-}
-
-.restaurant-detail-distance {
-  font-size: 1.7em;
-}
-
-.restaurant-detail-distance-text {
-  font-size: 1.1em;
 }

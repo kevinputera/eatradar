@@ -24,7 +24,7 @@
   right: 10px;
 
   height: calc(100% - 40px);
-  width: 27%;
+  width: 25%;
 
   background-color: white;
 }
@@ -33,7 +33,7 @@
   position: fixed;
 
   top: 10px;
-  right: calc(27% + 20px);
+  right: calc(25% + 20px);
 
   height: calc(100% - 40px);
   width: 27%;

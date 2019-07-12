@@ -14,7 +14,7 @@ class App extends React.Component {
       query: '',
       latitude: 1.3033702, // set default to point to the center of Singapore
       longitude: 103.8283541, // set default to point to the center of Singapore
-      restaurantSelection: null,
+      restaurantSelection: 0,
     };
   }
 
@@ -52,18 +52,12 @@ class App extends React.Component {
     );
   };
 
-  updateRestaurantSelection = async restaurant => {
-    if (!Immutable.is(this.state.restaurantSelection, restaurant)) {
-      this.setState({ restaurantSelection: restaurant });
-    }
+  updateRestaurantSelection = id => {
+    this.setState({ restaurantSelection: id });
   };
 
   clearRestaurantSelection = () => {
-    if (this.state.restaurantSelection != null) {
-      this.setState({
-        restaurantSelection: null,
-      });
-    }
+    this.setState({ restaurantSelection: null });
   };
 
   updateLocation = async ({ latitude, longitude }) => {

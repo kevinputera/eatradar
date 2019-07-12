@@ -1,10 +1,12 @@
 import React from 'react';
 import Immutable from 'immutable';
+import { getRestaurant } from '../../api/restaurantApi';
 import { getDetails } from '../../api/detailApi';
 import { getReviews } from '../../api/reviewApi';
 import { getBlogPosts, getBlogPostsCount } from '../../api/blogPostApi';
 import { details } from '../../entity/details';
 import { reviews } from '../../entity/reviews';
+import { restaurant } from '../../entity/restaurant';
 import { Button } from '@blueprintjs/core';
 
 import RoundBorderCard from '../shared/RoundBorderCard/RoundBorderCard';
@@ -19,6 +21,7 @@ class RestaurantDetailContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      restaurant: restaurant(),
       details: details(),
       reviews: reviews(),
       reviewsSelected: null,
@@ -30,6 +33,7 @@ class RestaurantDetailContainer extends React.Component {
   }
 
   componentDidMount() {
+    this.getAndUpdateRestaurant();
     this.getAndUpdateDetails();
     this.getAndUpdateReviews();
     this.getAndUpdateBlogPosts();
@@ -37,12 +41,8 @@ class RestaurantDetailContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      !Immutable.is(
-        this.props.restaurantSelection,
-        prevProps.restaurantSelection
-      )
-    ) {
+    if (this.props.restaurantSelection !== prevProps.restaurantSelection) {
+      this.getAndUpdateRestaurant();
       this.getAndUpdateDetails();
       this.getAndUpdateReviews();
       this.getAndUpdateBlogPosts();
@@ -54,21 +54,27 @@ class RestaurantDetailContainer extends React.Component {
     }
   }
 
+  getAndUpdateRestaurant = async () => {
+    const id = this.props.restaurantSelection;
+    const restaurant = await getRestaurant(id);
+    this.setState({ restaurant });
+  };
+
   getAndUpdateDetails = async () => {
-    const id = this.props.restaurantSelection.id;
+    const id = this.props.restaurantSelection;
     const details = await getDetails(id);
     this.setState({ details });
   };
 
   getAndUpdateReviews = async () => {
-    const id = this.props.restaurantSelection.id;
+    const id = this.props.restaurantSelection;
     const reviews = await getReviews(id);
     this.setState({ reviews });
   };
 
   getAndUpdateBlogPosts = async () => {
     const params = {
-      id: this.props.restaurantSelection.id,
+      id: this.props.restaurantSelection,
       page: this.state.blogPostPage,
     };
     const blogPosts = await getBlogPosts(params);
@@ -76,7 +82,7 @@ class RestaurantDetailContainer extends React.Component {
   };
 
   getAndUpdateBlogPostsCount = async () => {
-    const id = this.props.restaurantSelection.id;
+    const id = this.props.restaurantSelection;
     const blogPostsCount = await getBlogPostsCount(id);
     this.setState({ blogPostsCount });
   };
@@ -118,9 +124,7 @@ class RestaurantDetailContainer extends React.Component {
 
         <div className="container-wrapper">
           <RoundBorderCard className="summary-card" radius="10px">
-            <RestaurantDetailSummary
-              restaurant={this.props.restaurantSelection}
-            />
+            <RestaurantDetailSummary restaurant={this.state.restaurant} />
           </RoundBorderCard>
         </div>
 

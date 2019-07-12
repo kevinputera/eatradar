@@ -21,7 +21,7 @@ function Map(props) {
 
   useRestaurantSelection(secret, {
     map,
-    id: props.restaurantSelection && props.restaurantSelection.id,
+    id: props.restaurantSelection,
     geoJSON,
   });
 

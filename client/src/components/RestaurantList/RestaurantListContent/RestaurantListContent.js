@@ -12,8 +12,8 @@ function RestaurantListContent(props) {
         <Button
           alignText="left"
           style={{ height: '90px', borderRadius: 0 }}
-          active={Immutable.is(content, props.restaurantSelection)}
-          onClick={() => props.updateRestaurantSelection(content)}
+          active={content.id === props.restaurantSelection}
+          onClick={() => props.updateRestaurantSelection(content.id)}
         >
           <div className="content-button-detail-wrapper bp3-running-text">
             <section className="restaurant-list-identity">
