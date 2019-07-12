@@ -100,7 +100,7 @@ exports.getRestaurants = async params => {
   }
 
   let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
-  if (ids) {
+  if (ids && ids.length) {
     values = [...values, ...ids.map(i => i._source.id)];
   }
 
@@ -118,7 +118,7 @@ exports.getRestaurants = async params => {
       INNER JOIN street
           ON restaurant.street_id = street.id
       ${
-        ids
+        ids && ids.length
           ? /* sql */ `WHERE restaurant.id IN (${ids
               .map((_, idx) => '$' + (idx + 4))
               .join(',')})`
