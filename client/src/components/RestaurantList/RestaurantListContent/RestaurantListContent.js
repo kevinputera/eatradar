@@ -1,5 +1,4 @@
 import React from 'react';
-import Immutable from 'immutable';
 import { ButtonGroup, Button, Divider } from '@blueprintjs/core';
 import { getDistanceString } from '../../../utils/conversion';
 
