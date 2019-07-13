@@ -2,6 +2,7 @@ import React from 'react';
 
 import RestaurantListContainer from './components/RestaurantList/RestaurantListContainer';
 import RestaurantDetailContainer from './components/RestaurantDetail/RestaurantDetailContainer';
+import SearchFilter from './components/SearchFilter/SearchFilter';
 import Map from './components/Map/Map';
 
 import './AppContainer.css';
@@ -71,6 +72,13 @@ class App extends React.Component {
             query={this.state.query}
             restaurantSelection={this.state.restaurantSelection}
             updateRestaurantSelection={this.updateRestaurantSelection}
+          />
+        </div>
+        <div className="search-filter-wrapper">
+          <SearchFilter
+            query={this.state.query}
+            handleQueryInputChange={this.handleQueryInputChange}
+            handleRefreshButtonClick={this.handleRefreshButtonClick}
           />
         </div>
         <div className="restaurant-list-wrapper card-wrapper">

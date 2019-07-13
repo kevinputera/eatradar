@@ -2,9 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { getRestaurants } from '../../api/restaurantApi';
 
-import RestaurantListFilter from './RestaurantListFilter/RestaurantListFilter';
-import RestaurantListContent from './RestaurantListContent/RestaurantListContent';
-import RestaurantListNavigation from './RestaurantListNavigation/RestaurantListNavigation';
+import RestaurantListList from './RestaurantListList/RestaurantListList';
 
 import './RestaurantListContainer.css';
 
@@ -12,12 +10,15 @@ class RestaurantListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      offset: 1,
-      limit: 10,
       contents: [],
-      total: 0,
       hasNext: true,
+      offset: 0,
+      offsetUpdating: false,
     };
+
+    this.limit = 15; // number of additional items per fetch
+
+    this.containerRef = React.createRef();
 
     this.throttledGetAndUpdateRestaurants = _.throttle(
       this.getAndUpdateRestaurants,
@@ -30,50 +31,61 @@ class RestaurantListContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.state.offset !== prevState.offset) {
+      this.getAndUpdateRestaurants(false);
+    }
+
     if (
       this.props.latitude !== prevProps.latitude ||
-      this.props.longitude !== prevProps.longitude ||
-      this.state.offset !== prevState.offset ||
-      this.state.limit !== prevState.limit
+      this.props.longitude !== prevProps.longitude
     ) {
-      this.getAndUpdateRestaurants();
+      this.getAndUpdateRestaurants(true);
     }
 
     if (this.props.query !== prevProps.query) {
-      this.throttledGetAndUpdateRestaurants();
+      this.throttledGetAndUpdateRestaurants(true);
     }
   }
 
-  handleLimitChange = limit => {
-    this.setState({ limit });
-  };
-
   handleOffsetIncrement = () => {
-    this.setState(state => {
-      return { offset: state.hasNext ? state.offset + 1 : state.offset };
-    });
+    if (!this.state.offsetUpdating) {
+      this.setState(state => {
+        return {
+          offset: state.hasNext ? state.offset + 1 : state.offset,
+          offsetUpdating: true,
+        };
+      });
+    }
   };
 
-  handleOffsetDecrement = () => {
-    this.setState(state => {
-      return { offset: state.offset > 0 ? state.offset - 1 : 0 };
-    });
-  };
-
-  getAndUpdateRestaurants = async () => {
+  getAndUpdateRestaurants = async reset => {
     const params = {
       lat: this.props.latitude,
       lng: this.props.longitude,
       offset: this.state.offset,
-      limit: this.state.limit,
+      limit: this.limit,
     };
     if (this.props.query) {
       params.q = this.props.query;
     }
 
     try {
-      const { total, contents, hasNext } = await getRestaurants(params);
-      this.setState({ contents, total, hasNext });
+      const { contents, hasNext } = await getRestaurants(params);
+      if (reset) {
+        this.setState({
+          contents,
+          hasNext,
+          offset: 0,
+          offsetUpdating: false,
+        });
+      } else {
+        this.setState(state => ({
+          contents: state.contents.concat(contents),
+          hasNext,
+          offset: 0,
+          offsetUpdating: false,
+        }));
+      }
       this.props.clearRestaurantSelection();
     } catch (e) {
       // TODO: status message
@@ -83,22 +95,14 @@ class RestaurantListContainer extends React.Component {
 
   render() {
     return (
-      <div className="restaurant-list-container">
-        <RestaurantListFilter
-          query={this.props.query}
-          handleQueryInputChange={this.props.handleQueryInputChange}
-          handleRefreshButtonClick={this.props.handleRefreshButtonClick}
-        />
-        <RestaurantListContent
+      <div className="restaurant-list-container" ref={this.containerRef}>
+        <RestaurantListList
+          hasNext={this.state.hasNext}
           contents={this.state.contents}
+          containerEl={this.containerRef.current}
           restaurantSelection={this.props.restaurantSelection}
-          updateRestaurantSelection={this.props.updateRestaurantSelection}
-        />
-        <RestaurantListNavigation
-          pageSize={this.state.pageSize}
-          handleLimitChange={this.handleLimitChange}
           handleOffsetIncrement={this.handleOffsetIncrement}
-          handleOffsetDecrement={this.handleOffsetDecrement}
+          updateRestaurantSelection={this.props.updateRestaurantSelection}
         />
       </div>
     );

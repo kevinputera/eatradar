@@ -1,19 +1,19 @@
 import React from 'react';
 import { InputGroup, Button, Tooltip } from '@blueprintjs/core';
 
-import './RestaurantListFilter.css';
+import './SearchFilter.css';
 
-function RestaurantListFilter(props) {
+function SearchFilter(props) {
   return (
-    <div className="restaurant-list-filter">
-      <div className="search-input-wrapper">
+    <div className="search-filter">
+      <div className="search-filter-input-wrapper">
         <InputGroup
           large
-          type="search"
           leftIcon="search"
           placeholder="Search restaurants"
           value={props.query}
           onChange={props.handleQueryInputChange}
+          style={{ borderRadius: '10px' }}
         />
       </div>
       <div className="refresh-button-wrapper">
@@ -31,4 +31,4 @@ function RestaurantListFilter(props) {
   );
 }
 
-export default RestaurantListFilter;
+export default SearchFilter;
