@@ -1,5 +1,4 @@
 import React from 'react';
-import Immutable from 'immutable';
 import _ from 'lodash';
 import { getRestaurants } from '../../api/restaurantApi';
 
@@ -13,9 +12,11 @@ class RestaurantListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
-      pageSize: 10,
-      contents: Immutable.List(),
+      offset: 1,
+      limit: 10,
+      contents: [],
+      total: 0,
+      hasNext: true,
     };
 
     this.throttledGetAndUpdateRestaurants = _.throttle(
@@ -32,8 +33,8 @@ class RestaurantListContainer extends React.Component {
     if (
       this.props.latitude !== prevProps.latitude ||
       this.props.longitude !== prevProps.longitude ||
-      this.state.page !== prevState.page ||
-      this.state.pageSize !== prevState.pageSize
+      this.state.offset !== prevState.offset ||
+      this.state.limit !== prevState.limit
     ) {
       this.getAndUpdateRestaurants();
     }
@@ -43,37 +44,40 @@ class RestaurantListContainer extends React.Component {
     }
   }
 
-  handlePageSizeChange = size => {
-    this.setState({ pageSize: size });
+  handleLimitChange = limit => {
+    this.setState({ limit });
   };
 
-  handlePageNext = () => {
+  handleOffsetIncrement = () => {
     this.setState(state => {
-      return { page: state.page + 1 };
+      return { offset: state.hasNext ? state.offset + 1 : state.offset };
     });
   };
 
-  handlePagePrev = () => {
+  handleOffsetDecrement = () => {
     this.setState(state => {
-      return { page: state.page > 1 ? state.page - 1 : 1 };
+      return { offset: state.offset > 0 ? state.offset - 1 : 0 };
     });
   };
 
   getAndUpdateRestaurants = async () => {
-    let params = {
+    const params = {
       lat: this.props.latitude,
       lng: this.props.longitude,
-      p: this.state.page,
-      ps: this.state.pageSize,
-      q: this.props.query,
+      offset: this.state.offset,
+      limit: this.state.limit,
     };
+    if (this.props.query) {
+      params.q = this.props.query;
+    }
 
-    const restaurants = await getRestaurants(params);
-    if (!Immutable.is(restaurants, this.state.contents)) {
-      this.setState({
-        contents: restaurants,
-      });
+    try {
+      const { total, contents, hasNext } = await getRestaurants(params);
+      this.setState({ contents, total, hasNext });
       this.props.clearRestaurantSelection();
+    } catch (e) {
+      // TODO: status message
+      console.log(e.stack);
     }
   };
 
@@ -92,9 +96,9 @@ class RestaurantListContainer extends React.Component {
         />
         <RestaurantListNavigation
           pageSize={this.state.pageSize}
-          handlePageSizeChange={this.handlePageSizeChange}
-          handlePageNext={this.handlePageNext}
-          handlePagePrev={this.handlePagePrev}
+          handleLimitChange={this.handleLimitChange}
+          handleOffsetIncrement={this.handleOffsetIncrement}
+          handleOffsetDecrement={this.handleOffsetDecrement}
         />
       </div>
     );
