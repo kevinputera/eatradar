@@ -74,41 +74,37 @@ exports.getRestaurantNamesAndLocations = async q => {
 };
 
 /**
- * Get list of restaurants with filters applied.
+ * Get restaurants with filters applied.
  *
  * @param {Object} params
  * @param {number} params.longitude
  * @param {number} params.latitude
- * @param {number} params.page
- * @param {number} params.pageSize
+ * @param {number} params.offset
+ * @param {number} params.limit
  * @param {string} [params.q]
- * @return {Promise<Object[]>} - list of restaurants
+ * @return {Promise<Object>} - total number and list of restaurants
  */
 exports.getRestaurants = async params => {
   const geog = `Point(${params.longitude} ${params.latitude})`;
   const pgClient = await pgPool.connect();
 
+  let ids;
   let filter;
-  let values = [geog, (params.page - 1) * params.pageSize, params.pageSize];
-  if (params.q) {
-    try {
-      const ids = await exports.getRestaurantNamesAndLocations(params.q);
-      if (ids.length) {
-        filter = /* sql */ `WHERE restaurant.id IN (${ids
-          .map((_, idx) => '$' + (idx + 4))
-          .join(',')})`;
-        values = [...values, ...ids.map(i => i._source.id)];
-      } else {
-        // filter string returns no restaurant
-        pgClient.release();
-        return [];
-      }
-    } catch (e) {
-      pgClient.release();
-      const message = `restaurantService.js: error in getRestaurants\n${e}`;
-      console.log(message);
-      throw new Error(message);
+  let values = [geog, params.offset * params.limit, params.limit];
+
+  try {
+    ids = await exports.getRestaurantNamesAndLocations(params.q);
+    if (ids.length) {
+      filter = /* sql */ `WHERE restaurant.id IN (${ids
+        .map((_, idx) => '$' + (idx + 4))
+        .join(',')})`;
+      values = [...values, ...ids.map(i => i._source.id)];
     }
+  } catch (e) {
+    pgClient.release();
+    const message = `restaurantService.js: error in getRestaurants\n${e}`;
+    console.log(message);
+    throw new Error(message);
   }
 
   const query = {
@@ -134,7 +130,10 @@ exports.getRestaurants = async params => {
 
   try {
     const res = await pgClient.query(query);
-    return res.rows;
+    return {
+      hasNext: (params.offset + 1) * params.limit < ids.length,
+      contents: res.rows,
+    };
   } catch (e) {
     const message = `restaurantService.js: error in getRestaurants\n${e}`;
     console.log(message);

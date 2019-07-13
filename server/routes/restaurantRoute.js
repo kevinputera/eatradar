@@ -4,14 +4,14 @@ const restaurantService = require('../service/restaurantService');
 const response = require('../utils/response');
 
 /**
- * Get closest restaurants based on location.
+ * Get restaurants based on location.
  */
 router.get('/', async (req, res) => {
   const params = {
     longitude: req.query.lng,
     latitude: req.query.lat,
-    page: req.query.p || 1,
-    pageSize: req.query.ps || 10,
+    offset: req.query.offset || 0,
+    limit: req.query.limit || 10,
     q: req.query.q || null,
   };
 
@@ -23,16 +23,16 @@ router.get('/', async (req, res) => {
     return;
   }
 
-  if (params.page <= 0) {
+  if (params.offset < 0) {
     response.sendBadRequest(
       res,
-      'Page query parameter[p] must be greater than zero'
+      'Offset query parameter must be greater than or equal to zero'
     );
     return;
   }
 
-  if (params.pageSize < 10) {
-    response.sendBadRequest(res, 'Page size must be greater than 10');
+  if (params.limit < 10) {
+    response.sendBadRequest(res, 'Limit must be greater than 10');
     return;
   }
 

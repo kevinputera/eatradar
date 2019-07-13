@@ -15,14 +15,14 @@ function ExtendableContent(props) {
   );
 
   const content =
-    props.extendable && isSummarizable(props.body, props.count)
+    props.extendable && isSummarizable(props.content, props.count)
       ? isExtended
-        ? props.body
-        : getSummary(props.body, props.count)
-      : props.body;
+        ? props.content
+        : getSummary(props.content, props.count)
+      : props.content;
 
   const extendBtn = props.extendable &&
-    isSummarizable(props.body, props.count) && (
+    isSummarizable(props.content, props.count) && (
       <span
         className="toggle-extended"
         onClick={() => setExtended(!isExtended)}

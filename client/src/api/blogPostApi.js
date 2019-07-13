@@ -1,6 +1,4 @@
-import Immutable from 'immutable';
 import { get } from '../utils/http';
-import { blogPost } from '../entity/blogPost';
 
 /**
  * Get all blog posts of a restaurant
@@ -9,7 +7,7 @@ import { blogPost } from '../entity/blogPost';
  * @param {number} params.id
  * @param {number} [params.page]
  * @param {number} [params.pageSize]
- * @return {Immutable.List<Immutable.Record>} - a list of blog posts
+ * @return {Object[]} - a list of blog posts
  */
 export const getBlogPosts = async params => {
   const qs = {};
@@ -25,11 +23,12 @@ export const getBlogPosts = async params => {
       `${process.env.REACT_APP_SERVER_URL}/blogposts/${params.id}`,
       { qs }
     );
-    return Immutable.List(
-      json.data.map(bp => blogPost({ id: bp._id, ...bp._source }))
-    );
+    return json.data.map(bp => ({
+      id: bp._id,
+      ...bp._source,
+    }));
   } catch (e) {
-    return Immutable.List();
+    throw new Error(`Failed to fetch blog posts: ${e.message}`);
   }
 };
 
@@ -37,7 +36,7 @@ export const getBlogPosts = async params => {
  * Get the number of blog posts of a restaurant
  *
  * @param {number} id
- * @return {number} - the number of blog posts, -1 if not found
+ * @return {number} - the number of blog posts
  */
 export const getBlogPostsCount = async id => {
   try {
