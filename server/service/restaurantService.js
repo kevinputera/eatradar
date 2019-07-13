@@ -131,7 +131,6 @@ exports.getRestaurants = async params => {
   try {
     const res = await pgClient.query(query);
     return {
-      total: ids.length,
       hasNext: (params.offset + 1) * params.limit < ids.length,
       contents: res.rows,
     };
