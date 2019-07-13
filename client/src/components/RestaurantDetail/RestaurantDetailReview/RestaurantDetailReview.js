@@ -8,7 +8,6 @@ import './RestaurantDetailReview.css';
 import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
 
 function RestaurantDetailReview(props) {
-
   function handleRatingClick(brand) {
     if (props.reviewsSelected === brand) {
       props.handleReviewSelect(null);
@@ -17,42 +16,7 @@ function RestaurantDetailReview(props) {
     }
   }
 
-  let gr;
-  const google = props.reviews.google;
-  if (google) {
-    const reviews = google.reviews
-      .filter(review => review.text)
-      .take(2)
-      .map(review => (
-        <ExtendableContent
-          extendable
-          key={review.author_name}
-          body={review.text}
-          count={20}
-          footer={review.author_name}
-        />
-      ));
-
-    gr = (
-      <>
-        <FieldContent
-          body={google.rating}
-          attribution={poweredByGoogle}
-          attributionAlt="Powered by Google"
-          onClick={() => handleRatingClick('google')}
-        />
-        <Collapse isOpen={props.reviewsSelected === 'google'}>
-          <div className="reviews-content-body-wrapper">
-            <RoundBorderCard radius="5px" padding="12px 10px">
-              <div className="reviews-content-body">{reviews}</div>
-            </RoundBorderCard>
-          </div>
-        </Collapse>
-      </>
-    );
-  }
-
-  const empty = !gr;
+  const empty = !props.reviews || !props.reviews.google;
 
   return (
     <div className="restaurant-detail-review">
@@ -63,7 +27,35 @@ function RestaurantDetailReview(props) {
       ) : (
         <>
           <div className="detail-header">Ratings and reviews</div>
-          <div className="reviews-content">{gr}</div>
+          <div className="reviews-content">
+            <FieldContent
+              body={props.reviews.google.rating}
+              attribution={poweredByGoogle}
+              attributionAlt="Powered by Google"
+              onClick={() => handleRatingClick('google')}
+            />
+            <Collapse isOpen={props.reviewsSelected === 'google'}>
+              <div className="reviews-content-body-wrapper">
+                <RoundBorderCard radius="5px" padding="12px 10px">
+                  <div className="reviews-content-body">
+                    {props.reviews.google.reviews &&
+                      props.reviews.google.reviews
+                        .filter(review => review.text)
+                        .slice(0, 2)
+                        .map(review => (
+                          <ExtendableContent
+                            extendable
+                            key={review.author_name}
+                            content={review.text}
+                            count={20}
+                            footer={review.author_name}
+                          />
+                        ))}
+                  </div>
+                </RoundBorderCard>
+              </div>
+            </Collapse>
+          </div>
         </>
       )}
     </div>
