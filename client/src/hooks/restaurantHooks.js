@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useFetchServer } from './apiHooks';
 
 /**
@@ -32,11 +32,11 @@ export const useRestaurantList = params => {
     }
   }, [data]);
 
-  function loadMoreRestaurants() {
+  const loadMoreRestaurants = useCallback(() => {
     if (!isLoading && hasNext) {
       setOffset(offset + 1);
     }
-  }
+  }, [offset, isLoading, hasNext]);
 
   return [contents, hasNext, loadMoreRestaurants];
 };
