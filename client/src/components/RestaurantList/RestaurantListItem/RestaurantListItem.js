@@ -36,7 +36,7 @@ function RestaurantListItem(props) {
 }
 
 function RestaurantListLoading(props) {
-  return <div style={style}>Loading</div>;
+  return <div style={props.style}>Loading</div>;
 }
 
 export { RestaurantListItem, RestaurantListLoading };

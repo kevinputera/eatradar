@@ -21,7 +21,7 @@ function RestaurantListList(props) {
 
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
     if (props.contents.length - visibleStopIndex - 1 <= itemsLeftBeforeLoad) {
-      props.handleOffsetIncrement();
+      props.loadMoreRestaurants();
     }
   };
 
@@ -52,7 +52,7 @@ function RestaurantListList(props) {
               );
             } else {
               // Show loading indicator on the last item
-              return <RestaurantListLoading />;
+              return <RestaurantListLoading style={style} />;
             }
           }}
         </FixedSizeList>
