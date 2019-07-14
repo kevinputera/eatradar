@@ -1,7 +1,10 @@
 import React from 'react';
 import { FixedSizeList } from 'react-window';
 
-import RestaurantListItem from '../RestaurantListItem/RestaurantListItem';
+import {
+  RestaurantListItem,
+  RestaurantListLoading,
+} from '../RestaurantListItem/RestaurantListItem';
 
 import './RestaurantListList.css';
 
@@ -49,7 +52,7 @@ function RestaurantListList(props) {
               );
             } else {
               // Show loading indicator on the last item
-              return <div style={style}>Loading</div>;
+              return <RestaurantListLoading />;
             }
           }}
         </FixedSizeList>

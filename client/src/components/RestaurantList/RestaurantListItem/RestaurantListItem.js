@@ -35,4 +35,8 @@ function RestaurantListItem(props) {
   );
 }
 
-export default RestaurantListItem;
+function RestaurantListLoading(props) {
+  return <div style={style}>Loading</div>;
+}
+
+export { RestaurantListItem, RestaurantListLoading };
