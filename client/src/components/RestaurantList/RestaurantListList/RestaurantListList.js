@@ -1,7 +1,10 @@
 import React from 'react';
 import { FixedSizeList } from 'react-window';
 
-import RestaurantListItem from '../RestaurantListItem/RestaurantListItem';
+import {
+  RestaurantListItem,
+  RestaurantListLoading,
+} from '../RestaurantListItem/RestaurantListItem';
 
 import './RestaurantListList.css';
 
@@ -9,16 +12,9 @@ function RestaurantListList(props) {
   const itemSize = 90;
   const itemsLeftBeforeLoad = 3;
 
-  const itemKey = index => {
-    if (props.contents && index < props.contents.length) {
-      return props.contents[index].id;
-    }
-    return index;
-  };
-
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
     if (props.contents.length - visibleStopIndex - 1 <= itemsLeftBeforeLoad) {
-      props.handleOffsetIncrement();
+      props.loadMoreRestaurants();
     }
   };
 
@@ -28,7 +24,6 @@ function RestaurantListList(props) {
         <FixedSizeList
           width="100%"
           height={props.containerEl.clientHeight}
-          itemKey={itemKey}
           itemSize={itemSize}
           itemCount={
             props.contents.length && props.hasNext
@@ -43,13 +38,15 @@ function RestaurantListList(props) {
                 <RestaurantListItem
                   style={style}
                   content={props.contents[index]}
-                  restaurantSelection={props.restaurantSelection}
-                  updateRestaurantSelection={props.updateRestaurantSelection}
+                  restaurantIdSelection={props.restaurantIdSelection}
+                  updateRestaurantIdSelection={
+                    props.updateRestaurantIdSelection
+                  }
                 />
               );
             } else {
               // Show loading indicator on the last item
-              return <div style={style}>Loading</div>;
+              return <RestaurantListLoading style={style} />;
             }
           }}
         </FixedSizeList>

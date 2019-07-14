@@ -8,6 +8,7 @@ function SearchFilter(props) {
     <div className="search-filter">
       <InputGroup
         large
+        type="search"
         leftIcon="search"
         placeholder="Search restaurants"
         value={props.query}
@@ -17,17 +18,5 @@ function SearchFilter(props) {
     </div>
   );
 }
-
-// <div className="refresh-button-wrapper">
-//   <Tooltip position="bottom" content="Update your location">
-//     <Button
-//       large
-//       minimal
-//       icon="refresh"
-//       onClick={props.handleRefreshButtonClick}
-//       style={{ borderRadius: '20px' }}
-//     />
-//   </Tooltip>
-// </div>
 
 export default SearchFilter;

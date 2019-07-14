@@ -8,11 +8,11 @@ import './RestaurantDetailReview.css';
 import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
 
 function RestaurantDetailReview(props) {
-  function handleRatingClick(brand) {
-    if (props.reviewsSelected === brand) {
-      props.handleReviewSelect(null);
+  function handleReviewClick(brand) {
+    if (props.reviewSelected === brand) {
+      props.updateReviewSelected(null);
     } else {
-      props.handleReviewSelect(brand);
+      props.updateReviewSelected(brand);
     }
   }
 
@@ -32,9 +32,9 @@ function RestaurantDetailReview(props) {
               body={props.reviews.google.rating}
               attribution={poweredByGoogle}
               attributionAlt="Powered by Google"
-              onClick={() => handleRatingClick('google')}
+              onClick={() => handleReviewClick('google')}
             />
-            <Collapse isOpen={props.reviewsSelected === 'google'}>
+            <Collapse isOpen={props.reviewSelected === 'google'}>
               <div className="reviews-content-body-wrapper">
                 <RoundBorderCard radius="5px" padding="12px 10px">
                   <div className="reviews-content-body">

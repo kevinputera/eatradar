@@ -20,16 +20,16 @@ function Map(props) {
 
   const [geoJSON, restaurantMarkersLayer] = useRestaurantMarkers({
     map,
-    qs: props.query,
+    q: props.query,
   });
 
   useMarkerClickCallback({
     map,
     layerId: restaurantMarkersLayer,
-    callback: props.updateRestaurantSelection,
+    callback: props.updateRestaurantIdSelection,
   });
 
-  useMarkerSelection({ map, id: props.restaurantSelection, geoJSON });
+  useMarkerSelection({ map, id: props.restaurantIdSelection, geoJSON });
 
   return <div id="map" />;
 }
