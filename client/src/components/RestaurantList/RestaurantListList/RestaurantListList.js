@@ -7,7 +7,7 @@ import './RestaurantListList.css';
 
 function RestaurantListList(props) {
   const itemSize = 90;
-  const percentageBeforeLoad = 0.9;
+  const itemsLeftBeforeLoad = 3;
 
   const itemKey = index => {
     if (props.contents && index < props.contents.length) {
@@ -17,7 +17,7 @@ function RestaurantListList(props) {
   };
 
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
-    if (visibleStopIndex / props.contents.length > percentageBeforeLoad) {
+    if (props.contents.length - visibleStopIndex - 1 <= itemsLeftBeforeLoad) {
       props.handleOffsetIncrement();
     }
   };

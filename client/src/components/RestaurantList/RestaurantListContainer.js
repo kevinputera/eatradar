@@ -82,7 +82,6 @@ class RestaurantListContainer extends React.Component {
         this.setState(state => ({
           contents: state.contents.concat(contents),
           hasNext,
-          offset: 0,
           offsetUpdating: false,
         }));
       }

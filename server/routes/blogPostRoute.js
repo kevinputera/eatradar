@@ -7,21 +7,19 @@ const response = require('../utils/response');
  * Get all blog posts of a restaurant based on id.
  */
 router.get('/:id', async (req, res) => {
-  let id;
-  try {
-    id = parseInt(req.params.id);
-  } catch (e) {
+  const id = parseInt(req.params.id);
+  if (!Number.isInteger(id)) {
     response.sendBadRequest(res, 'Id must be of type number');
     return;
   }
 
   const params = {
     id,
-    page: req.query.p || 1,
-    pageSize: req.query.ps || 3,
+    page: parseInt(req.query.p) || 1,
+    pageSize: parseInt(req.query.ps) || 3,
   };
 
-  if (!params.id || params.id < 0) {
+  if (params.id < 0) {
     response.sendBadRequest(
       res,
       'A correct id must be included in the request URI'
@@ -54,15 +52,13 @@ router.get('/:id', async (req, res) => {
  * Get the number of blog posts for a restaurant id
  */
 router.get('/:id/count', async (req, res) => {
-  let id;
-  try {
-    id = parseInt(req.params.id);
-  } catch (e) {
+  const id = parseInt(req.params.id);
+  if (!Number.isInteger(id)) {
     response.sendBadRequest(res, 'Id must be of type number');
     return;
   }
 
-  if (!id || id < 0) {
+  if (id < 0) {
     response.sendBadRequest(
       res,
       'A correct id must be included in the request URI'

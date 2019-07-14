@@ -5,7 +5,14 @@ import './RestaurantListItem.css';
 
 function RestaurantListItem(props) {
   return (
-    <div className="restaurant-list-item bp3-running-text" style={props.style}>
+    <div
+      style={props.style}
+      onClick={() => props.updateRestaurantSelection(props.content.id)}
+      className={
+        'restaurant-list-item bp3-running-text' +
+        (props.restaurantSelection === props.content.id ? ' active' : '')
+      }
+    >
       {props.content && (
         <>
           <div className="restaurant-list-item-content">
