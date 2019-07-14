@@ -8,7 +8,8 @@ import { useFetchServer } from './apiHooks';
  * @param {number} params.lat The latitude position of the user
  * @param {number} params.lng The longitude position of the user
  * @param {string} params.q The restaurant name used to filter the list
- *
+ * @return {any[]} - The list contents, whether or not there are more items,
+ * and function to load more items. [contents, hasNext, loadMoreRestaurants]
  */
 export const useRestaurantList = params => {
   const { lat, lng, q } = params;
@@ -50,7 +51,7 @@ export const useRestaurantList = params => {
  * @param {number} [params.offset] The list offset
  * @param {number} [params.limit] The number of restaurants per fetch
  * @param {string} [params.q] The restaurant name used to filter the result
- * @return {any[]} - the data from fetching and loading indicator, [data, isLoading]
+ * @return {any[]} - the data from fetching and loading indicator. [data, isLoading]
  */
 export const useFetchRestaurants = params => {
   const reqParams = useMemo(() => {
@@ -72,4 +73,15 @@ export const useFetchRestaurants = params => {
   }, [params.lat, params.lng, params.offset, params.limit, params.q]);
 
   return useFetchServer('/restaurants', reqParams);
+};
+
+/**
+ * Wrapper on top of useFetchServer, used to get info of a restaurant.
+ *
+ * @param {number} id The restaurant's id
+ * @return {Object} - The info of the restaurant
+ */
+export const useFetchRestaurant = id => {
+  const reqParams = { method: 'GET' };
+  return useFetchServer(`/restaurants/${id}`, reqParams);
 };
