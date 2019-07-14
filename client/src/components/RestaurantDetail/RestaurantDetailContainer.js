@@ -14,7 +14,7 @@ import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetai
 import './RestaurantDetailContainer.css';
 
 function RestaurantDetailContainer(props) {
-  const id = props.restaurantSelection;
+  const id = props.restaurantIdSelection;
 
   const [restaurant, isRestaurantLoading] = useFetchRestaurant(id);
   const [details, isDetailsLoading] = useFetchDetails(id);
@@ -33,7 +33,7 @@ function RestaurantDetailContainer(props) {
         <Button
           minimal
           icon="cross"
-          onClick={props.clearRestaurantSelection}
+          onClick={props.clearRestaurantIdSelection}
           style={{ borderRadius: '20px' }}
         />
       </div>

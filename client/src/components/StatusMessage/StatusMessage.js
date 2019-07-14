@@ -10,7 +10,7 @@ export const showSuccess = message => {
     StatusMessage.show({
       icon: 'tick',
       intent: Intent.SUCCESS,
-      timeout: 2000,
+      timeout: 3000,
       message,
     });
   }
@@ -21,7 +21,7 @@ export const showError = message => {
     StatusMessage.show({
       icon: 'error',
       intent: Intent.DANGER,
-      timeout: 2000,
+      timeout: 3000,
       message,
     });
   }

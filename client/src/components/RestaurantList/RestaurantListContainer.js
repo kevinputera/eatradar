@@ -22,9 +22,9 @@ function RestaurantListContainer(props) {
         hasNext={hasNext}
         contents={contents}
         containerEl={containerRef.current}
-        restaurantSelection={props.restaurantSelection}
+        restaurantIdSelection={props.restaurantIdSelection}
         loadMoreRestaurants={loadMoreRestaurants}
-        updateRestaurantSelection={props.updateRestaurantSelection}
+        updateRestaurantIdSelection={props.updateRestaurantIdSelection}
       />
     </div>
   );

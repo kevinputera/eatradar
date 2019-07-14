@@ -38,8 +38,10 @@ function RestaurantListList(props) {
                 <RestaurantListItem
                   style={style}
                   content={props.contents[index]}
-                  restaurantSelection={props.restaurantSelection}
-                  updateRestaurantSelection={props.updateRestaurantSelection}
+                  restaurantIdSelection={props.restaurantIdSelection}
+                  updateRestaurantIdSelection={
+                    props.updateRestaurantIdSelection
+                  }
                 />
               );
             } else {

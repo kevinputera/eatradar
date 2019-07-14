@@ -7,10 +7,10 @@ function RestaurantListItem(props) {
   return (
     <div
       style={props.style}
-      onClick={() => props.updateRestaurantSelection(props.content.id)}
+      onClick={() => props.updateRestaurantIdSelection(props.content.id)}
       className={
         'restaurant-list-item bp3-running-text' +
-        (props.restaurantSelection === props.content.id ? ' active' : '')
+        (props.restaurantIdSelection === props.content.id ? ' active' : '')
       }
     >
       {props.content && (
