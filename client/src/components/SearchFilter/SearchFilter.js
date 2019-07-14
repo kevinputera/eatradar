@@ -18,16 +18,4 @@ function SearchFilter(props) {
   );
 }
 
-// <div className="refresh-button-wrapper">
-//   <Tooltip position="bottom" content="Update your location">
-//     <Button
-//       large
-//       minimal
-//       icon="refresh"
-//       onClick={props.handleRefreshButtonClick}
-//       style={{ borderRadius: '20px' }}
-//     />
-//   </Tooltip>
-// </div>
-
 export default SearchFilter;
