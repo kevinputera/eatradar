@@ -92,7 +92,6 @@ export const useRestaurantMarkers = params => {
   const filteredGeoJSON = useFetchRestaurantLocationsWithQuery(q);
   useEffect(() => {
     if (map && filteredGeoJSON) {
-      console.log(filteredGeoJSON);
       const ids = filteredGeoJSON.features.map(g => g.properties.id);
       map.setFilter(layerId, ['in', 'id', ...ids]);
     }
