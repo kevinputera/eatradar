@@ -42,6 +42,8 @@ export const useFetchServer = (resource, params) => {
             )
           );
         break;
+      default:
+        break;
     }
 
     return () => {
