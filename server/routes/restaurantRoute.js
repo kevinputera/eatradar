@@ -8,14 +8,17 @@ const response = require('../utils/response');
  */
 router.get('/', async (req, res) => {
   const params = {
-    longitude: req.query.lng,
-    latitude: req.query.lat,
-    offset: req.query.offset || 0,
-    limit: req.query.limit || 10,
-    q: req.query.q || null,
+    longitude: parseFloat(req.query.lng),
+    latitude: parseFloat(req.query.lat),
+    offset: parseInt(req.query.offset) || 0,
+    limit: parseInt(req.query.limit) || 10
   };
 
-  if (!params.longitude || !params.latitude) {
+  if (req.query.q) {
+    params.q = req.query.q;
+  }
+
+  if (!Number.isFinite(params.longitude) || !Number.isFinite(params.latitude)) {
     response.sendBadRequest(
       res,
       `Both lng and lat must be appended to the URI as query parameters`
@@ -48,15 +51,13 @@ router.get('/', async (req, res) => {
  * Get a single restaurant by its id.
  */
 router.get('/:id', async (req, res) => {
-  let id;
-  try {
-    id = parseInt(req.params.id);
-  } catch (e) {
+  const id = parseInt(req.params.id);
+  if (!Number.isInteger(id)) {
     response.sendBadRequest(res, 'Id must be of type number');
     return;
   }
 
-  if (!id || id < 0) {
+  if (id < 0) {
     response.sendBadRequest(
       res,
       'A correct id must be included in the request URI'
