@@ -18,8 +18,6 @@ function RestaurantListList(props) {
     }
   };
 
-  console.log(props.contents.length);
-
   return (
     <div className="restaurant-list-list">
       {props.containerEl && (
