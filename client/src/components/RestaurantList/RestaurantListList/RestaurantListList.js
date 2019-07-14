@@ -12,18 +12,13 @@ function RestaurantListList(props) {
   const itemSize = 90;
   const itemsLeftBeforeLoad = 3;
 
-  const itemKey = index => {
-    if (props.contents && index < props.contents.length) {
-      return props.contents[index].id;
-    }
-    return index;
-  };
-
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
     if (props.contents.length - visibleStopIndex - 1 <= itemsLeftBeforeLoad) {
       props.loadMoreRestaurants();
     }
   };
+
+  console.log(props.contents.length);
 
   return (
     <div className="restaurant-list-list">
@@ -31,7 +26,6 @@ function RestaurantListList(props) {
         <FixedSizeList
           width="100%"
           height={props.containerEl.clientHeight}
-          itemKey={itemKey}
           itemSize={itemSize}
           itemCount={
             props.contents.length && props.hasNext
