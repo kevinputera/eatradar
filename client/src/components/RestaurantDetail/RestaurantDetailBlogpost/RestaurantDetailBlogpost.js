@@ -1,5 +1,4 @@
 import React from 'react';
-import NavigationButtons from '../../shared/NavigationButtons/NavigationButtons';
 import ExtendableContent from '../../shared/ExtendableContent/ExtendableContent';
 
 import './RestaurantDetailBlogpost.css';
@@ -7,7 +6,7 @@ import './RestaurantDetailBlogpost.css';
 function RestaurantDetailBlogpost(props) {
   return (
     <div className="restaurant-detail-blogpost">
-      {props.blogPostsCount <= 0 ? (
+      {!props.blogPosts || !props.blogPosts.length ? (
         <div className="detail-not-found">
           Sorry, we can't find any blog posts related to this restaurant
         </div>
@@ -28,12 +27,6 @@ function RestaurantDetailBlogpost(props) {
                 footer={blogPost.author}
               />
             ))}
-          </div>
-          <div className="detail-navigation">
-            <NavigationButtons
-              handlePagePrev={props.handleBlogpostPagePrev}
-              handlePageNext={props.handleBlogpostPageNext}
-            />
           </div>
         </>
       )}
