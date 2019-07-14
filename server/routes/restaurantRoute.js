@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     longitude: parseFloat(req.query.lng),
     latitude: parseFloat(req.query.lat),
     offset: parseInt(req.query.offset) || 0,
-    limit: parseInt(req.query.limit) || 10
+    limit: parseInt(req.query.limit) || 10,
   };
 
   if (req.query.q) {

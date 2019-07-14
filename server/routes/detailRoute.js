@@ -8,7 +8,7 @@ const response = require('../utils/response');
  */
 router.get('/:id', async (req, res) => {
   const id = parseInt(req.params.id);
-  if (!Number.isInteger(id)) { 
+  if (!Number.isInteger(id)) {
     response.sendBadRequest(res, 'Id must be of type number');
     return;
   }
