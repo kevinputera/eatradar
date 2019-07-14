@@ -96,7 +96,7 @@ exports.getRestaurants = async params => {
     ids = await exports.getRestaurantNamesAndLocations(params.q);
     if (ids.length) {
       filter = /* sql */ `WHERE restaurant.id IN (${ids
-        .map((_, idx) => '$' + (idx + 4))
+        .map((_, idx) => '$' + (idx + values.length + 1))
         .join(',')})`;
       values = [...values, ...ids.map(i => i._source.id)];
     }
