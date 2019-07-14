@@ -8,6 +8,7 @@ function SearchFilter(props) {
     <div className="search-filter">
       <InputGroup
         large
+        type="search"
         leftIcon="search"
         placeholder="Search restaurants"
         value={props.query}
