@@ -147,10 +147,12 @@ export const useMarkerSelection = params => {
         });
 
         // pan to selected restaurant
-        const center = map.project(single.geometry.coordinates);
-        const offsetX = window.innerWidth / 4;
-        const offsetY = 0;
-        map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
+        if (single) {
+          const center = map.project(single.geometry.coordinates);
+          const offsetX = window.innerWidth / 4;
+          const offsetY = 0;
+          map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
+        }
 
         return () => {
           removeLayerIfExists(map, 'marker-selection');

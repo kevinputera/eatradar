@@ -85,3 +85,22 @@ export const useFetchRestaurant = id => {
   const reqParams = { method: 'GET' };
   return useFetchServer(`/restaurants/${id}`, reqParams);
 };
+
+/**
+ * Custom hook to store and update restaurant id selection.
+ *
+ * @return {any[]} - The restaurant id selection, a function to update the selection,
+ * and a function to clear the selection.
+ * [restaurantIdSelection, setRestaurantIdSelection, clearRestaurantIdSelection]
+ */
+export const useRestaurantIdSelection = () => {
+  const [restaurantIdSelection, setRestaurantIdSelection] = useState(0);
+  const clearRestaurantIdSelection = useCallback(() => {
+    setRestaurantIdSelection(0);
+  }, []);
+  return [
+    restaurantIdSelection,
+    setRestaurantIdSelection,
+    clearRestaurantIdSelection,
+  ];
+};
