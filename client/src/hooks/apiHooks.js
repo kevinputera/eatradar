@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { get } from '../utils/http';
 
+import { showError } from '../components/StatusMessage/StatusMessage';
+
 /**
  * Custom hook to fetch data from an api endpoint
  *
@@ -31,7 +33,7 @@ export const useFetchServer = (resource, params) => {
               setData(res.data);
             }
           })
-          .catch(console.log);
+          .catch(() => showError('Failed to connect to server. Please try refreshing the page.'));
         break;
       default:
         break;

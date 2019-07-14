@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { getRestaurants } from '../../api/restaurantApi';
 
 import RestaurantListList from './RestaurantListList/RestaurantListList';
+import { showError } from '../StatusMessage/StatusMessage';
 
 import './RestaurantListContainer.css';
 
@@ -87,8 +88,7 @@ class RestaurantListContainer extends React.Component {
       }
       this.props.clearRestaurantSelection();
     } catch (e) {
-      // TODO: status message
-      console.log(e.stack);
+      showError('Failed to fetch restaurants. Please try refreshing the page.');
     }
   };
 

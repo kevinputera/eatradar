@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputGroup, Button, Tooltip } from '@blueprintjs/core';
+import { InputGroup } from '@blueprintjs/core';
 
 import './SearchFilter.css';
 

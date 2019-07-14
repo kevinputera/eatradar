@@ -1,15 +1,16 @@
 import React from 'react';
+import { Button } from '@blueprintjs/core';
 import { getRestaurant } from '../../api/restaurantApi';
 import { getDetails } from '../../api/detailApi';
 import { getReviews } from '../../api/reviewApi';
 import { getBlogPosts, getBlogPostsCount } from '../../api/blogPostApi';
-import { Button } from '@blueprintjs/core';
 
 import RoundBorderCard from '../shared/RoundBorderCard/RoundBorderCard';
 import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
 import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetailBlogpost';
+import { showError } from '../StatusMessage/StatusMessage';
 
 import './RestaurantDetailContainer.css';
 
@@ -56,8 +57,7 @@ class RestaurantDetailContainer extends React.Component {
       const restaurant = await getRestaurant(id);
       this.setState({ restaurant });
     } catch (e) {
-      // TODO: status message
-      console.log(e.stack);
+      showError('Failed to fetch restaurant summary. Please try refreshing the page.');
     }
   };
 
@@ -67,8 +67,7 @@ class RestaurantDetailContainer extends React.Component {
       const details = await getDetails(id);
       this.setState({ details });
     } catch (e) {
-      // TODO: status message
-      console.log(e.stack);
+      showError('Failed to fetch restaurant details. Please try refreshing the page.');
     }
   };
 
@@ -78,8 +77,7 @@ class RestaurantDetailContainer extends React.Component {
       const reviews = await getReviews(id);
       this.setState({ reviews });
     } catch (e) {
-      // TODO: status message
-      console.log(e.stack);
+      showError('Failed to fetch restaurant reviews. Please try refreshing the page.');
     }
   };
 
@@ -92,8 +90,7 @@ class RestaurantDetailContainer extends React.Component {
       const blogPosts = await getBlogPosts(params);
       this.setState({ blogPosts });
     } catch (e) {
-      // TODO: status message
-      console.log(e.stack);
+      showError('Failed to fetch blog posts. Please try refreshing the page.');
     }
   };
 
