@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { get } from '../utils/http';
 
 import { showError } from '../components/StatusMessage/StatusMessage';
@@ -9,21 +9,23 @@ import { showError } from '../components/StatusMessage/StatusMessage';
  * @param {string} resource The resource locator, e.g. /restaurants
  * @param {Object} params The parameters used in fetching data
  * @param {string} params.method The HTTP method used in fetching
- * @param {Object} [params.qs] Query string to be appended to request URL
- * @param {Object} [params.headers] Headers to be used in HTTP request
- * @return The data fetched
+ * @param {Object} [params.qs] Query string to be appended to request URL. Must be stable(same identity for same value)
+ * @param {Object} [params.body] The body of the request. Must be stable(same identity for same value)
+ * @param {Object} [params.headers] Headers to be used in HTTP request. Must be stable(same identity for same value)
+ * @return The data fetched and a loading indicator, in the form [data, isLoading]
  */
 export const useFetchServer = (resource, params) => {
-  const [data, setData] = useState(null);
+  const { method, headers, qs, body } = params;
 
-  const method = params.method;
-  const headers = params.headers;
-  const qs = params.qs;
-  const reqParams = useMemo(() => ({ headers, qs }), [headers, qs]);
+  const [data, setData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const endpoint = `${process.env.REACT_APP_SERVER_URL}${resource}`;
+    const reqParams = { headers, qs, body };
+
     let cancel = false;
+    setLoading(true);
 
     switch (method) {
       case 'GET':
@@ -31,18 +33,21 @@ export const useFetchServer = (resource, params) => {
           .then(res => {
             if (!cancel) {
               setData(res.data);
+              setLoading(false);
             }
           })
-          .catch(() => showError('Failed to connect to server. Please try refreshing the page.'));
-        break;
-      default:
+          .catch(() =>
+            showError(
+              'Failed to connect to server. Please try refreshing the page.'
+            )
+          );
         break;
     }
 
     return () => {
       cancel = true;
     };
-  }, [resource, method, reqParams]);
+  }, [resource, method, headers, qs, body]);
 
-  return data;
+  return [data, isLoading];
 };

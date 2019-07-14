@@ -20,7 +20,7 @@ function Map(props) {
 
   const [geoJSON, restaurantMarkersLayer] = useRestaurantMarkers({
     map,
-    qs: props.query,
+    q: props.query,
   });
 
   useMarkerClickCallback({
