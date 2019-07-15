@@ -29,7 +29,11 @@ function Map(props) {
     callback: props.updateRestaurantIdSelection,
   });
 
-  useMarkerSelection({ map, id: props.restaurantIdSelection, geoJSON });
+  useMarkerSelection({
+    map,
+    id: props.restaurantIdSelection,
+    geoJSON,
+  });
 
   return <div id="map" />;
 }

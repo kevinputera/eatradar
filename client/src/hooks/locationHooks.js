@@ -39,7 +39,8 @@ export const useUserLocation = initial => {
         setLocation([res.coords.latitude, res.coords.longitude]);
         showSuccess('Successfully retrieved your location!');
       },
-      _ => showError('Failed to retrieve your location. Please try again.'),
+      _ =>
+        showError('Failed to retrieve your location. Please try again.'),
       navigatorConfig
     );
   }, [setLocation]);

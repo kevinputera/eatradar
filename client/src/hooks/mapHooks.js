@@ -151,7 +151,9 @@ export const useMarkerSelection = params => {
           const center = map.project(single.geometry.coordinates);
           const offsetX = window.innerWidth / 4;
           const offsetY = 0;
-          map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
+          map.panTo(
+            map.unproject([center.x + offsetX, center.y + offsetY])
+          );
         }
 
         return () => {
@@ -177,7 +179,8 @@ export const useMarkerClickCallback = params => {
   useEffect(() => {
     if (map && layerId) {
       const clickHandler = e => callback(e.features[0].properties.id);
-      const setPointerCursor = () => (map.getCanvas().style.cursor = 'pointer');
+      const setPointerCursor = () =>
+        (map.getCanvas().style.cursor = 'pointer');
       const setGrabCursor = () => (map.getCanvas().style.cursor = 'grab');
 
       map.on('click', layerId, clickHandler);

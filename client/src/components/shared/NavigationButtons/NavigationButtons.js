@@ -18,7 +18,10 @@ function NavigationButtons(props) {
   return (
     <div className="navigation-buttons">
       <PageButton icon="chevron-left" handleClick={props.handlePagePrev} />
-      <PageButton icon="chevron-right" handleClick={props.handlePageNext} />
+      <PageButton
+        icon="chevron-right"
+        handleClick={props.handlePageNext}
+      />
     </div>
   );
 }

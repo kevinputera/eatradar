@@ -11,7 +11,10 @@ function RestaurantDetailContent(props) {
   let hours;
   if (props.details) {
     phone = props.details.phone_number && (
-      <FieldContent title="Phone number" body={props.details.phone_number} />
+      <FieldContent
+        title="Phone number"
+        body={props.details.phone_number}
+      />
     );
 
     website = props.details.website && (

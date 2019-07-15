@@ -19,7 +19,13 @@ export const useRestaurantList = params => {
   const [hasNext, setHasNext] = useState(true);
   const [offset, setOffset] = useState(0);
 
-  const [data, isLoading] = useFetchRestaurants({ lat, lng, offset, limit, q });
+  const [data, isLoading] = useFetchRestaurants({
+    lat,
+    lng,
+    offset,
+    limit,
+    q,
+  });
 
   useEffect(() => {
     setOffset(0);

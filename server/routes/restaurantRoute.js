@@ -18,7 +18,10 @@ router.get('/', async (req, res) => {
     params.q = req.query.q;
   }
 
-  if (!Number.isFinite(params.longitude) || !Number.isFinite(params.latitude)) {
+  if (
+    !Number.isFinite(params.longitude) ||
+    !Number.isFinite(params.latitude)
+  ) {
     response.sendBadRequest(
       res,
       `Both lng and lat must be appended to the URI as query parameters`

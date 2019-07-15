@@ -7,7 +7,9 @@ function RestaurantDetailSummary(props) {
     <div className="restaurant-detail-summary">
       {props.restaurant && (
         <>
-          <div className="restaurant-detail-name">{props.restaurant.name}</div>
+          <div className="restaurant-detail-name">
+            {props.restaurant.name}
+          </div>
           <div className="restaurant-detail-address">
             <span>{props.restaurant.block} </span>
             <span>{props.restaurant.street}</span>

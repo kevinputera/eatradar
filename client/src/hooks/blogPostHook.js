@@ -10,7 +10,10 @@ export const useFetchBlogPosts = id => {
   const reqParams = { method: 'GET' };
   const [data, isLoading] = useFetchServer(`/blogposts/${id}`, reqParams);
   if (data) {
-    const blogPosts = data.map(bp => ({ id: bp._id, ...bp._source }));
+    const blogPosts = data.map(bp => ({
+      id: bp._id,
+      ...bp._source,
+    }));
     return [blogPosts, isLoading];
   }
   return [null, isLoading];

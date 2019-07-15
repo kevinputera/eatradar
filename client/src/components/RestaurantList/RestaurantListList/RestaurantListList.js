@@ -13,7 +13,10 @@ function RestaurantListList(props) {
   const itemsLeftBeforeLoad = 3;
 
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
-    if (props.contents.length - visibleStopIndex - 1 <= itemsLeftBeforeLoad) {
+    if (
+      props.contents.length - visibleStopIndex - 1 <=
+      itemsLeftBeforeLoad
+    ) {
       props.loadMoreRestaurants();
     }
   };
