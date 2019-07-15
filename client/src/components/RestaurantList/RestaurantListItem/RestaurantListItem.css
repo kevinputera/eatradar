@@ -1,0 +1,7 @@
+.restaurant-list-item.active {
+  background-color: #e1e8ed;
+}
+
+.restaurant-list-item {
+  cursor: pointer;
+}

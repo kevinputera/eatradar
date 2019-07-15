@@ -6,39 +6,44 @@ import './RestaurantDetailContent.css';
 import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
 
 function RestaurantDetailContent(props) {
-  const empty =
-    !props.details.phone_number &&
-    !props.details.website &&
-    !props.details.opening_hours;
+  let phone;
+  let website;
+  let hours;
+  if (props.details) {
+    phone = props.details.phone_number && (
+      <FieldContent
+        title="Phone number"
+        body={props.details.phone_number}
+      />
+    );
 
-  const phone = props.details.phone_number && (
-    <FieldContent title="Phone number" body={props.details.phone_number} />
-  );
+    website = props.details.website && (
+      <FieldContent
+        title="Website"
+        body={
+          <a
+            href={props.details.website}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {props.details.website}
+          </a>
+        }
+      />
+    );
 
-  const website = props.details.website && (
-    <FieldContent
-      title="Website"
-      body={
-        <a
-          href={props.details.website}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {props.details.website}
-        </a>
-      }
-    />
-  );
+    const day = new Date().getDay();
+    hours = props.details.opening_hours &&
+      day < props.details.opening_hours.length && (
+        <FieldContent
+          title="Opening hours"
+          body={`${props.details.opening_hours.periods[day].open.time} 
+          - ${props.details.opening_hours.periods[day].close.time}`}
+        />
+      );
+  }
 
-  const day = new Date().getDay();
-  const hours = props.details.opening_hours && (
-    <FieldContent
-      title="Opening hours"
-      body={`${props.details.opening_hours.periods.get(day).open.time} - ${
-        props.details.opening_hours.periods.get(day).close.time
-      }`}
-    />
-  );
+  const empty = !phone && !website && !hours;
 
   return (
     <div className="restaurant-detail-content">
