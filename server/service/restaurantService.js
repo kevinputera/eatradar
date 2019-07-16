@@ -1,6 +1,7 @@
 const { pgPool } = require('../config/dbConfig');
 const { esClient } = require('../config/elasticsearchConfig');
 const googlePlacesApiService = require('./googlePlacesApiService');
+const yelpApiService = require('./yelpApiService');
 
 /**
  * Get a list of all restaurant ids and locations in GeoJSON format, filtered by name
@@ -273,3 +274,97 @@ exports.processGooglePlacesId = async (id, googlePlacesId) => {
 
   return googlePlacesId;
 };
+
+/**
+ * Update yelp id for a given restaurant id
+ *
+ * @param {number} id
+ * @param {string} yelpId
+ * @return {Promise<number>} - id
+ */
+exports.updateYelpId = async (id, yelpId) => {
+  const query = {
+    text: /* sql */ `
+      UPDATE restaurant
+      SET yelp_id = $2
+      WHERE id = $1;
+    `,
+    values: [id, yelpId],
+  };
+
+  const pgClient = await pgPool.connect();
+  try {
+    await pgClient.query(query);
+    return id;
+  } catch (e) {
+    const message = `restaurantService.js: error in updateYelpId\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  } finally {
+    await pgClient.release();
+  }
+};
+
+/**
+ * Process a restaurant's Yelp id
+ * Make a getPlaceId call through Yelp Api Services if necessary
+ * Make a refreshPlaceId call through Yelp Api Services if necessary
+ * retrieved place id is the id received from calling the Yelp Api
+ *
+ * @param {number} id
+ * @param {string} yelpId
+ * @return {Optional<string>} - yelp id
+ */
+exports.processYelpId = async (id, yelpId) => {
+  if (yelpId === null) {
+    try {
+      const detail = await exports.getRestaurant(id);
+      const retrievedPlaceId = await yelpApiService.getPlaceId({
+        term: detail.name,
+        latitude: detail.lat,
+        longitude: detail.lng,
+      });
+      if(retrievedPlaceId){
+      await exports.updateYelpId(id, retrievedPlaceId);
+      return retrievedPlaceId;
+      }
+      else return null;
+    } catch (e) {
+      const message = `restaurantService.js: error in processYelpId\n${e}`;
+      console.log(message);
+      throw new Error(e);
+    }
+  }
+
+  return yelpId;
+};
+
+/**
+ * Get the yelp id for a given restaurant id
+ *
+ * @param {number} id
+ * @return {Promise<string>} - yelp_id
+ */
+exports.getYelpId = async id => {
+  const query = {
+    text: /* sql */ `
+      SELECT restaurant.yelp_id
+      FROM restaurant
+      WHERE id = $1; 
+    `,
+    values: [id],
+  };
+
+  const pgClient = await pgPool.connect();
+  try {
+    const res = await pgClient.query(query);
+    return exports.processYelpId(id, res.rows[0].yelp_id);
+  } catch (e) {
+    const message = `restaurantService.js: error in getYelpPlacesId\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  } finally {
+    await pgClient.release();
+  }
+};
+
