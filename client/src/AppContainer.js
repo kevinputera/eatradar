@@ -1,5 +1,4 @@
-import React from 'react';
-import { useQueryInput } from './hooks/queryHooks';
+import React, { useState } from 'react';
 import { useRestaurantIdSelection } from './hooks/restaurantHooks';
 import { useUserLocation } from './hooks/locationHooks';
 
@@ -11,7 +10,7 @@ import Map from './components/Map/Map';
 import './AppContainer.css';
 
 function App(props) {
-  const [queryInput, handleQueryInputChange] = useQueryInput('');
+  const [queryInput, setQueryInput] = useState('');
 
   const [
     restaurantIdSelection,
@@ -36,10 +35,7 @@ function App(props) {
         />
       </div>
       <div className="search-filter-wrapper">
-        <SearchFilter
-          query={queryInput}
-          handleQueryInputChange={handleQueryInputChange}
-        />
+        <SearchFilter updateQueryInput={setQueryInput} />
       </div>
       <div className="restaurant-list-wrapper card-wrapper">
         <RestaurantListContainer
