@@ -39,7 +39,10 @@ export const useMap = (secret, params) => {
       center: [longitude, latitude],
     });
 
-    map.on('load', () => setMap(map));
+    map.on('load', () => {
+      map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+      setMap(map);
+    });
   }, [
     secret,
     longitude,
@@ -64,6 +67,7 @@ export const useMap = (secret, params) => {
 export const useRestaurantMarkers = params => {
   const { map, q } = params;
   const layerId = 'restaurant-markers';
+  const filteredLayerId = 'filtered-restaurant-markers';
 
   // Get all the restaurants and plot in the map
   const fullGeoJSON = useFetchRestaurantLocationsWithQuery();
@@ -78,7 +82,7 @@ export const useRestaurantMarkers = params => {
         },
         paint: {
           'circle-radius': 2,
-          'circle-color': '#00aa00',
+          'circle-color': 'rgb(0, 150, 0)',
         },
       });
 
@@ -91,12 +95,40 @@ export const useRestaurantMarkers = params => {
   // Filter out the restaurants based on the query
   const filteredGeoJSON = useFetchRestaurantLocationsWithQuery(q);
   useEffect(() => {
-    if (map && filteredGeoJSON) {
-      const ids = filteredGeoJSON.features.map(g => g.properties.id);
-      map.setFilter(layerId, ['in', 'id', ...ids]);
-    }
-  }, [map, filteredGeoJSON]);
+    if (map && q && filteredGeoJSON) {
+      map.addLayer({
+        id: filteredLayerId,
+        type: 'circle',
+        source: {
+          type: 'geojson',
+          data: filteredGeoJSON,
+        },
+        paint: {
+          'circle-radius': 2,
+          'circle-color': 'rgb(0, 150, 0)',
+        },
+      });
 
+      return () => {
+        removeLayerIfExists(map, filteredLayerId);
+      };
+    }
+  }, [map, q, filteredGeoJSON]);
+
+  // Do not repaint all the points. Instead, use two layers and flip between them.
+  useEffect(() => {
+    if (map) {
+      if (q) {
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+      } else {
+        map.setLayoutProperty(layerId, 'visibility', 'visible');
+      }
+    }
+  }, [map, q]);
+
+  if (q) {
+    return [filteredGeoJSON, filteredLayerId];
+  }
   return [fullGeoJSON, layerId];
 };
 
