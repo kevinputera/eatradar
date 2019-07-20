@@ -178,34 +178,24 @@ export const useMarkerSelection = params => {
     if (map && geoJSON) {
       if (id) {
         const single = geoJSON.features.find(g => g.properties.id === id);
-
-        // highlight selection
-        map.addLayer({
-          id: 'marker-selection',
-          type: 'circle',
-          source: {
-            type: 'geojson',
-            data: single,
-          },
-          paint: {
-            'circle-radius': 7,
-            'circle-color': '#ff0000',
-          },
-        });
-
-        // pan to selected restaurant
         if (single) {
+          // highlight selection
+          const selection = new mapboxgl.Marker({ color: '#ff0000' })
+            .setLngLat(single.geometry.coordinates)
+            .addTo(map);
+
+          // pan to selected restaurant
           const center = map.project(single.geometry.coordinates);
           const offsetX = window.innerWidth / 4;
           const offsetY = 0;
           map.panTo(
             map.unproject([center.x + offsetX, center.y + offsetY])
           );
-        }
 
-        return () => {
-          removeLayerIfExists(map, 'marker-selection');
-        };
+          return () => {
+            selection.remove();
+          };
+        }
       }
     }
   }, [map, id, geoJSON]);
