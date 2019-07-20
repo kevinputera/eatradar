@@ -43,6 +43,7 @@ export const useMap = (secret, params) => {
       style: params.style || 'mapbox://styles/mapbox/streets-v11',
       minZoom: params.minZoom || 8,
       maxZoom: params.maxZoom || 14,
+      zoom: 10.5,
       center: [longitude, latitude],
     });
 

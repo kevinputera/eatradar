@@ -9,7 +9,7 @@ function ZoomAction(props) {
       <div className="zoom-control">
         <Button
           large
-          icon="small-plus"
+          icon="plus"
           onClick={props.handleZoomIn}
           style={{ borderRadius: '20px' }}
         />
@@ -17,7 +17,7 @@ function ZoomAction(props) {
       <div className="zoom-control">
         <Button
           large
-          icon="small-minus"
+          icon="minus"
           onClick={props.handleZoomOut}
           style={{ borderRadius: '20px' }}
         />
