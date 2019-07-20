@@ -11,10 +11,13 @@ function SearchFilter(props) {
     throttle(props.updateQueryInput, 300),
     [props.updateQueryInput]
   );
-  const handleInputChange = useCallback(e => {
-    setInput(e.target.value);
-    throttledUpdateQueryInput(e.target.value);
-  });
+  const handleInputChange = useCallback(
+    e => {
+      setInput(e.target.value);
+      throttledUpdateQueryInput(e.target.value);
+    },
+    [setInput, throttledUpdateQueryInput]
+  );
 
   return (
     <div className="search-filter">
