@@ -28,7 +28,7 @@
 
 .map-action-wrapper {
   position: fixed;
-  left: 0;
+  left: 10px;
   bottom: 40px;
 }
 
