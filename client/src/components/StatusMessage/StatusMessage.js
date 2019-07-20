@@ -6,25 +6,32 @@ const StatusMessage = Toaster.create({
 });
 
 export const showSuccess = message => {
-  if (!isToastMessageExist(message)) {
-    StatusMessage.show({
-      icon: 'tick',
-      intent: Intent.SUCCESS,
-      timeout: 3000,
-      message,
-    });
-  }
+  StatusMessage.clear();
+  StatusMessage.show({
+    icon: 'tick',
+    intent: Intent.SUCCESS,
+    timeout: 2000,
+    message,
+  });
 };
 
 export const showError = message => {
-  if (!isToastMessageExist(message)) {
-    StatusMessage.show({
-      icon: 'error',
-      intent: Intent.DANGER,
-      timeout: 3000,
-      message,
-    });
-  }
+  StatusMessage.clear();
+  StatusMessage.show({
+    icon: 'error',
+    intent: Intent.DANGER,
+    timeout: 2000,
+    message,
+  });
+};
+
+export const show = (icon, message) => {
+  StatusMessage.clear();
+  StatusMessage.show({
+    icon,
+    timeout: 2000,
+    message,
+  });
 };
 
 function isToastMessageExist(message) {

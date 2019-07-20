@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
+  show,
   showSuccess,
   showError,
 } from '../components/StatusMessage/StatusMessage';
@@ -37,6 +38,7 @@ export const useUserLocation = initial => {
   // Function to manually trigger location update
   const refreshLocation = useCallback(() => {
     if (setLocation) {
+      show('refresh', 'Getting your location...');
       getLocation({
         setLocation,
         noPermissionMsg:
