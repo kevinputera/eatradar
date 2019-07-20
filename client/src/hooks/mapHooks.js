@@ -70,7 +70,19 @@ export const useRestaurantMarkers = params => {
 
   const layerId = 'restaurant-markers';
   const filteredLayerId = 'filtered-restaurant-markers';
-  const color = 'rgba(0, 150, 0, 0.5)';
+
+  const radius = ['interpolate', ['linear'], ['zoom'], 10, 2.5, 14, 5];
+  const filteredRadius = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    10,
+    4,
+    14,
+    6,
+  ];
+  const color = 'rgba(0, 100, 0, 0.5)';
+  const filteredColor = 'rgba(0, 100, 0, 0.8)';
 
   // Get all the restaurants and plot in the map
   const fullGeoJSON = useFetchRestaurantLocationsWithQuery();
@@ -84,7 +96,7 @@ export const useRestaurantMarkers = params => {
           data: fullGeoJSON,
         },
         paint: {
-          'circle-radius': 2,
+          'circle-radius': radius,
           'circle-color': color,
         },
       });
@@ -107,8 +119,8 @@ export const useRestaurantMarkers = params => {
           data: filteredGeoJSON,
         },
         paint: {
-          'circle-radius': 2,
-          'circle-color': color,
+          'circle-radius': filteredRadius,
+          'circle-color': filteredColor,
         },
       });
 
