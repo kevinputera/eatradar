@@ -117,7 +117,7 @@ export const useRestaurantMarkers = params => {
 
   // Do not repaint all the points. Instead, use two layers and flip between them.
   useEffect(() => {
-    if (map) {
+    if (map && map.getLayer(layerId)) {
       if (q) {
         map.setLayoutProperty(layerId, 'visibility', 'none');
       } else {

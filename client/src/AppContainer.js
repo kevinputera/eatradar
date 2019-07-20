@@ -46,7 +46,7 @@ function App(props) {
           updateRestaurantIdSelection={updateRestaurantIdSelection}
         />
       </div>
-      {restaurantIdSelection && (
+      {!!restaurantIdSelection && (
         <div className="restaurant-detail-wrapper card-wrapper">
           <RestaurantDetailContainer
             restaurantIdSelection={restaurantIdSelection}
