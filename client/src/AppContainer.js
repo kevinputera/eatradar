@@ -18,12 +18,10 @@ function App(props) {
     clearRestaurantIdSelection,
   ] = useRestaurantIdSelection();
 
-  const [
-    latitude,
-    longitude,
-    refreshLocation,
-    stopAutoRetry,
-  ] = useUserLocation([1.3033702, 103.8283541]);
+  const [latitude, longitude, refreshLocation] = useUserLocation([
+    1.3033702,
+    103.8283541,
+  ]);
 
   return (
     <div className="app">
