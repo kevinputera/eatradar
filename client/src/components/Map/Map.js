@@ -16,6 +16,8 @@ function Map(props) {
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [103.9089594, 1.347636],
     zoom: 10.5,
+    minZoom: 10,
+    maxZoom: 14.5,
   });
 
   const [geoJSON, restaurantMarkersLayer] = useRestaurantMarkers({

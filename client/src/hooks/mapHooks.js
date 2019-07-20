@@ -36,13 +36,12 @@ export const useMap = (secret, params) => {
       container: params.container,
       style: params.style || 'mapbox://styles/mapbox/streets-v11',
       zoom: params.zoom || 12,
+      minZoom: params.minZoom,
+      maxZoom: params.maxZoom,
       center: [longitude, latitude],
     });
 
-    map.on('load', () => {
-      map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
-      setMap(map);
-    });
+    map.on('load', () => setMap(map));
   }, [
     secret,
     longitude,
@@ -50,6 +49,8 @@ export const useMap = (secret, params) => {
     params.container,
     params.style,
     params.zoom,
+    params.minZoom,
+    params.maxZoom,
   ]);
 
   return map;
@@ -66,8 +67,10 @@ export const useMap = (secret, params) => {
  */
 export const useRestaurantMarkers = params => {
   const { map, q } = params;
+
   const layerId = 'restaurant-markers';
   const filteredLayerId = 'filtered-restaurant-markers';
+  const color = 'rgba(0, 150, 0, 0.5)';
 
   // Get all the restaurants and plot in the map
   const fullGeoJSON = useFetchRestaurantLocationsWithQuery();
@@ -82,7 +85,7 @@ export const useRestaurantMarkers = params => {
         },
         paint: {
           'circle-radius': 2,
-          'circle-color': 'rgb(0, 150, 0)',
+          'circle-color': color,
         },
       });
 
@@ -105,7 +108,7 @@ export const useRestaurantMarkers = params => {
         },
         paint: {
           'circle-radius': 2,
-          'circle-color': 'rgb(0, 150, 0)',
+          'circle-color': color,
         },
       });
 
