@@ -1,0 +1,4 @@
+.zoom-action {
+  display: flex;
+  flex-direction: column;
+}

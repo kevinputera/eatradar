@@ -26,6 +26,12 @@
   width: 25%;
 }
 
+.map-action-wrapper {
+  position: fixed;
+  left: 0;
+  bottom: 40px;
+}
+
 .restaurant-list-wrapper {
   position: fixed;
 
