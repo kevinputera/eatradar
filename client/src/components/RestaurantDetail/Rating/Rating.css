@@ -1,0 +1,9 @@
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-attribution {
+  height: 12px;
+  margin-left: 10px;
+}
