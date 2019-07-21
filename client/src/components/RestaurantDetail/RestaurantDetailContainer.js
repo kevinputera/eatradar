@@ -61,9 +61,7 @@ function RestaurantDetailContainer(props) {
       </div>
 
       <div className="container-wrapper">
-        <RoundBorderCard className="blogpost-card" radius="10px">
-          <RestaurantDetailBlogpost blogPosts={blogPosts} />
-        </RoundBorderCard>
+        <RestaurantDetailBlogpost blogPosts={blogPosts} />
       </div>
     </div>
   );

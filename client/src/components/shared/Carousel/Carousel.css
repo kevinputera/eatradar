@@ -1,0 +1,79 @@
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 3px;
+
+  border-radius: 10px;
+  box-shadow: 0 1px 0 0 #bfccd6;
+
+  border: 1px solid #d8e1e8;
+  border-width: 1px;
+}
+
+.carousel-middle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 100%;
+  flex-grow: 1;
+
+  padding-top: 20px;
+  padding-bottom: 10px;
+
+  overflow: hidden;
+}
+
+.carousel-content {
+  flex-grow: 1;
+}
+
+.carousel-content-title {
+  border-bottom: 1px solid #bfccd6;
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+}
+
+.carousel-content-link {
+  margin-left: 10px;
+}
+
+.carousel-content-author {
+  text-align: end;
+  font-style: italic;
+}
+
+.carousel-page-indicator {
+  margin-top: 10px;
+
+  display: flex;
+  flex-grow: 0;
+}
+
+.carousel-page-bar {
+  display: inline-block;
+
+  width: 20px;
+  height: 4px;
+
+  margin: 0 2px;
+
+  flex-grow: 1;
+
+  border-radius: 2px;
+  background-color: #bfccd6;
+}
+
+.carousel-page-bar:hover {
+  cursor: pointer;
+}
+
+.carousel-page-bar.active {
+  background-color: #5c7080;
+}
+
+.carousel-nav-button {
+  flex-grow: 0;
+}

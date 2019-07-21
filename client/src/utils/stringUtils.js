@@ -1,5 +1,8 @@
 export const getSummary = (text, summaryLength) => {
   const tokens = text.split(' ');
+  if (summaryLength < tokens.length) {
+    return tokens.slice(0, summaryLength).join(' ') + '...';
+  }
   return tokens.slice(0, summaryLength).join(' ');
 };
 

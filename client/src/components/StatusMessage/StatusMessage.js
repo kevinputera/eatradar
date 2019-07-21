@@ -33,13 +33,3 @@ export const show = (icon, message) => {
     message,
   });
 };
-
-function isToastMessageExist(message) {
-  const toasts = StatusMessage.getToasts();
-  for (const toast of toasts) {
-    if (toast.message === message) {
-      return true;
-    }
-  }
-  return false;
-}
