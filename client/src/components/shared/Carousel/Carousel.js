@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Divider } from '@blueprintjs/core';
 import { useCarousel } from '../../../hooks/carouselHooks';
 
 import './Carousel.css';
@@ -42,7 +42,10 @@ function CarouselContent(props) {
   return (
     <div className="carousel-content">
       {content.title && (
-        <div className="carousel-content-title">{content.title}</div>
+        <>
+          <div className="carousel-content-title">{content.title}</div>
+          <Divider />
+        </>
       )}
       <div className="carousel-content-post">
         {content.post}

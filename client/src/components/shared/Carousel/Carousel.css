@@ -30,12 +30,6 @@
   flex-grow: 1;
 }
 
-.carousel-content-title {
-  border-bottom: 1px solid #bfccd6;
-  padding-bottom: 5px;
-  margin-bottom: 8px;
-}
-
 .carousel-content-link {
   margin-left: 10px;
 }
