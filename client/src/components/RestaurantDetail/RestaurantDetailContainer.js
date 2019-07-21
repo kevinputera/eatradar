@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Divider } from '@blueprintjs/core';
 import { useFetchRestaurant } from '../../hooks/restaurantHooks';
 import { useFetchDetails } from '../../hooks/detailHook';
 import { useFetchBlogPosts } from '../../hooks/blogPostHook';
 import { useReviews } from '../../hooks/reviewHook';
 
-import RoundBorderCard from '../shared/RoundBorderCard/RoundBorderCard';
 import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
@@ -20,12 +19,7 @@ function RestaurantDetailContainer(props) {
   const [details, isDetailsLoading] = useFetchDetails(id);
   const [blogPosts, isBlogPostsLoading] = useFetchBlogPosts(id);
 
-  const [
-    reviews,
-    reviewSelected,
-    setReviewSelected,
-    isReviewsLoading,
-  ] = useReviews(id);
+  const [ratings, reviews, isReviewsLoading] = useReviews(id);
 
   return (
     <div className="restaurant-detail-container">
@@ -37,31 +31,33 @@ function RestaurantDetailContainer(props) {
           style={{ borderRadius: '20px' }}
         />
       </div>
-
       <div className="container-wrapper">
-        <RoundBorderCard className="summary-card" radius="10px">
-          <RestaurantDetailSummary restaurant={restaurant} />
-        </RoundBorderCard>
+        <RestaurantDetailSummary
+          isRestaurantLoading={isRestaurantLoading}
+          isReviewsLoading={isReviewsLoading}
+          restaurant={restaurant}
+          ratings={ratings}
+        />
       </div>
-
+      <Divider />
       <div className="container-wrapper">
-        <RoundBorderCard className="details-card" radius="10px">
-          <RestaurantDetailContent details={details} />
-        </RoundBorderCard>
+        <RestaurantDetailContent
+          isRestaurantLoading={isRestaurantLoading}
+          isDetailsLoading={isDetailsLoading}
+          restaurant={restaurant}
+          details={details}
+        />
       </div>
-
-      <div className="container-wrapper">
-        <RoundBorderCard className="review-card" radius="10px">
-          <RestaurantDetailReview
-            reviews={reviews}
-            reviewSelected={reviewSelected}
-            updateReviewSelected={setReviewSelected}
-          />
-        </RoundBorderCard>
-      </div>
-
+      <Divider />
       <div className="container-wrapper">
         <RestaurantDetailBlogpost blogPosts={blogPosts} />
+      </div>
+      <div className="container-wrapper">
+        <RestaurantDetailReview
+          reviews={reviews}
+          reviewSelected={() => {}}
+          updateReviewSelected={() => {}}
+        />
       </div>
     </div>
   );

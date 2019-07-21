@@ -1,15 +1,13 @@
-.blogposts-wrapper {
-  margin: 15px 0px;
+.restaurant-detail-blogpost {
+  margin: 20px 0;
 }
 
-.blogpost {
-  margin: 5px 1px;
+.restaurant-detail-blogpost-title {
+  margin-bottom: 7px;
+  margin-left: 3px;
 }
 
-.blogpost-title {
-  font-style: italic;
-}
-
-.blogpost-content {
-  margin-bottom: 5px;
+.blogpost-icon {
+  color: #a7b6c2;
+  margin-right: 10px;
 }
