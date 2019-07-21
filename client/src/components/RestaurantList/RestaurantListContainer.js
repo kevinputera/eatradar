@@ -12,9 +12,12 @@ function RestaurantListContainer(props) {
     q: props.query,
   };
 
-  const [contents, hasNext, loadMoreRestaurants] = useRestaurantList(
-    params
-  );
+  const [
+    contents,
+    isRestaurantListLoading,
+    hasNext,
+    loadMoreRestaurants,
+  ] = useRestaurantList(params);
 
   const containerRef = useRef(null);
 

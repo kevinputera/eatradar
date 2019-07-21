@@ -45,7 +45,7 @@ export const useRestaurantList = params => {
     }
   }, [offset, isLoading, hasNext]);
 
-  return [contents, hasNext, loadMoreRestaurants];
+  return [contents, isLoading, hasNext, loadMoreRestaurants];
 };
 
 /**
