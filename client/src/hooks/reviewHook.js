@@ -2,25 +2,38 @@ import { useState } from 'react';
 import { useFetchServer } from './apiHooks';
 
 /**
- * Custom hook to get reviews of a restaurant and manage their focus.
+ * Custom hook to get ratings and reviews of a restaurant.
  *
  * @param {number} id The restaurant's id
- * @return {Object} - The reviews of the restaurant, the selected review,
- * and function to handle selection change. [reviews, reviewSelected, setReviewSelected]
+ * @return {any[]} - The ratings of the restaurant, reviews of the restaurant,
+ * and a loading indicator. [ratings, reviews, isLoading]
  */
 export const useReviews = id => {
-  const [reviews, isReviewsLoading] = useFetchReviews(id);
-  const [reviewSelected, setReviewSelected] = useState(null);
-  return [reviews, reviewSelected, setReviewSelected, isReviewsLoading];
+  const [ratings, reviews, isLoading] = useFetchReviews(id);
+  return [ratings, reviews, isLoading];
 };
 
 /**
  * Wrapper on top of useFetchServer, used to get reviews of a restaurant.
  *
  * @param {number} id The restaurant's id
- * @return {Object} - The reviews of the restaurant
+ * @return {any[]} - The ratings and reviews of the restaurant, in that order.
+ * [ratings, reviews]
  */
 export const useFetchReviews = id => {
   const reqParams = { method: 'GET' };
-  return useFetchServer(`/reviews/${id}`, reqParams);
+  const [data, isLoading] = useFetchServer(`/reviews/${id}`, reqParams);
+
+  const reviews = {};
+  const ratings = {};
+  if (data) {
+    Object.entries(data).forEach(entry => {
+      const brand = entry[0];
+      const content = entry[1];
+      ratings[brand] = content.rating;
+      reviews[brand] = content.reviews;
+    });
+  }
+
+  return [ratings, reviews, isLoading];
 };
