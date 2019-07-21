@@ -1,0 +1,13 @@
+.logo-field-content {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.logo-field-content-logo {
+  color: #a7b6c2;
+}
+
+.logo-field-content-content {
+  margin-left: 10px;
+}
