@@ -15,9 +15,10 @@ function RestaurantListItem(props) {
     setHover(false);
   }, [setHover]);
 
+  const updateRestaurantIdSelection = props.updateRestaurantIdSelection;
   const handleClick = useCallback(() => {
-    props.updateRestaurantIdSelection(props.content.id);
-  }, [props.updateRestaurantIdSelection, props.content.id]);
+    updateRestaurantIdSelection(props.content.id);
+  }, [updateRestaurantIdSelection, props.content.id]);
 
   const isSelected = useMemo(() => {
     return props.restaurantIdSelection === props.content.id;
@@ -61,7 +62,7 @@ function RestaurantListItem(props) {
 
 function RestaurantListLoading(props) {
   return (
-    <div class="restaurant-list-item" style={props.style}>
+    <div className="restaurant-list-item" style={props.style}>
       Loading
     </div>
   );

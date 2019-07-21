@@ -63,12 +63,19 @@ export const useMap = (secret, params) => {
   // update zoom
   useEffect(() => {
     if (map && params.zoom) {
+      let offset;
+      if (params.isRestaurantSelected) {
+        offset = [-window.innerWidth / 4, 0];
+      } else {
+        offset = [-window.innerWidth / 8, 0];
+      }
+
       map.zoomTo(params.zoom, {
         duration: 100,
-        offset: [-window.innerWidth / 4, 0],
+        offset,
       });
     }
-  }, [map, params.zoom]);
+  }, [map, params.zoom, params.isRestaurantSelected]);
 
   return map;
 };
