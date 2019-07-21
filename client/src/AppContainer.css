@@ -58,6 +58,7 @@
 
 .card-wrapper {
   border-radius: 10px;
+  border: 1px solid #ced9e0;
 
   overflow-y: scroll;
   overflow-x: hidden;
