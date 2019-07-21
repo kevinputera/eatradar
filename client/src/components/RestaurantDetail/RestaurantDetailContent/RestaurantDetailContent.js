@@ -50,12 +50,14 @@ function RestaurantDetailContent(props) {
               </a>
             </LogoFieldContent>
           )}
-          {props.details && props.details.opening_hours && (
-            <LogoFieldContent icon="time">
-              {props.details.opening_hours.periods[today].open.time} -{' '}
-              {props.details.opening_hours.periods[today].close.time}
-            </LogoFieldContent>
-          )}
+          {props.details &&
+            props.details.opening_hours &&
+            today < props.details.opening_hours.length && (
+              <LogoFieldContent icon="time">
+                {props.details.opening_hours.periods[today].open.time} -{' '}
+                {props.details.opening_hours.periods[today].close.time}
+              </LogoFieldContent>
+            )}
         </div>
       )}
     </div>
