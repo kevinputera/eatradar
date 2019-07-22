@@ -1,27 +1,11 @@
-// TODO: Add yelp integeration
+const fetch = require('node-fetch');
+const querystring = require('querystring');
 const yelp_key = process.env.YELP_API_KEY;
 const bearer = 'Bearer ' + yelp_key;
-const url = 'https://api.yelp.com/v3/autocomplete?text=del&latitude=37.786882&longitude=-122.399972';
-var urlBusiness = 'https://api.yelp.com/v3/businesses'
-const fetch = require('node-fetch');
-var querystring = require('querystring');
-const restaurants = require('../service/restaurantService');
-
-exports.testYelp = async () => {
-   return await fetch(url,{
-        'method' : 'GET',
-        'headers' : {
-            'Authorization' : bearer,
-        },
-    }).then(response => response.json())
-    .then(json =>{
-        console.log(json);
-        return json;
-    });
-};
+const urlBusiness = 'https://api.yelp.com/v3/businesses'
 
  /**
- * Get reviews of a given restaurant id
+ * Get place of a given restaurant id
  * @param {object} params
  * @param {string} params.term
  * @param {number} params.longitude
@@ -30,23 +14,28 @@ exports.testYelp = async () => {
  */
 
 exports.getPlaceId = async (params) => {
-    var id_query = {
+    let id_query = {
         term: params.term,
         longitude: params.longitude,
         latitude: params.latitude,
     };
-    var urlId = urlBusiness +"/search?"+ querystring.stringify(id_query);
-    return await fetch(urlId,{
+    let urlId = urlBusiness +"/search?"+ querystring.stringify(id_query);
+    let res = await fetch(urlId,{
         'method' : 'GET',
         'headers' : {
             'Authorization' : bearer,
         },
-    }).then(response => response.json())
-    .then(json =>{
+    }); 
+    let json = await res.json();
+    try{
         if(json.businesses[0]){
-        return json.businesses[0].id;
+            return json.businesses[0].id;
         }
-    });    
+    }catch(e){
+        const message = `yelpApiService.js: error in getId\n${e}`;
+        console.log(message);
+        throw new Error(message);
+    }
 };
 
 /**
@@ -56,34 +45,64 @@ exports.getPlaceId = async (params) => {
  * @return {Promise<Object>} - reviews from yelp
  */
 exports.getReviews = async (id) => {
-    var urlReviews = urlBusiness + '/' + id + '/reviews';
-    return await fetch(urlReviews,{
+    let urlReviews = urlBusiness + '/' + id + '/reviews';
+    let res = await fetch(urlReviews,{
         'method' : 'GET',
         'headers' : {
             'Authorization' : bearer,
         },
-    }).then(response => response.json())
-    .then(json =>{
-        return json;
-    });    
+    });
+    if(res.ok){
+    let json = await res.json();
+    return exports.mapReviewShape(json);
+    } else{
+        const message = `yelpApiService.js: error in getReviews\n${e}`;
+        throw new Error(message);
+    }
 };
 
 /**
- * Get reviews of a given restaurant id
+ * Get Details of a given restaurant id
  *
  * @param {number} id - id should be the actual yelp_id as it queries yelps api
- * @return {Promise<Object>} - reviews from yelp
+ * @return {Promise<Object>} - Details from yelp
  */
 exports.getDetails = async (id) =>{
-    var urlDetails = urlBusiness + '/' + id;
-    return await fetch(urlDetails,{
+    let urlDetails = urlBusiness + '/' + id;
+    let res = await fetch(urlDetails,{
         'method' : 'GET',
         'headers' : {
             'Authorization' : bearer,
         },
-    }).then(response => response.json())
-    .then(json =>{
-        return json;
-    }); 
+    });
+    if(res.ok){
+    let json = await res.json();
+    return json;
+    } else {
+        const message = `yelpApiService.js: error in getDetails\n${e}`;
+        console.log(message);
+        throw new Error(message);
+    }
 };
 
+
+/**
+ * Transform Review Object into similar shape as google reviews object
+ *
+ * @param {object} old - id should be the actual yelp_id as it queries yelps api
+ * @return {object} - New shape of object
+ */
+
+ exports.mapReviewShape = (old) =>{
+newShape= [];
+    for(let i=0; old.reviews[i]; i+=1){
+        temp = {
+            "author_name" : old.reviews[i].user.name,
+            "text" : old.reviews[i].text,
+            "rating" : old.reviews[i].rating,
+            "time": old.reviews[i].time_created,
+            };
+        newShape.push(temp);
+    }
+return newShape;
+ };

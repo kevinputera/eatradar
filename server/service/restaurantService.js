@@ -249,7 +249,7 @@ exports.updateGooglePlacesId = async (id, googlePlacesId) => {
  *
  * @param {number} id
  * @param {string} googlePlacesId
- * @return {Optional<string>} - places id
+ * @return {<string>} - places id
  */
 exports.processGooglePlacesId = async (id, googlePlacesId) => {
   // TODO: refresh google places id if too old
@@ -313,7 +313,7 @@ exports.updateYelpId = async (id, yelpId) => {
  *
  * @param {number} id
  * @param {string} yelpId
- * @return {Optional<string>} - yelp id
+ * @return {<string>} - yelp id
  */
 exports.processYelpId = async (id, yelpId) => {
   if (yelpId === null) {
