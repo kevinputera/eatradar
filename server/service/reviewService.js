@@ -11,10 +11,11 @@ const yelpApiService = require('./yelpApiService')
 exports.getReviews = async id => {
   try {
     const reviews = {};
+    const res = await Promise.all([restaurantService.getGooglePlacesId(id), restaurantService.getYelpId(id)]);
     const placeId = {
-      googleId: await restaurantService.getGooglePlacesId(id),
-      yelpId: await restaurantService.getYelpId(id),
-    }
+      googleId: res[0],
+      yelpId: res[1]
+    };
     if (placeId.googleId) {
       const googleReviews = await googlePlacesApiService.getReviews({
         placeId: placeId.googleId,
