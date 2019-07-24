@@ -28,7 +28,7 @@ exports.getPlaceId = async (params) => {
     }); 
     let json = await res.json();
     try{
-        if(json.businesses[0]){
+        if(json.businesses.length){
             return json.businesses[0].id;
         }
     }catch(e){
