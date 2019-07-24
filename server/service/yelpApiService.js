@@ -54,7 +54,7 @@ exports.getReviews = async (id) => {
     });
     if(res.ok){
     let json = await res.json();
-    return exports.mapReviewShape(json);
+    return mapReviewShape(json);
     } else{
         const message = `yelpApiService.js: error in getReviews\n${e}`;
         throw new Error(message);
@@ -93,16 +93,13 @@ exports.getDetails = async (id) =>{
  * @return {object} - New shape of object
  */
 
- exports.mapReviewShape = (old) =>{
-newShape= [];
-    for(let i=0; old.reviews[i]; i+=1){
-        temp = {
-            "author_name" : old.reviews[i].user.name,
-            "text" : old.reviews[i].text,
-            "rating" : old.reviews[i].rating,
-            "time": old.reviews[i].time_created,
-            };
-        newShape.push(temp);
-    }
-return newShape;
+mapReviewShape = (old) =>{
+return old.reviews.map(old =>{
+    return {
+             "author_name" : old.user.name,
+             "text" : old.text,
+             "rating" : old.rating,
+             "time": old.time_created,  
+    }; 
+});
  };
