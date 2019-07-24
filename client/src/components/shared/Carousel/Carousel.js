@@ -8,6 +8,7 @@ function CarouselNavigationButton(props) {
   return (
     <div className="carousel-nav-button">
       <Button
+        small
         minimal
         icon={props.icon}
         onClick={props.handleClick}

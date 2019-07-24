@@ -31,7 +31,7 @@ function RestaurantDetailContainer(props) {
           style={{ borderRadius: '20px' }}
         />
       </div>
-      <div className="container-wrapper">
+      <div className="detail-wrapper">
         <RestaurantDetailSummary
           isRestaurantLoading={isRestaurantLoading}
           isReviewsLoading={isReviewsLoading}
@@ -40,7 +40,7 @@ function RestaurantDetailContainer(props) {
         />
       </div>
       <Divider />
-      <div className="container-wrapper">
+      <div className="detail-wrapper">
         <RestaurantDetailContent
           isRestaurantLoading={isRestaurantLoading}
           isDetailsLoading={isDetailsLoading}
@@ -49,16 +49,16 @@ function RestaurantDetailContainer(props) {
         />
       </div>
       <Divider />
-      <div className="container-wrapper">
+      <div className="detail-wrapper">
         <RestaurantDetailBlogpost blogPosts={blogPosts} />
       </div>
-      <div className="container-wrapper">
+      {/* <div className="container-wrapper">
         <RestaurantDetailReview
           reviews={reviews}
           reviewSelected={() => {}}
           updateReviewSelected={() => {}}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

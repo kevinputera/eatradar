@@ -2,8 +2,9 @@
   padding: 10px 10px;
 }
 
-.container-wrapper {
+.detail-wrapper {
   margin: 10px 10px;
+  overflow-x: hidden;
 }
 
 .detail-header {
