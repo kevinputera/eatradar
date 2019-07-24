@@ -52,6 +52,7 @@ function RestaurantDetailContainer(props) {
       <div className="detail-wrapper">
         <RestaurantDetailBlogpost blogPosts={blogPosts} />
       </div>
+      <Divider />
       {/* <div className="container-wrapper">
         <RestaurantDetailReview
           reviews={reviews}
