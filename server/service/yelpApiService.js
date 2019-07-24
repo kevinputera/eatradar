@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
-const querystring = require('querystring');
-const yelp_key = process.env.YELP_API_KEY;
-const bearer = 'Bearer ' + yelp_key;
+const queryString = require('querystring');
+const yelpKey = process.env.YELP_API_KEY;
+const bearer = 'Bearer ' + yelpKey;
 const urlBusiness = 'https://api.yelp.com/v3/businesses'
 
  /**
@@ -14,12 +14,12 @@ const urlBusiness = 'https://api.yelp.com/v3/businesses'
  */
 
 exports.getPlaceId = async (params) => {
-    let id_query = {
+    let idQuery = {
         term: params.term,
         longitude: params.longitude,
         latitude: params.latitude,
     };
-    let urlId = urlBusiness +"/search?"+ querystring.stringify(id_query);
+    let urlId = urlBusiness +"/search?"+ queryString.stringify(idQuery);
     let res = await fetch(urlId,{
         'method' : 'GET',
         'headers' : {
