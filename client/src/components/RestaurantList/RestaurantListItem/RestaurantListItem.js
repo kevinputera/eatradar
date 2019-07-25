@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Icon } from '@blueprintjs/core';
+import { Classes, Icon } from '@blueprintjs/core';
 import { getDistanceString } from '../../../utils/stringUtils';
 
 import './RestaurantListItem.css';
@@ -60,12 +60,34 @@ function RestaurantListItem(props) {
   );
 }
 
-function RestaurantListLoading(props) {
+function RestaurantListItemLoading(props) {
   return (
-    <div className="restaurant-list-item" style={props.style}>
-      Loading
+    <div
+      className="restaurant-list-item"
+      style={{
+        ...props.style,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div className="restaurant-list-item-left">
+        <div className="restaurant-list-item-content">
+          <div className={'restaurant-list-item-name ' + Classes.SKELETON}>
+            {new Array(30).fill('a').join('')}
+          </div>
+          <div
+            className={'restaurant-list-item-address ' + Classes.SKELETON}
+          >
+            {new Array(30).fill('a').join('')}
+          </div>
+        </div>
+      </div>
+      <div className={'restaurant-list-item-distance ' + Classes.SKELETON}>
+        {new Array(4).fill('a').join('')}
+      </div>
     </div>
   );
 }
 
-export { RestaurantListItem, RestaurantListLoading };
+export { RestaurantListItem, RestaurantListItemLoading };

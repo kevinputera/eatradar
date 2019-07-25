@@ -30,6 +30,7 @@ function RestaurantListContainer(props) {
     <div className="restaurant-list-container" ref={containerRef}>
       {renderChild && (
         <RestaurantListList
+          isLoading={isRestaurantListLoading && !contents.length}
           hasNext={hasNext}
           contents={contents}
           containerEl={containerRef.current}
