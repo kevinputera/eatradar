@@ -1,7 +1,26 @@
 import React from 'react';
-import { Icon } from '@blueprintjs/core';
+import { Icon, Classes } from '@blueprintjs/core';
 
 import './LogoFieldContent.css';
+
+function LogoFieldContentLoading(props) {
+  return (
+    <div className="logo-field-content">
+      <div
+        className={'logo-field-content-logo-loading ' + Classes.SKELETON}
+      >
+        &nbsp;
+      </div>
+      <div
+        className={
+          'logo-field-content-content-loading ' + Classes.SKELETON
+        }
+      >
+        &nbsp;
+      </div>
+    </div>
+  );
+}
 
 function LogoFieldContent(props) {
   return (
@@ -12,4 +31,4 @@ function LogoFieldContent(props) {
   );
 }
 
-export default LogoFieldContent;
+export { LogoFieldContent, LogoFieldContentLoading };

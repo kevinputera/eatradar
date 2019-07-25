@@ -9,5 +9,16 @@
 }
 
 .logo-field-content-content {
+  flex-grow: 1;
   margin-left: 10px;
+}
+
+.logo-field-content-logo-loading {
+  width: 25px;
+}
+
+.logo-field-content-content-loading {
+  flex-grow: 1;
+  margin-left: 10px;
+  max-width: 240px;
 }
