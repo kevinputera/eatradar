@@ -55,8 +55,14 @@ exports.getReviews = async (id) => {
     });
     if(res.ok){
     let json = await res.json();
-    return mapReviewShape(json);
-    } else{
+    return json.reviews.map(old =>{
+       return{ "author_name" : old.user.name,
+        "text" : old.text,
+        "rating" : old.rating,
+        "time": old.time_created,  
+        }
+    });
+    }else{
         const message = `yelpApiService.js: error in getReviews\n${e}`;
         throw new Error(message);
     }
