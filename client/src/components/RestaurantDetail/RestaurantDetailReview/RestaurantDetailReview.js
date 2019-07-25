@@ -24,7 +24,7 @@ function RestaurantDetailReview(props) {
               <img
                 className="review-profile-photo"
                 src={props.reviews[offset].profile_photo_url}
-                alt="Reviewer profile"
+                alt="Profile"
               />
             )}
             {props.reviews[offset].author_name && (
