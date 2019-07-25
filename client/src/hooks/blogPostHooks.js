@@ -16,5 +16,5 @@ export const useFetchBlogPosts = id => {
     }));
     return [blogPosts, isLoading];
   }
-  return [null, isLoading];
+  return [[], isLoading];
 };

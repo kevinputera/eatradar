@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useFetchServer } from './apiHooks';
 
 /**
@@ -33,6 +32,14 @@ export const useFetchReviews = id => {
       ratings[brand] = content.rating;
       reviews[brand] = content.reviews;
     });
+  }
+
+  if (!reviews.google) {
+    reviews.google = [];
+  }
+
+  if (!reviews.yelp) {
+    reviews.yelp = [];
   }
 
   return [ratings, reviews, isLoading];
