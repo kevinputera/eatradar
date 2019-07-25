@@ -1,4 +1,5 @@
 import React from 'react';
+import { Classes } from '@blueprintjs/core';
 import RestaurantDetailRatingGoogle from '../RestaurantDetailRatingGoogle/RestaurantDetailRatingGoogle';
 
 import './RestaurantDetailSummary.css';
@@ -8,8 +9,10 @@ function RestaurantDetailSummary(props) {
   return (
     <div className="restaurant-detail-summary">
       {props.isRestaurantLoading ? (
-        <div className="restaurant-detail-name-loading">
-          Loading name...
+        <div
+          className={'restaurant-detail-name-loading ' + Classes.SKELETON}
+        >
+          &nbsp;
         </div>
       ) : (
         <div className="restaurant-detail-name">
@@ -17,8 +20,12 @@ function RestaurantDetailSummary(props) {
         </div>
       )}
       {props.isReviewsLoading ? (
-        <div className="restaurant-detail-ratings-loading">
-          Loading reviews...
+        <div
+          className={
+            'restaurant-detail-ratings-loading ' + Classes.SKELETON
+          }
+        >
+          &nbsp;
         </div>
       ) : (
         <div className="restaurant-detail-ratings">

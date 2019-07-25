@@ -1,6 +1,10 @@
 import React from 'react';
-import LogoFieldContent from '../../shared/LogoFieldContent/LogoFieldContent';
 import { capitalize } from '../../../utils/stringUtils';
+
+import {
+  LogoFieldContent,
+  LogoFieldContentLoading,
+} from '../../shared/LogoFieldContent/LogoFieldContent';
 
 import './RestaurantDetailContent.css';
 
@@ -8,12 +12,15 @@ function RestaurantDetailContent(props) {
   const today = new Date().getDay();
   return (
     <div className="restaurant-detail-content">
-      {props.isRestaurantLoading ? (
-        <div className="restaurant-address-loading">
-          Address loading...
-        </div>
+      {props.isLoading ? (
+        <>
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+        </>
       ) : (
-        <div className="restaurant-address">
+        <>
           <LogoFieldContent icon="map-marker">
             {props.restaurant.block ? `${props.restaurant.block} ` : ''}
             {capitalize(props.restaurant.street)}
@@ -27,12 +34,6 @@ function RestaurantDetailContent(props) {
               ? ` ${props.restaurant.postcode}`
               : ''}
           </LogoFieldContent>
-        </div>
-      )}
-      {props.isDetailsLoading ? (
-        <div className="restaurant-detail-loading">Details loading...</div>
-      ) : (
-        <div className="restaurant-detail-phone">
           {props.details.phone && (
             <LogoFieldContent icon="phone">
               {props.details.phone}
@@ -56,7 +57,7 @@ function RestaurantDetailContent(props) {
                 {props.details.opening_hours.periods[today].close.time}
               </LogoFieldContent>
             )}
-        </div>
+        </>
       )}
     </div>
   );

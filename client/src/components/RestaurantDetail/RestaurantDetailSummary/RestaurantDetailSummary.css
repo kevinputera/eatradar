@@ -11,3 +11,13 @@
   font-style: italic;
   color: #394b59;
 }
+
+.restaurant-detail-name-loading {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  max-width: 240px;
+}
+
+.restaurant-detail-ratings-loading {
+  max-width: 200px;
+}

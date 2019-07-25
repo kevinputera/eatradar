@@ -43,8 +43,7 @@ function RestaurantDetailContainer(props) {
       <Divider />
       <div className="detail-wrapper">
         <RestaurantDetailContent
-          isRestaurantLoading={isRestaurantLoading}
-          isDetailsLoading={isDetailsLoading}
+          isLoading={isRestaurantLoading || isDetailsLoading}
           restaurant={restaurant}
           details={details}
         />
