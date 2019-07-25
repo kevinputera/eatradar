@@ -12,3 +12,6 @@ node_modules
 
 # raw data file
 eating-establishments-geojson.geojson 
+
+# jest
+coverage
