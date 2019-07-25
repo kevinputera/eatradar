@@ -25,13 +25,14 @@ exports.getPlaceId = async (params) => {
         'headers' : {
             'Authorization' : bearer,
         },
-    }); 
-    let json = await res.json();
-    try{
+    });
+    if (res.ok){
+        let json = await res.json();
         if(json.businesses.length){
             return json.businesses[0].id;
+            }
         }
-    }catch(e){
+    else{
         const message = `yelpApiService.js: error in getId\n${e}`;
         console.log(message);
         throw new Error(message);

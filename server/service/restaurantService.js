@@ -253,7 +253,7 @@ exports.updateGooglePlacesId = async (id, googlePlacesId) => {
  */
 exports.processGooglePlacesId = async (id, googlePlacesId) => {
   // TODO: refresh google places id if too old
-  if (googlePlacesId === null) {
+  if (!googlePlacesId) {
     try {
       const detail = await exports.getRestaurant(id);
       const retrievedPlaceId = await googlePlacesApiService.getPlaceId({
@@ -316,7 +316,7 @@ exports.updateYelpId = async (id, yelpId) => {
  * @return {string} - yelp id
  */
 exports.processYelpId = async (id, yelpId) => {
-  if (yelpId === null) {
+  if (!yelpId) {
     try {
       const detail = await exports.getRestaurant(id);
       const retrievedPlaceId = await yelpApiService.getPlaceId({
@@ -328,7 +328,6 @@ exports.processYelpId = async (id, yelpId) => {
       await exports.updateYelpId(id, retrievedPlaceId);
       return retrievedPlaceId;
       }
-      else return null;
     } catch (e) {
       const message = `restaurantService.js: error in processYelpId\n${e}`;
       console.log(message);
