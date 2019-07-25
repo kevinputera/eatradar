@@ -30,6 +30,7 @@ export const useUserLocation = initial => {
           'Please enable location services to enable location tracking.',
         errorMsg:
           'Failed to retrieve your location. Trying again in 5 seconds.',
+        successMsg: 'We have retrieved your location. You are good to go!',
         retry: true,
       });
     }
