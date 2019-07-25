@@ -13,7 +13,7 @@ const secret = process.env.REACT_APP_MAPBOX_ACCESSTOKEN;
 function Map(props) {
   const isRestaurantSelected = useMemo(() => {
     return props.restaurantIdSelection !== 0;
-  });
+  }, [props.restaurantIdSelection]);
 
   const map = useMap(secret, {
     container: 'map',
