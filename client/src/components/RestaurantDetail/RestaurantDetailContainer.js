@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button, Divider } from '@blueprintjs/core';
 import { useFetchRestaurant } from '../../hooks/restaurantHooks';
-import { useFetchDetails } from '../../hooks/detailHook';
-import { useFetchBlogPosts } from '../../hooks/blogPostHook';
-import { useReviews } from '../../hooks/reviewHook';
+import { useFetchDetails } from '../../hooks/detailHooks';
+import { useFetchBlogPosts } from '../../hooks/blogPostHooks';
+import { useReviews } from '../../hooks/reviewHooks';
 
 import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
 import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetailBlogpost';
+import GoogleAttribution from '../shared/GoogleAttribution/GoogleAttribution';
 
 import './RestaurantDetailContainer.css';
 
@@ -48,18 +49,21 @@ function RestaurantDetailContainer(props) {
           details={details}
         />
       </div>
-      <Divider />
+      {(isReviewsLoading || reviews.google) && <Divider />}
       <div className="detail-wrapper">
-        <RestaurantDetailBlogpost blogPosts={blogPosts} />
-      </div>
-      <Divider />
-      {/* <div className="container-wrapper">
         <RestaurantDetailReview
-          reviews={reviews}
-          reviewSelected={() => {}}
-          updateReviewSelected={() => {}}
+          isReviewsLoading={isReviewsLoading}
+          reviews={reviews.google}
+          attribution={<GoogleAttribution />}
         />
-      </div> */}
+      </div>
+      {(isBlogPostsLoading || !!blogPosts.length) && <Divider />}
+      <div className="detail-wrapper">
+        <RestaurantDetailBlogpost
+          isBlogPostsLoading={isBlogPostsLoading}
+          blogPosts={blogPosts}
+        />
+      </div>
     </div>
   );
 }

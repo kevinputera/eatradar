@@ -1,7 +1,6 @@
 import React from 'react';
 import LogoFieldContent from '../../shared/LogoFieldContent/LogoFieldContent';
 import { capitalize } from '../../../utils/stringUtils';
-// import CircularOpeningIndicator from '../../shared/CircularOpeningIndicator/CircularOpeningIndicator';
 
 import './RestaurantDetailContent.css';
 
@@ -34,12 +33,12 @@ function RestaurantDetailContent(props) {
         <div className="restaurant-detail-loading">Details loading...</div>
       ) : (
         <div className="restaurant-detail-phone">
-          {props.details && props.details.phone && (
+          {props.details.phone && (
             <LogoFieldContent icon="phone">
               {props.details.phone}
             </LogoFieldContent>
           )}
-          {props.details && props.details.website && (
+          {props.details.website && (
             <LogoFieldContent icon="globe-network">
               <a
                 href={props.details.website}
@@ -50,8 +49,7 @@ function RestaurantDetailContent(props) {
               </a>
             </LogoFieldContent>
           )}
-          {props.details &&
-            props.details.opening_hours &&
+          {props.details.opening_hours &&
             today < props.details.opening_hours.length && (
               <LogoFieldContent icon="time">
                 {props.details.opening_hours.periods[today].open.time} -{' '}

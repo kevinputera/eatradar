@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleRating from '../GoogleRating/GoogleRating';
+import RestaurantDetailRatingGoogle from '../RestaurantDetailRatingGoogle/RestaurantDetailRatingGoogle';
 
 import './RestaurantDetailSummary.css';
 
@@ -24,7 +24,9 @@ function RestaurantDetailSummary(props) {
         <div className="restaurant-detail-ratings">
           {props.ratings.google && (
             <div className="restaurant-google-rating-wrapper">
-              <GoogleRating rating={props.ratings.google} />
+              <RestaurantDetailRatingGoogle
+                rating={props.ratings.google}
+              />
             </div>
           )}
           {props.ratings.yelp && (
