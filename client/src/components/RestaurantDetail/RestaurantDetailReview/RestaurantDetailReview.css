@@ -1,3 +1,40 @@
-.reviews-content-body-wrapper {
-  margin: 1px 1px;
+.restaurant-detail-review {
+  margin: 20px 0;
+}
+
+.review-upper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-right: 5px;
+}
+
+.review-identity {
+  display: flex;
+  align-items: center;
+}
+
+.review-profile-photo {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.review-author-name {
+  padding: 5px 10px;
+  border: 1px solid #bfccd6;
+  border-radius: 20px;
+}
+
+.review-lower-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.review-time {
+  color: #5c7080;
+  font-style: italic;
 }

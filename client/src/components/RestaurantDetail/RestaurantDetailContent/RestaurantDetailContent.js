@@ -1,72 +1,62 @@
 import React from 'react';
-import FieldContent from '../../shared/FieldContent/FieldContent';
-// import CircularOpeningIndicator from '../../shared/CircularOpeningIndicator/CircularOpeningIndicator';
+import { capitalize } from '../../../utils/stringUtils';
+
+import {
+  LogoFieldContent,
+  LogoFieldContentLoading,
+} from '../../shared/LogoFieldContent/LogoFieldContent';
 
 import './RestaurantDetailContent.css';
-import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
 
 function RestaurantDetailContent(props) {
-  let phone;
-  let website;
-  let hours;
-  if (props.details) {
-    phone = props.details.phone_number && (
-      <FieldContent
-        title="Phone number"
-        body={props.details.phone_number}
-      />
-    );
-
-    website = props.details.website && (
-      <FieldContent
-        title="Website"
-        body={
-          <a
-            href={props.details.website}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {props.details.website}
-          </a>
-        }
-      />
-    );
-
-    const day = new Date().getDay();
-    hours = props.details.opening_hours &&
-      day < props.details.opening_hours.length && (
-        <FieldContent
-          title="Opening hours"
-          body={`${props.details.opening_hours.periods[day].open.time} 
-          - ${props.details.opening_hours.periods[day].close.time}`}
-        />
-      );
-  }
-
-  const empty = !phone && !website && !hours;
-
+  const today = new Date().getDay();
   return (
     <div className="restaurant-detail-content">
-      {empty ? (
-        <div className="detail-not-found">
-          Sorry, we can't find any details for this restaurant
-        </div>
+      {props.isLoading ? (
+        <>
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+          <LogoFieldContentLoading />
+        </>
       ) : (
         <>
-          <div className="detail-header">Details</div>
-          <div className="contents-wrapper">
-            {phone}
-            {website}
-            {hours}
-            <div className="detail-photos"></div>
-          </div>
-          <div className="attribution-wrapper">
-            <img
-              className="attribution"
-              src={poweredByGoogle}
-              alt="Powered by Google"
-            />
-          </div>
+          <LogoFieldContent icon="map-marker">
+            {props.restaurant.block ? `${props.restaurant.block} ` : ''}
+            {capitalize(props.restaurant.street)}
+            {props.restaurant.level ? ` #${props.restaurant.level}` : ''}
+            {props.restaurant.unit
+              ? props.restaurant.level
+                ? `-${props.restaurant.unit}`
+                : ` #${props.restaurant.unit}`
+              : ''}
+            {props.restaurant.postcode
+              ? ` ${props.restaurant.postcode}`
+              : ''}
+          </LogoFieldContent>
+          {props.details.phone && (
+            <LogoFieldContent icon="phone">
+              {props.details.phone}
+            </LogoFieldContent>
+          )}
+          {props.details.website && (
+            <LogoFieldContent icon="globe-network">
+              <a
+                href={props.details.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {props.details.website}
+              </a>
+            </LogoFieldContent>
+          )}
+          {props.details.opening_hours &&
+            today < props.details.opening_hours.length && (
+              <LogoFieldContent icon="time">
+                {props.details.opening_hours.periods[today].open.time} -{' '}
+                {props.details.opening_hours.periods[today].close.time}
+              </LogoFieldContent>
+            )}
         </>
       )}
     </div>

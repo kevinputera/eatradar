@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRestaurantList } from '../../hooks/restaurantHooks';
 
 import RestaurantListList from './RestaurantListList/RestaurantListList';
@@ -12,22 +12,33 @@ function RestaurantListContainer(props) {
     q: props.query,
   };
 
-  const [contents, hasNext, loadMoreRestaurants] = useRestaurantList(
-    params
-  );
+  const [
+    contents,
+    isRestaurantListLoading,
+    hasNext,
+    loadMoreRestaurants,
+  ] = useRestaurantList(params);
 
+  // Setup container ref and delay rendering child
+  const [renderChild, setRenderChild] = useState(false);
   const containerRef = useRef(null);
+  useEffect(() => {
+    setRenderChild(true);
+  }, []);
 
   return (
     <div className="restaurant-list-container" ref={containerRef}>
-      <RestaurantListList
-        hasNext={hasNext}
-        contents={contents}
-        containerEl={containerRef.current}
-        restaurantIdSelection={props.restaurantIdSelection}
-        loadMoreRestaurants={loadMoreRestaurants}
-        updateRestaurantIdSelection={props.updateRestaurantIdSelection}
-      />
+      {renderChild && (
+        <RestaurantListList
+          isLoading={isRestaurantListLoading && !contents.length}
+          hasNext={hasNext}
+          contents={contents}
+          containerEl={containerRef.current}
+          restaurantIdSelection={props.restaurantIdSelection}
+          loadMoreRestaurants={loadMoreRestaurants}
+          updateRestaurantIdSelection={props.updateRestaurantIdSelection}
+        />
+      )}
     </div>
   );
 }

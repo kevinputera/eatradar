@@ -1,7 +1,41 @@
+.restaurant-list-item:hover {
+  background-color: #ebf1f5;
+}
+
 .restaurant-list-item.active {
   background-color: #e1e8ed;
 }
 
 .restaurant-list-item {
   cursor: pointer;
+  overflow: hidden;
+  border-bottom: 1px solid #ced9e0;
+}
+
+.restaurant-list-item-left {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+}
+
+.restaurant-list-item-content {
+  margin: 10px 0;
+  margin-left: 10px;
+}
+
+.restaurant-list-item-name {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.restaurant-list-item-address {
+  color: #394b59;
+}
+
+.restaurant-list-item-distance {
+  margin: 20px;
+  padding: 7px 0;
+
+  font-size: 20px;
+  color: #293742;
 }

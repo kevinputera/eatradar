@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useFetchServer } from './apiHooks';
 
+import { ITEMS_LIMIT } from '../constants/restaurantListConstants';
+
 /**
  * Custom hook to get a paginated restaurant list result.
  *
@@ -13,7 +15,6 @@ import { useFetchServer } from './apiHooks';
  */
 export const useRestaurantList = params => {
   const { lat, lng, q } = params;
-  const limit = 15;
 
   const [contents, setContents] = useState([]);
   const [hasNext, setHasNext] = useState(true);
@@ -23,7 +24,7 @@ export const useRestaurantList = params => {
     lat,
     lng,
     offset,
-    limit,
+    ITEMS_LIMIT,
     q,
   });
 
@@ -45,7 +46,7 @@ export const useRestaurantList = params => {
     }
   }, [offset, isLoading, hasNext]);
 
-  return [contents, hasNext, loadMoreRestaurants];
+  return [contents, isLoading, hasNext, loadMoreRestaurants];
 };
 
 /**

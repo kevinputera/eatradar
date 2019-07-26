@@ -18,7 +18,7 @@ export const useFetchServer = (resource, params) => {
   const { method, headers, qs, body } = params;
 
   const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const endpoint = `${process.env.REACT_APP_SERVER_URL}${resource}`;

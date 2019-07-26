@@ -1,64 +1,61 @@
 import React from 'react';
-import { Collapse } from '@blueprintjs/core';
-import FieldContent from '../../shared/FieldContent/FieldContent';
-import ExtendableContent from '../../shared/ExtendableContent/ExtendableContent';
-import RoundBorderCard from '../../shared/RoundBorderCard/RoundBorderCard';
+import { usePaginatedContent } from '../../../hooks/paginationHooks';
+
+import PaginationControls from '../../shared/PaginationControls/PaginationControls';
 
 import './RestaurantDetailReview.css';
-import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
+import GenericRatingStars from '../../shared/GenericRatingStars/GenericRatingStars';
 
 function RestaurantDetailReview(props) {
-  function handleReviewClick(brand) {
-    if (props.reviewSelected === brand) {
-      props.updateReviewSelected(null);
-    } else {
-      props.updateReviewSelected(brand);
-    }
-  }
+  const [offset, handleOffsetDecr, handleOffsetIncr] = usePaginatedContent(
+    props.reviews.length
+  );
 
-  const empty = !props.reviews || !props.reviews.google;
-
-  return (
+  return props.isReviewsLoading ? (
     <div className="restaurant-detail-review">
-      {empty ? (
-        <div className="detail-not-found">
-          Sorry, we can't find any rating nor reviews for this restaurant
-        </div>
-      ) : (
-        <>
-          <div className="detail-header">Ratings and reviews</div>
-          <div className="reviews-content">
-            <FieldContent
-              body={props.reviews.google.rating}
-              attribution={poweredByGoogle}
-              attributionAlt="Powered by Google"
-              onClick={() => handleReviewClick('google')}
-            />
-            <Collapse isOpen={props.reviewSelected === 'google'}>
-              <div className="reviews-content-body-wrapper">
-                <RoundBorderCard radius="5px" padding="12px 10px">
-                  <div className="reviews-content-body">
-                    {props.reviews.google.reviews &&
-                      props.reviews.google.reviews
-                        .filter(review => review.text)
-                        .slice(0, 2)
-                        .map(review => (
-                          <ExtendableContent
-                            extendable
-                            key={review.author_name}
-                            content={review.text}
-                            count={20}
-                            footer={review.author_name}
-                          />
-                        ))}
-                  </div>
-                </RoundBorderCard>
-              </div>
-            </Collapse>
-          </div>
-        </>
-      )}
+      <div className="restaurant-review-loading">Review loading...</div>
     </div>
+  ) : (
+    !!props.reviews.length && (
+      <div className="restaurant-detail-review">
+        <div className="review-upper-row">
+          <div className="review-identity">
+            {props.reviews[offset].profile_photo_url && (
+              <img
+                className="review-profile-photo"
+                src={props.reviews[offset].profile_photo_url}
+                alt="Profile"
+              />
+            )}
+            {props.reviews[offset].author_name && (
+              <div className="review-author-name">
+                {props.reviews[offset].author_name}
+              </div>
+            )}
+          </div>
+          {props.reviews[offset].rating && (
+            <GenericRatingStars rating={props.reviews[offset].rating} />
+          )}
+        </div>
+        {props.reviews[offset].text && (
+          <div className="review-text">{props.reviews[offset].text}</div>
+        )}
+        <div className="review-lower-row">
+          <div className="review-attribution">{props.attribution}</div>
+          {props.reviews[offset].relative_time_description && (
+            <div className="review-time">
+              {props.reviews[offset].relative_time_description}
+            </div>
+          )}
+        </div>
+        <PaginationControls
+          small
+          offset={offset}
+          handleOffsetDecr={handleOffsetDecr}
+          handleOffsetIncr={handleOffsetIncr}
+        />
+      </div>
+    )
   );
 }
 

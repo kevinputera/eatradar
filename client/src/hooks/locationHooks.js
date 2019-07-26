@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
+  show,
   showSuccess,
   showError,
 } from '../components/StatusMessage/StatusMessage';
 
 const navigatorConfig = {
   enableHighAccuracy: true,
-  timeout: 3000,
+  timeout: 1500,
   maximumAge: 10000,
 };
 
@@ -22,33 +23,75 @@ export const useUserLocation = initial => {
 
   // Automatically retrieve user's location.
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      res => setLocation([res.coords.latitude, res.coords.longitude]),
-      _ =>
-        showError(
-          'Failed to retrieve your location. Trying again in 5 seconds.'
-        ),
-      navigatorConfig
-    );
+    if (setLocation) {
+      getLocation({
+        setLocation,
+        noPermissionMsg:
+          'Please enable location services to enable location tracking.',
+        errorMsg:
+          'Failed to retrieve your location. Trying again in 5 seconds.',
+        successMsg: 'We have retrieved your location. You are good to go!',
+        retry: true,
+      });
+    }
   }, [setLocation]);
 
   // Function to manually trigger location update
   const refreshLocation = useCallback(() => {
-    navigator.geolocation.getCurrentPosition(
-      res => {
-        setLocation([res.coords.latitude, res.coords.longitude]);
-        showSuccess('Successfully retrieved your location!');
-      },
-      _ =>
-        showError('Failed to retrieve your location. Please try again.'),
-      navigatorConfig
-    );
+    if (setLocation) {
+      show('refresh', 'Getting your location...');
+      getLocation({
+        setLocation,
+        noPermissionMsg:
+          'Please enable location services to enable location tracking.',
+        errorMsg: 'Failed to retrieve your location. Please try again.',
+        successMsg: 'Successfully retrieved your location!',
+        retry: false,
+      });
+    }
   }, [setLocation]);
 
-  // Function to stop automatic retry when automatic location retrieval fails
-  const stopAutoRetry = useCallback(() => {
-    console.log('stopped');
-  }, []);
-
-  return [...location, refreshLocation, stopAutoRetry];
+  return [...location, refreshLocation];
 };
+
+/**
+ * Get user's location, reschedule a retry if it fails.
+ *
+ * @param {Object} params
+ * @param {Function} params.setLocation The update state function used to set location state
+ * @param {boolean} params.retry Whether or not to schedule a retry
+ * @param {string} params.noPermissionMsg The message to display when permission is denied
+ * @param {String} params.errorMsg The message to display when retrieval is unsuccessful
+ * @param {string} [params.successMsg] The message to display when retrieval is successful
+ */
+function getLocation(params) {
+  const {
+    setLocation,
+    successMsg,
+    noPermissionMsg,
+    errorMsg,
+    retry,
+  } = params;
+
+  navigator.geolocation.getCurrentPosition(
+    res => {
+      if (successMsg) {
+        showSuccess(successMsg);
+      }
+      setLocation([res.coords.latitude, res.coords.longitude]);
+    },
+    error => {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          showError(noPermissionMsg);
+          break;
+        default:
+          showError(errorMsg);
+          if (retry) {
+            setTimeout(() => getLocation(params), 5000);
+          }
+      }
+    },
+    navigatorConfig
+  );
+}

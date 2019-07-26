@@ -3,19 +3,32 @@ import { FixedSizeList } from 'react-window';
 
 import {
   RestaurantListItem,
-  RestaurantListLoading,
+  RestaurantListItemLoading,
 } from '../RestaurantListItem/RestaurantListItem';
+
+import {
+  ITEM_SIZE,
+  ITEMS_LIMIT,
+  ITEMS_LEFT_BEFORE_LOAD,
+} from '../../../constants/restaurantListConstants';
 
 import './RestaurantListList.css';
 
-function RestaurantListList(props) {
-  const itemSize = 90;
-  const itemsLeftBeforeLoad = 3;
+function RestaurantListListLoading(props) {
+  const placeholder = new Array(ITEMS_LIMIT).fill(true);
+  return placeholder.map((_, index) => (
+    <RestaurantListItemLoading
+      key={index}
+      style={{ height: `${ITEM_SIZE}px` }}
+    />
+  ));
+}
 
+function RestaurantListList(props) {
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
     if (
       props.contents.length - visibleStopIndex - 1 <=
-      itemsLeftBeforeLoad
+      ITEMS_LEFT_BEFORE_LOAD
     ) {
       props.loadMoreRestaurants();
     }
@@ -23,11 +36,13 @@ function RestaurantListList(props) {
 
   return (
     <div className="restaurant-list-list">
-      {props.containerEl && (
+      {props.isLoading ? (
+        <RestaurantListListLoading />
+      ) : (
         <FixedSizeList
           width="100%"
           height={props.containerEl.clientHeight}
-          itemSize={itemSize}
+          itemSize={ITEM_SIZE}
           itemCount={
             props.contents.length && props.hasNext
               ? props.contents.length + 1
@@ -49,7 +64,7 @@ function RestaurantListList(props) {
               );
             } else {
               // Show loading indicator on the last item
-              return <RestaurantListLoading style={style} />;
+              return <RestaurantListItemLoading style={style} />;
             }
           }}
         </FixedSizeList>

@@ -1,0 +1,8 @@
+.zoom-action {
+  display: flex;
+  flex-direction: column;
+}
+
+.zoom-control {
+  margin: 2px 0;
+}

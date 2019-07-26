@@ -1,15 +1,15 @@
 import React from 'react';
-import { Button } from '@blueprintjs/core';
+import { Button, Divider } from '@blueprintjs/core';
 import { useFetchRestaurant } from '../../hooks/restaurantHooks';
-import { useFetchDetails } from '../../hooks/detailHook';
-import { useFetchBlogPosts } from '../../hooks/blogPostHook';
-import { useReviews } from '../../hooks/reviewHook';
+import { useFetchDetails } from '../../hooks/detailHooks';
+import { useFetchBlogPosts } from '../../hooks/blogPostHooks';
+import { useReviews } from '../../hooks/reviewHooks';
 
-import RoundBorderCard from '../shared/RoundBorderCard/RoundBorderCard';
 import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
 import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetailBlogpost';
+import GoogleAttribution from '../shared/GoogleAttribution/GoogleAttribution';
 
 import './RestaurantDetailContainer.css';
 
@@ -20,12 +20,7 @@ function RestaurantDetailContainer(props) {
   const [details, isDetailsLoading] = useFetchDetails(id);
   const [blogPosts, isBlogPostsLoading] = useFetchBlogPosts(id);
 
-  const [
-    reviews,
-    reviewSelected,
-    setReviewSelected,
-    isReviewsLoading,
-  ] = useReviews(id);
+  const [ratings, reviews, isReviewsLoading] = useReviews(id);
 
   return (
     <div className="restaurant-detail-container">
@@ -37,33 +32,36 @@ function RestaurantDetailContainer(props) {
           style={{ borderRadius: '20px' }}
         />
       </div>
-
-      <div className="container-wrapper">
-        <RoundBorderCard className="summary-card" radius="10px">
-          <RestaurantDetailSummary restaurant={restaurant} />
-        </RoundBorderCard>
+      <div className="detail-wrapper">
+        <RestaurantDetailSummary
+          isRestaurantLoading={isRestaurantLoading}
+          isReviewsLoading={isReviewsLoading}
+          restaurant={restaurant}
+          ratings={ratings}
+        />
       </div>
-
-      <div className="container-wrapper">
-        <RoundBorderCard className="details-card" radius="10px">
-          <RestaurantDetailContent details={details} />
-        </RoundBorderCard>
+      <Divider />
+      <div className="detail-wrapper">
+        <RestaurantDetailContent
+          isLoading={isRestaurantLoading || isDetailsLoading}
+          restaurant={restaurant}
+          details={details}
+        />
       </div>
-
-      <div className="container-wrapper">
-        <RoundBorderCard className="review-card" radius="10px">
-          <RestaurantDetailReview
-            reviews={reviews}
-            reviewSelected={reviewSelected}
-            updateReviewSelected={setReviewSelected}
-          />
-        </RoundBorderCard>
+      {(isReviewsLoading || reviews.google) && <Divider />}
+      <div className="detail-wrapper">
+        <RestaurantDetailReview
+          isReviewsLoading={isReviewsLoading}
+          reviews={reviews.google}
+          attribution={<GoogleAttribution />}
+        />
       </div>
-
-      <div className="container-wrapper">
-        <RoundBorderCard className="blogpost-card" radius="10px">
-          <RestaurantDetailBlogpost blogPosts={blogPosts} />
-        </RoundBorderCard>
+      {(isBlogPostsLoading || !!blogPosts.length) && <Divider />}
+      <div className="detail-wrapper">
+        <RestaurantDetailBlogpost
+          isBlogPostsLoading={isBlogPostsLoading}
+          blogPosts={blogPosts}
+        />
       </div>
     </div>
   );

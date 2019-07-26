@@ -1,0 +1,18 @@
+.generic-rating-stars {
+  position: relative;
+}
+
+.generic-stars-base {
+  color: #bfccd6;
+  z-index: 0;
+}
+
+.generic-stars-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  color: #ffc940;
+  z-index: 1;
+  overflow: hidden;
+}

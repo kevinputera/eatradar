@@ -1,13 +1,23 @@
 .restaurant-detail-summary {
-  flex-grow: 1;
-  margin-left: 5px;
+  margin: 20px 0;
 }
 
 .restaurant-detail-name {
-  font-size: 1.3em;
+  font-size: 1.5em;
   margin-bottom: 10px;
 }
 
-.restaurant-detail-address {
-  margin-top: 3px;
+.ratings-not-found {
+  font-style: italic;
+  color: #394b59;
+}
+
+.restaurant-detail-name-loading {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  max-width: 240px;
+}
+
+.restaurant-detail-ratings-loading {
+  max-width: 200px;
 }

@@ -26,6 +26,12 @@
   width: 25%;
 }
 
+.map-action-wrapper {
+  position: fixed;
+  left: 10px;
+  bottom: 40px;
+}
+
 .restaurant-list-wrapper {
   position: fixed;
 
@@ -52,6 +58,7 @@
 
 .card-wrapper {
   border-radius: 10px;
+  border: 1px solid #ced9e0;
 
   overflow-y: scroll;
   overflow-x: hidden;
