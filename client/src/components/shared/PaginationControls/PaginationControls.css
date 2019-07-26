@@ -1,0 +1,11 @@
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin: 5px 0;
+}
+
+.pagination-offset-indicator {
+  margin: 0 5px;
+}

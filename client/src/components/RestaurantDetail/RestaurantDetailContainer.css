@@ -1,31 +1,15 @@
 .restaurant-detail-container {
+  position: relative;
   padding: 10px 10px;
 }
 
-.container-wrapper {
+.close-button-wrapper {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
+
+.detail-wrapper {
   margin: 10px 10px;
-}
-
-.detail-header {
-  margin-bottom: 7px;
-}
-
-.detail-not-found {
-  font-style: italic;
-}
-
-.detail-navigation {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.attribution-wrapper {
-  display: flex;
-  justify-content: flex-end;
-
-  margin-top: 20px;
-}
-
-img.attribution {
-  width: 110px;
+  overflow-x: hidden;
 }

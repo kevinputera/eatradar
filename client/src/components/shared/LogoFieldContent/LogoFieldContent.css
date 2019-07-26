@@ -1,0 +1,24 @@
+.logo-field-content {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.logo-field-content-logo {
+  color: #a7b6c2;
+}
+
+.logo-field-content-content {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.logo-field-content-logo-loading {
+  width: 25px;
+}
+
+.logo-field-content-content-loading {
+  flex-grow: 1;
+  margin-left: 10px;
+  max-width: 240px;
+}

@@ -2,10 +2,8 @@ const express = require('express');
 
 const { enableCors } = require('./middlewares/corsMiddleware');
 
-const {
-  restaurantLocationRoute,
-  restaurantRoute,
-} = require('./routes/restaurantRoute');
+const restaurantLocationRoute = require('./routes/restaurantLocationRoute');
+const restaurantRoute = require('./routes/restaurantRoute');
 const detailRoute = require('./routes/detailRoute');
 const reviewRoute = require('./routes/reviewRoute');
 const blogPostRoute = require('./routes/blogPostRoute');

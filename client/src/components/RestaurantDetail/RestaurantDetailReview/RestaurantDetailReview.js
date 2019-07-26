@@ -1,72 +1,61 @@
 import React from 'react';
-import { Collapse } from '@blueprintjs/core';
-import FieldContent from '../../shared/FieldContent/FieldContent';
-import ExtendableContent from '../../shared/ExtendableContent/ExtendableContent';
-import RoundBorderCard from '../../shared/RoundBorderCard/RoundBorderCard';
+import { usePaginatedContent } from '../../../hooks/paginationHooks';
+
+import PaginationControls from '../../shared/PaginationControls/PaginationControls';
 
 import './RestaurantDetailReview.css';
-import poweredByGoogle from '../powered_by_google_on_white_hdpi.png';
+import GenericRatingStars from '../../shared/GenericRatingStars/GenericRatingStars';
 
 function RestaurantDetailReview(props) {
+  const [offset, handleOffsetDecr, handleOffsetIncr] = usePaginatedContent(
+    props.reviews.length
+  );
 
-  function handleRatingClick(brand) {
-    if (props.reviewsSelected === brand) {
-      props.handleReviewSelect(null);
-    } else {
-      props.handleReviewSelect(brand);
-    }
-  }
-
-  let gr;
-  const google = props.reviews.google;
-  if (google) {
-    const reviews = google.reviews
-      .filter(review => review.text)
-      .take(2)
-      .map(review => (
-        <ExtendableContent
-          extendable
-          key={review.author_name}
-          body={review.text}
-          count={20}
-          footer={review.author_name}
-        />
-      ));
-
-    gr = (
-      <>
-        <FieldContent
-          body={google.rating}
-          attribution={poweredByGoogle}
-          attributionAlt="Powered by Google"
-          onClick={() => handleRatingClick('google')}
-        />
-        <Collapse isOpen={props.reviewsSelected === 'google'}>
-          <div className="reviews-content-body-wrapper">
-            <RoundBorderCard radius="5px" padding="12px 10px">
-              <div className="reviews-content-body">{reviews}</div>
-            </RoundBorderCard>
-          </div>
-        </Collapse>
-      </>
-    );
-  }
-
-  const empty = !gr;
-
-  return (
+  return props.isReviewsLoading ? (
     <div className="restaurant-detail-review">
-      {empty ? (
-        <div className="detail-not-found">
-          Sorry, we can't find any rating nor reviews for this restaurant
-        </div>
-      ) : (
-        <>
-          <div className="detail-header">Ratings and reviews</div>
-          <div className="reviews-content">{gr}</div>
-        </>
-      )}
+      <div className="restaurant-review-loading">Review loading...</div>
     </div>
+  ) : (
+    !!props.reviews.length && (
+      <div className="restaurant-detail-review">
+        <div className="review-upper-row">
+          <div className="review-identity">
+            {props.reviews[offset].profile_photo_url && (
+              <img
+                className="review-profile-photo"
+                src={props.reviews[offset].profile_photo_url}
+                alt="Profile"
+              />
+            )}
+            {props.reviews[offset].author_name && (
+              <div className="review-author-name">
+                {props.reviews[offset].author_name}
+              </div>
+            )}
+          </div>
+          {props.reviews[offset].rating && (
+            <GenericRatingStars rating={props.reviews[offset].rating} />
+          )}
+        </div>
+        {props.reviews[offset].text && (
+          <div className="review-text">{props.reviews[offset].text}</div>
+        )}
+        <div className="review-lower-row">
+          <div className="review-attribution">{props.attribution}</div>
+          {props.reviews[offset].relative_time_description && (
+            <div className="review-time">
+              {props.reviews[offset].relative_time_description}
+            </div>
+          )}
+        </div>
+        <PaginationControls
+          small
+          offset={offset}
+          handleOffsetDecr={handleOffsetDecr}
+          handleOffsetIncr={handleOffsetIncr}
+        />
+      </div>
+    )
   );
 }
 

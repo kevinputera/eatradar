@@ -1,36 +1,27 @@
 const express = require('express');
-const restaurantRoute = express.Router();
-const restaurantLocationRoute = express.Router();
+const router = express.Router();
 const restaurantService = require('../service/restaurantService');
 const response = require('../utils/response');
 
 /**
- * Get all restaurants in Singapore in the form of GeoJSON data
+ * Get restaurants based on location.
  */
-restaurantLocationRoute.get('/', async (req, res) => {
-  try {
-    const result = await restaurantService.getRestaurantLocationsGeoJSON(
-      req.query.q
-    );
-    response.sendOk(res, result);
-  } catch (e) {
-    response.sendInternalError(res, e.message);
-  }
-});
-
-/**
- * Get closest restaurants based on location.
- */
-restaurantRoute.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   const params = {
-    longitude: req.query.lng,
-    latitude: req.query.lat,
-    page: req.query.p || 1,
-    pageSize: req.query.ps || 10,
-    q: req.query.q || null,
+    longitude: parseFloat(req.query.lng),
+    latitude: parseFloat(req.query.lat),
+    offset: parseInt(req.query.offset) || 0,
+    limit: parseInt(req.query.limit) || 10,
   };
 
-  if (!params.longitude || !params.latitude) {
+  if (req.query.q) {
+    params.q = req.query.q;
+  }
+
+  if (
+    !Number.isFinite(params.longitude) ||
+    !Number.isFinite(params.latitude)
+  ) {
     response.sendBadRequest(
       res,
       `Both lng and lat must be appended to the URI as query parameters`
@@ -38,16 +29,16 @@ restaurantRoute.get('/', async (req, res) => {
     return;
   }
 
-  if (params.page <= 0) {
+  if (params.offset < 0) {
     response.sendBadRequest(
       res,
-      'Page query parameter[p] must be greater than zero'
+      'Offset query parameter must be greater than or equal to zero'
     );
     return;
   }
 
-  if (params.pageSize < 10) {
-    response.sendBadRequest(res, 'Page size must be greater than 10');
+  if (params.limit < 10) {
+    response.sendBadRequest(res, 'Limit must be greater than 10');
     return;
   }
 
@@ -59,7 +50,30 @@ restaurantRoute.get('/', async (req, res) => {
   }
 });
 
-module.exports = {
-  restaurantLocationRoute,
-  restaurantRoute,
-};
+/**
+ * Get a single restaurant by its id.
+ */
+router.get('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!Number.isInteger(id)) {
+    response.sendBadRequest(res, 'Id must be of type number');
+    return;
+  }
+
+  if (id < 0) {
+    response.sendBadRequest(
+      res,
+      'A correct id must be included in the request URI'
+    );
+    return;
+  }
+
+  try {
+    const result = await restaurantService.getRestaurant(id);
+    response.sendOk(res, result);
+  } catch (e) {
+    response.sendInternalError(res, e.message);
+  }
+});
+
+module.exports = router;

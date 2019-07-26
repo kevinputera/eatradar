@@ -1,43 +1,27 @@
 import React from 'react';
-import NavigationButtons from '../../shared/NavigationButtons/NavigationButtons';
-import ExtendableContent from '../../shared/ExtendableContent/ExtendableContent';
+import Carousel from '../../shared/Carousel/Carousel';
+import { getSummary } from '../../../utils/stringUtils';
 
 import './RestaurantDetailBlogpost.css';
 
 function RestaurantDetailBlogpost(props) {
-  const blogposts = props.blogPosts.map(blogPost => (
-    <ExtendableContent
-      extendable
-      key={blogPost.id}
-      title={blogPost.title}
-      body={blogPost.post}
-      count={20}
-      link={blogPost.link}
-      footer={blogPost.author}
-    />
-  ));
-
-  return (
+  return props.isBlogPostsLoading ? (
     <div className="restaurant-detail-blogpost">
-      {props.blogPostsCount <= 0 ? (
-        <div className="detail-not-found">
-          Sorry, we can't find any blog posts related to this restaurant
-        </div>
-      ) : (
-        <>
-          <div className="detail-header">
-            Blog posts you might find interesting
-          </div>
-          <div className="blogposts-wrapper">{blogposts}</div>
-          <div className="detail-navigation">
-            <NavigationButtons
-              handlePagePrev={props.handleBlogpostPagePrev}
-              handlePageNext={props.handleBlogpostPageNext}
-            />
-          </div>
-        </>
-      )}
+      <div className="restaurant-blogpost-loading">
+        Blog posts loading...
+      </div>
     </div>
+  ) : (
+    !!props.blogPosts.length && (
+      <div className="restaurant-detail-blogpost">
+        <Carousel
+          contents={props.blogPosts.map(blogPost => ({
+            ...blogPost,
+            post: getSummary(blogPost.post, 50),
+          }))}
+        />
+      </div>
+    )
   );
 }
 

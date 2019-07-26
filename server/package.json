@@ -4,6 +4,8 @@
   "description": "eatradar server app",
   "main": "app.js",
   "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
     "start": "node -r dotenv/config app.js dotenv_config_path=.env",
     "dev": "nodemon -r dotenv/config app.js dotenv_config_path=.env",
     "table": "node -r dotenv/config scripts/tables.js dotenv_config_path=.env",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "faker": "^4.1.0",
+    "jest": "^24.8.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2"
   },
@@ -27,8 +30,8 @@
     "url": "https://github.com/kevinputera/eatradar.git"
   },
   "contributors": [
-    "Justin Chia Jia Jin",
-    "Kevin Putera"
+    "Kevin Putera",
+    "Justin Chia Jia Jin"
   ],
   "license": "ISC"
 }

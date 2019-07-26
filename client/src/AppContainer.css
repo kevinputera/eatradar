@@ -17,14 +17,29 @@
   background-color: #f9f9f9;
 }
 
+.search-filter-wrapper {
+  position: fixed;
+
+  top: 20px;
+  right: 10px;
+
+  width: 25%;
+}
+
+.map-action-wrapper {
+  position: fixed;
+  left: 10px;
+  bottom: 40px;
+}
+
 .restaurant-list-wrapper {
   position: fixed;
 
-  top: 10px;
+  top: 75px;
   right: 10px;
 
-  height: calc(100% - 40px);
-  width: 27%;
+  height: calc(100% - 105px);
+  width: 25%;
 
   background-color: white;
 }
@@ -32,10 +47,10 @@
 .restaurant-detail-wrapper {
   position: fixed;
 
-  top: 10px;
-  right: calc(27% + 20px);
+  top: 20px;
+  right: calc(25% + 20px);
 
-  height: calc(100% - 40px);
+  height: calc(100% - 50px);
   width: 27%;
 
   background-color: white;
@@ -43,6 +58,7 @@
 
 .card-wrapper {
   border-radius: 10px;
+  border: 1px solid #ced9e0;
 
   overflow-y: scroll;
   overflow-x: hidden;

@@ -1,104 +1,46 @@
-import React from 'react';
-import Immutable from 'immutable';
-import _ from 'lodash';
-import { getRestaurants } from '../../api/restaurantApi';
+import React, { useRef, useState, useEffect } from 'react';
+import { useRestaurantList } from '../../hooks/restaurantHooks';
 
-import RestaurantListFilter from './RestaurantListFilter/RestaurantListFilter';
-import RestaurantListContent from './RestaurantListContent/RestaurantListContent';
-import RestaurantListNavigation from './RestaurantListNavigation/RestaurantListNavigation';
+import RestaurantListList from './RestaurantListList/RestaurantListList';
 
 import './RestaurantListContainer.css';
 
-class RestaurantListContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      page: 1,
-      pageSize: 10,
-      contents: Immutable.List(),
-    };
-
-    this.throttledGetAndUpdateRestaurants = _.throttle(
-      this.getAndUpdateRestaurants,
-      200
-    );
-  }
-
-  componentDidMount() {
-    this.getAndUpdateRestaurants();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.latitude !== prevProps.latitude ||
-      this.props.longitude !== prevProps.longitude ||
-      this.state.page !== prevState.page ||
-      this.state.pageSize !== prevState.pageSize
-    ) {
-      this.getAndUpdateRestaurants();
-    }
-
-    if (this.props.query !== prevProps.query) {
-      this.throttledGetAndUpdateRestaurants();
-    }
-  }
-
-  handlePageSizeChange = size => {
-    this.setState({ pageSize: size });
+function RestaurantListContainer(props) {
+  const params = {
+    lat: props.latitude,
+    lng: props.longitude,
+    q: props.query,
   };
 
-  handlePageNext = () => {
-    this.setState(state => {
-      return { page: state.page + 1 };
-    });
-  };
+  const [
+    contents,
+    isRestaurantListLoading,
+    hasNext,
+    loadMoreRestaurants,
+  ] = useRestaurantList(params);
 
-  handlePagePrev = () => {
-    this.setState(state => {
-      return { page: state.page > 1 ? state.page - 1 : 1 };
-    });
-  };
+  // Setup container ref and delay rendering child
+  const [renderChild, setRenderChild] = useState(false);
+  const containerRef = useRef(null);
+  useEffect(() => {
+    setRenderChild(true);
+  }, []);
 
-  getAndUpdateRestaurants = async () => {
-    let params = {
-      lat: this.props.latitude,
-      lng: this.props.longitude,
-      p: this.state.page,
-      ps: this.state.pageSize,
-      q: this.props.query,
-    };
-
-    const restaurants = await getRestaurants(params);
-    if (!Immutable.is(restaurants, this.state.contents)) {
-      this.setState({
-        contents: restaurants,
-      });
-      this.props.clearRestaurantSelection();
-    }
-  };
-
-  render() {
-    return (
-      <div className="restaurant-list-container">
-        <RestaurantListFilter
-          query={this.props.query}
-          handleQueryInputChange={this.props.handleQueryInputChange}
-          handleRefreshButtonClick={this.props.handleRefreshButtonClick}
+  return (
+    <div className="restaurant-list-container" ref={containerRef}>
+      {renderChild && (
+        <RestaurantListList
+          isLoading={isRestaurantListLoading && !contents.length}
+          hasNext={hasNext}
+          contents={contents}
+          containerEl={containerRef.current}
+          restaurantIdSelection={props.restaurantIdSelection}
+          loadMoreRestaurants={loadMoreRestaurants}
+          updateRestaurantIdSelection={props.updateRestaurantIdSelection}
         />
-        <RestaurantListContent
-          contents={this.state.contents}
-          restaurantSelection={this.props.restaurantSelection}
-          updateRestaurantSelection={this.props.updateRestaurantSelection}
-        />
-        <RestaurantListNavigation
-          pageSize={this.state.pageSize}
-          handlePageSizeChange={this.handlePageSizeChange}
-          handlePageNext={this.handlePageNext}
-          handlePagePrev={this.handlePagePrev}
-        />
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 
 export default RestaurantListContainer;

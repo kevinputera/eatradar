@@ -19,7 +19,9 @@ export const get = async (url, params) => {
 
   const config = {
     method: 'GET',
-    headers: (params && params.headers) || { Accept: 'application/json' },
+    headers: (params && params.headers) || {
+      Accept: 'application/json',
+    },
   };
   const res = await fetch(endpoint, config);
   const json = await res.json();
