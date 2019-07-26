@@ -324,9 +324,9 @@ exports.processYelpId = async (id, yelpId) => {
         latitude: detail.lat,
         longitude: detail.lng,
       });
-      if(retrievedPlaceId){
-      await exports.updateYelpId(id, retrievedPlaceId);
-      return retrievedPlaceId;
+      if (retrievedPlaceId) {
+        await exports.updateYelpId(id, retrievedPlaceId);
+        return retrievedPlaceId;
       }
     } catch (e) {
       const message = `restaurantService.js: error in processYelpId\n${e}`;
@@ -366,4 +366,3 @@ exports.getYelpId = async id => {
     await pgClient.release();
   }
 };
-

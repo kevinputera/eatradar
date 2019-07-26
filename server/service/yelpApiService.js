@@ -1,11 +1,36 @@
 const fetch = require('node-fetch');
 const queryString = require('querystring');
-const yelpKey = process.env.YELP_API_KEY;
-const bearer = 'Bearer ' + yelpKey;
-const urlBusiness = 'https://api.yelp.com/v3/businesses'
 
- /**
+/**
+ * Helper function to send request to yelp's business endpoint.
+ *
+ * @param {string} resource
+ * @return {Promise<Object>} The json result
+ * @throws {Error} If HTTP response status is not within 200-299
+ */
+async function queryYelpBusinessEndpoint(resource) {
+  const urlBusiness = 'https://api.yelp.com/v3/businesses';
+  const yelpKey = process.env.YELP_API_KEY;
+  const bearer = 'Bearer ' + yelpKey;
+
+  const url = urlBusiness + resource;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: bearer,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error fetching data. HTTP status: ${res.status}`);
+  }
+
+  return await res.json();
+}
+
+/**
  * Get place of a given restaurant id
+ *
  * @param {object} params
  * @param {string} params.term
  * @param {number} params.longitude
@@ -13,100 +38,63 @@ const urlBusiness = 'https://api.yelp.com/v3/businesses'
  * @return {Promise<String>} - yelp id of place
  */
 
-exports.getPlaceId = async (params) => {
-    let idQuery = {
-        term: params.term,
-        longitude: params.longitude,
-        latitude: params.latitude,
+exports.getPlaceId = async params => {
+  try {
+    const idQuery = {
+      term: params.term,
+      longitude: params.longitude,
+      latitude: params.latitude,
     };
-    let urlId = urlBusiness +"/search?"+ queryString.stringify(idQuery);
-    let res = await fetch(urlId,{
-        'method' : 'GET',
-        'headers' : {
-            'Authorization' : bearer,
-        },
-    });
-    if (res.ok){
-        let json = await res.json();
-        if(json.businesses.length){
-            return json.businesses[0].id;
-            }
-        }
-    else{
-        const message = `yelpApiService.js: error in getId\n${e}`;
-        console.log(message);
-        throw new Error(message);
+    const resource = '/search?' + queryString.stringify(idQuery);
+    const json = await queryYelpBusinessEndpoint(resource);
+    if (json.businesses.length) {
+      return json.businesses[0].id;
     }
+    return null;
+  } catch (e) {
+    const message = `yelpApiService.js: error in getId\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
 };
 
 /**
  * Get reviews of a given restaurant id
  *
- * @param {number} id - id should be the actual yelp_id as it queries yelps api
+ * @param {number} id Id should be the actual yelp_id as it queries yelps api
  * @return {Promise<Object>} - reviews from yelp
  */
-exports.getReviews = async (id) => {
-    let urlReviews = urlBusiness + '/' + id + '/reviews';
-    let res = await fetch(urlReviews,{
-        'method' : 'GET',
-        'headers' : {
-            'Authorization' : bearer,
-        },
-    });
-    if(res.ok){
-    let json = await res.json();
-    return json.reviews.map(old =>{
-       return{ "author_name" : old.user.name,
-        "text" : old.text,
-        "rating" : old.rating,
-        "time": old.time_created,  
-        }
-    });
-    }else{
-        const message = `yelpApiService.js: error in getReviews\n${e}`;
-        throw new Error(message);
-    }
+exports.getReviews = async id => {
+  try {
+    const resource = `/${id}/reviews`;
+    const json = await queryYelpBusinessEndpoint(resource);
+    return json.reviews.map(review => ({
+      author_name: review.user.name,
+      text: review.text,
+      rating: review.rating,
+      time: review.time_created,
+    }));
+  } catch (e) {
+    const message = `yelpApiService.js: error in getReviews\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
 };
 
 /**
  * Get Details of a given restaurant id
  *
- * @param {number} id - id should be the actual yelp_id as it queries yelps api
+ * @param {number} id Id should be the actual yelp_id as it queries yelps api
  * @return {Promise<Object>} - Details from yelp
  */
-exports.getDetails = async (id) =>{
-    let urlDetails = urlBusiness + '/' + id;
-    let res = await fetch(urlDetails,{
-        'method' : 'GET',
-        'headers' : {
-            'Authorization' : bearer,
-        },
-    });
-    if(res.ok){
-    let json = await res.json();
+exports.getDetails = async id => {
+  try {
+    const resource = `/${id}`;
+    const json = await queryYelpBusinessEndpoint(resource);
     return json;
-    } else {
-        const message = `yelpApiService.js: error in getDetails\n${e}`;
-        console.log(message);
-        throw new Error(message);
-    }
+  } catch (e) {
+    const message = `yelpApiService.js: error in getDetails\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
 };
-
-
-/**
- * Transform Review Object into similar shape as google reviews object
- *
- * @param {object} old - id should be the actual yelp_id as it queries yelps api
- * @return {object} - New shape of object
- */
-
-mapReviewShape = (old) =>{
-return old.reviews.map(old =>{
-    return {
-             "author_name" : old.user.name,
-             "text" : old.text,
-             "rating" : old.rating,
-             "time": old.time_created,  
-    }; 
-});
- };
