@@ -30,6 +30,7 @@ const sql = (async () => {
       level VARCHAR(10),
       location GEOGRAPHY(Point) NOT NULL,
       google_places_id VARCHAR(200),
+      yelp_id VARCHAR(200),
       street_id INTEGER NOT NULL,
       FOREIGN KEY (street_id) REFERENCES street(id)
         ON UPDATE CASCADE ON DELETE CASCADE
