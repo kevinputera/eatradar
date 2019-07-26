@@ -1,0 +1,7 @@
+module.exports = {
+  BLOG_POST_LIMIT: 5,
+
+  BLOG_POST_ES_MIN_SCORE: 1,
+  BLOG_POST_ES_FUZZINESS: 1,
+  BLOG_POST_ES_INDEX_NAME: 'blogpost',
+};
