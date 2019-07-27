@@ -92,6 +92,7 @@ exports.getReviews = async id => {
     const json = await queryYelpBusinessEndpoint(resource);
     return json.reviews.map(review => ({
       author_name: review.user.name,
+      profile_photo_url: review.user.image_url,
       text: review.text,
       rating: review.rating,
       time: review.time_created,
