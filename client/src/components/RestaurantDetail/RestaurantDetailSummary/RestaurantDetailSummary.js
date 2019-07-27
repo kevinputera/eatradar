@@ -19,7 +19,7 @@ function RestaurantDetailSummary(props) {
           {props.restaurant.name}
         </div>
       )}
-      {props.isReviewsLoading ? (
+      {props.isRatingsLoading ? (
         <div
           className={
             'restaurant-detail-ratings-loading ' + Classes.SKELETON

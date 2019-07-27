@@ -3,7 +3,7 @@ import { Button, Divider } from '@blueprintjs/core';
 import { useFetchRestaurant } from '../../hooks/restaurantHooks';
 import { useFetchDetails } from '../../hooks/detailHooks';
 import { useFetchBlogPosts } from '../../hooks/blogPostHooks';
-import { useReviews } from '../../hooks/reviewHooks';
+import { useFetchRatingReviews } from '../../hooks/ratingReviewHooks';
 
 import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailSummary';
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
@@ -20,7 +20,9 @@ function RestaurantDetailContainer(props) {
   const [details, isDetailsLoading] = useFetchDetails(id);
   const [blogPosts, isBlogPostsLoading] = useFetchBlogPosts(id);
 
-  const [ratings, reviews, isReviewsLoading] = useReviews(id);
+  const [ratings, reviews, isRatingReviewsLoading] = useFetchRatingReviews(
+    id
+  );
 
   return (
     <div className="restaurant-detail-container">
@@ -35,7 +37,7 @@ function RestaurantDetailContainer(props) {
       <div className="detail-wrapper">
         <RestaurantDetailSummary
           isRestaurantLoading={isRestaurantLoading}
-          isReviewsLoading={isReviewsLoading}
+          isRatingsLoading={isRatingReviewsLoading}
           restaurant={restaurant}
           ratings={ratings}
         />
@@ -51,7 +53,7 @@ function RestaurantDetailContainer(props) {
       {(isReviewsLoading || reviews.google) && <Divider />}
       <div className="detail-wrapper">
         <RestaurantDetailReview
-          isReviewsLoading={isReviewsLoading}
+          isReviewsLoading={isRatingReviewsLoading}
           reviews={reviews.google}
           attribution={<GoogleAttribution />}
         />
