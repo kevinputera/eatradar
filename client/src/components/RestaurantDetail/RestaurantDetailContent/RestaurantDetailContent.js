@@ -10,6 +10,7 @@ import './RestaurantDetailContent.css';
 
 function RestaurantDetailContent(props) {
   const today = new Date().getDay();
+  console.log(props.details);
   return (
     <div className="restaurant-detail-content">
       {props.isLoading ? (
@@ -34,9 +35,9 @@ function RestaurantDetailContent(props) {
               ? ` ${props.restaurant.postcode}`
               : ''}
           </LogoFieldContent>
-          {props.details.phone && (
+          {props.details.phone_number && (
             <LogoFieldContent icon="phone">
-              {props.details.phone}
+              {props.details.phone_number}
             </LogoFieldContent>
           )}
           {props.details.website && (
@@ -51,7 +52,7 @@ function RestaurantDetailContent(props) {
             </LogoFieldContent>
           )}
           {props.details.opening_hours &&
-            today < props.details.opening_hours.length && (
+            today < props.details.opening_hours.periods.length && (
               <LogoFieldContent icon="time">
                 {props.details.opening_hours.periods[today].open.time} -{' '}
                 {props.details.opening_hours.periods[today].close.time}
