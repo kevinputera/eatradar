@@ -27,8 +27,7 @@ function CarouselPageIndicator(props) {
             key={index}
             onClick={() => props.jumpTo(index)}
             className={
-              'carousel-page-bar' +
-              (index === props.index ? ' active' : '')
+              'carousel-page-bar' + (index === props.index ? ' active' : '')
             }
           >
             &nbsp;
@@ -76,10 +75,7 @@ function Carousel(props) {
 
   return (
     <div className="carousel-container">
-      <CarouselNavigationButton
-        icon="chevron-left"
-        handleClick={handlePrevClick}
-      />
+      <CarouselNavigationButton icon="chevron-left" handleClick={handlePrevClick} />
       <div className="carousel-middle-wrapper">
         <CarouselContent contents={props.contents} index={index} />
         <CarouselPageIndicator
@@ -88,10 +84,7 @@ function Carousel(props) {
           jumpTo={jumpTo}
         />
       </div>
-      <CarouselNavigationButton
-        icon="chevron-right"
-        handleClick={handleNextClick}
-      />
+      <CarouselNavigationButton icon="chevron-right" handleClick={handleNextClick} />
     </div>
   );
 }

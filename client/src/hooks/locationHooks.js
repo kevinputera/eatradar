@@ -28,8 +28,7 @@ export const useUserLocation = initial => {
         setLocation,
         noPermissionMsg:
           'Please enable location services to enable location tracking.',
-        errorMsg:
-          'Failed to retrieve your location. Trying again in 5 seconds.',
+        errorMsg: 'Failed to retrieve your location. Trying again in 5 seconds.',
         successMsg: 'We have retrieved your location. You are good to go!',
         retry: true,
       });
@@ -65,13 +64,7 @@ export const useUserLocation = initial => {
  * @param {string} [params.successMsg] The message to display when retrieval is successful
  */
 function getLocation(params) {
-  const {
-    setLocation,
-    successMsg,
-    noPermissionMsg,
-    errorMsg,
-    retry,
-  } = params;
+  const { setLocation, successMsg, noPermissionMsg, errorMsg, retry } = params;
 
   navigator.geolocation.getCurrentPosition(
     res => {

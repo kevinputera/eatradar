@@ -33,9 +33,7 @@ test('getBlogPosts must call elasticsearch client with correct body', async () =
       },
     },
   };
-  expect(await blogPostService.getBlogPosts(id)).toEqual(
-    res.body.hits.hits
-  );
+  expect(await blogPostService.getBlogPosts(id)).toEqual(res.body.hits.hits);
   expect(restaurantService.getRestaurant).toHaveBeenCalledTimes(1);
   expect(restaurantService.getRestaurant).toHaveBeenCalledWith(id);
   expect(esClient.search).toHaveBeenCalledTimes(1);

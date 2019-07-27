@@ -41,13 +41,9 @@ function RestaurantListItem(props) {
         <div className="restaurant-list-item-left">
           {(hover || isSelected) && <Icon icon="chevron-left" />}
           <div className="restaurant-list-item-content">
-            <div className="restaurant-list-item-name">
-              {props.content.name}
-            </div>
+            <div className="restaurant-list-item-name">{props.content.name}</div>
             <div className="restaurant-list-item-address">
-              <span>
-                {props.content.block ? `${props.content.block} ` : ''}
-              </span>
+              <span>{props.content.block ? `${props.content.block} ` : ''}</span>
               <span>{props.content.street}</span>
             </div>
           </div>
@@ -76,9 +72,7 @@ function RestaurantListItemLoading(props) {
           <div className={'restaurant-list-item-name ' + Classes.SKELETON}>
             {new Array(30).fill('a').join('')}
           </div>
-          <div
-            className={'restaurant-list-item-address ' + Classes.SKELETON}
-          >
+          <div className={'restaurant-list-item-address ' + Classes.SKELETON}>
             {new Array(30).fill('a').join('')}
           </div>
         </div>

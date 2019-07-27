@@ -12,10 +12,7 @@ async function getRatingReviews(req, res) {
   }
 
   if (id < 0) {
-    response.sendBadRequest(
-      res,
-      'A correct id must be included in the request URI'
-    );
+    response.sendBadRequest(res, 'A correct id must be included in the request URI');
     return;
   }
   try {

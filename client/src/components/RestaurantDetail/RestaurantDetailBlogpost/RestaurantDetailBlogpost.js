@@ -7,9 +7,7 @@ import './RestaurantDetailBlogpost.css';
 function RestaurantDetailBlogpost(props) {
   return props.isBlogPostsLoading ? (
     <div className="restaurant-detail-blogpost">
-      <div className="restaurant-blogpost-loading">
-        Blog posts loading...
-      </div>
+      <div className="restaurant-blogpost-loading">Blog posts loading...</div>
     </div>
   ) : (
     !!props.blogPosts.length && (

@@ -6,9 +6,7 @@ exports.capitalize = string => {
   const tokens = string.split(' ');
 
   return tokens
-    .map(
-      token => token.charAt(0).toUpperCase() + token.toLowerCase().slice(1)
-    )
+    .map(token => token.charAt(0).toUpperCase() + token.toLowerCase().slice(1))
     .join(' ');
 };
 

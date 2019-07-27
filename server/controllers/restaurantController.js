@@ -16,10 +16,7 @@ async function getRestaurants(req, res) {
     params.q = req.query.q;
   }
 
-  if (
-    !Number.isFinite(params.longitude) ||
-    !Number.isFinite(params.latitude)
-  ) {
+  if (!Number.isFinite(params.longitude) || !Number.isFinite(params.latitude)) {
     response.sendBadRequest(
       res,
       `Both lng and lat must be appended to the URI as query parameters`
@@ -59,10 +56,7 @@ async function getRestaurant(req, res) {
   }
 
   if (id < 0) {
-    response.sendBadRequest(
-      res,
-      'A correct id must be included in the request URI'
-    );
+    response.sendBadRequest(res, 'A correct id must be included in the request URI');
     return;
   }
 

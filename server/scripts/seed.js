@@ -63,9 +63,7 @@ const r = (async () => {
         entry.postcode === '' ? null : entry.postcode,
         entry.unit === '' ? null : entry.unit,
         entry.level === '' ? null : entry.level,
-        `Point(${entry.geometry.coordinates[0]} ${
-          entry.geometry.coordinates[1]
-        })`,
+        `Point(${entry.geometry.coordinates[0]} ${entry.geometry.coordinates[1]})`,
         streetPk,
       ],
     };

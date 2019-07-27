@@ -107,15 +107,7 @@ export const useRestaurantMarkers = params => {
           data: fullGeoJSON,
         },
         paint: {
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            10,
-            2.5,
-            14,
-            5,
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 2.5, 14, 5],
           'circle-color': 'rgba(0, 100, 0, 0.5)',
         },
       });
@@ -138,15 +130,7 @@ export const useRestaurantMarkers = params => {
           data: filteredGeoJSON,
         },
         paint: {
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            10,
-            4,
-            14,
-            6,
-          ],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 4, 14, 6],
           'circle-color': 'rgba(0, 100, 0, 0.8)',
         },
       });
@@ -207,7 +191,9 @@ export const useMarkerSelection = params => {
         const single = geoJSON.features.find(g => g.properties.id === id);
         if (single) {
           // highlight selection
-          const selection = new mapboxgl.Marker({ color: '#ff0000' })
+          const selection = new mapboxgl.Marker({
+            color: '#ff0000',
+          })
             .setLngLat(single.geometry.coordinates)
             .addTo(map);
 
@@ -215,9 +201,7 @@ export const useMarkerSelection = params => {
           const center = map.project(single.geometry.coordinates);
           const offsetX = window.innerWidth / 4;
           const offsetY = 0;
-          map.panTo(
-            map.unproject([center.x + offsetX, center.y + offsetY])
-          );
+          map.panTo(map.unproject([center.x + offsetX, center.y + offsetY]));
 
           return () => {
             selection.remove();
@@ -243,8 +227,7 @@ export const useMarkerClickCallback = params => {
   useEffect(() => {
     if (map && layerId) {
       const clickHandler = e => callback(e.features[0].properties.id);
-      const setPointerCursor = () =>
-        (map.getCanvas().style.cursor = 'pointer');
+      const setPointerCursor = () => (map.getCanvas().style.cursor = 'pointer');
       const setGrabCursor = () => (map.getCanvas().style.cursor = 'grab');
 
       map.on('click', layerId, clickHandler);

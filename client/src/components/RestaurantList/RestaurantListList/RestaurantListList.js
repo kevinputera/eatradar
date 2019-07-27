@@ -17,19 +17,13 @@ import './RestaurantListList.css';
 function RestaurantListListLoading(props) {
   const placeholder = new Array(ITEMS_LIMIT).fill(true);
   return placeholder.map((_, index) => (
-    <RestaurantListItemLoading
-      key={index}
-      style={{ height: `${ITEM_SIZE}px` }}
-    />
+    <RestaurantListItemLoading key={index} style={{ height: `${ITEM_SIZE}px` }} />
   ));
 }
 
 function RestaurantListList(props) {
   const detectScrollAndFetch = ({ visibleStopIndex }) => {
-    if (
-      props.contents.length - visibleStopIndex - 1 <=
-      ITEMS_LEFT_BEFORE_LOAD
-    ) {
+    if (props.contents.length - visibleStopIndex - 1 <= ITEMS_LEFT_BEFORE_LOAD) {
       props.loadMoreRestaurants();
     }
   };
@@ -57,9 +51,7 @@ function RestaurantListList(props) {
                   style={style}
                   content={props.contents[index]}
                   restaurantIdSelection={props.restaurantIdSelection}
-                  updateRestaurantIdSelection={
-                    props.updateRestaurantIdSelection
-                  }
+                  updateRestaurantIdSelection={props.updateRestaurantIdSelection}
                 />
               );
             } else {

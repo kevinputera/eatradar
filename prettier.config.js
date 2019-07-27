@@ -1,7 +1,7 @@
 // prettier configurations
 module.exports = {
   singleQuote: true,
-  trailingComma: "es5",
-  endOfLine: "lf",
-  printWidth: 75,
+  trailingComma: 'es5',
+  endOfLine: 'lf',
+  printWidth: 85,
 };

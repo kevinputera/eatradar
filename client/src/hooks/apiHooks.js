@@ -37,9 +37,7 @@ export const useFetchServer = (resource, params) => {
             }
           })
           .catch(() =>
-            showError(
-              'Failed to connect to server. Please try refreshing the page.'
-            )
+            showError('Failed to connect to server. Please try refreshing the page.')
           );
         break;
       default:

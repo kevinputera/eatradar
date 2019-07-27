@@ -14,12 +14,7 @@ exports.getDetails = async params => {
       .place({
         placeid: params.placeId,
         language: params.language || 'en',
-        fields: [
-          'opening_hours',
-          'international_phone_number',
-          'website',
-          'photo',
-        ],
+        fields: ['opening_hours', 'international_phone_number', 'website', 'photo'],
       })
       .asPromise();
 

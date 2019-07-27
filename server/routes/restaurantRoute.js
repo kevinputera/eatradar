@@ -3,9 +3,7 @@ const router = express.Router();
 
 const { getBlogPosts } = require('../controllers/blogPostController');
 const { getDetails } = require('../controllers/detailController');
-const {
-  getRatingReviews,
-} = require('../controllers/ratingReviewController');
+const { getRatingReviews } = require('../controllers/ratingReviewController');
 const {
   getRestaurants,
   getRestaurant,

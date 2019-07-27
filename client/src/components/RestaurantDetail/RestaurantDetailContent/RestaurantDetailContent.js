@@ -31,9 +31,7 @@ function RestaurantDetailContent(props) {
                 ? `-${props.restaurant.unit}`
                 : ` #${props.restaurant.unit}`
               : ''}
-            {props.restaurant.postcode
-              ? ` ${props.restaurant.postcode}`
-              : ''}
+            {props.restaurant.postcode ? ` ${props.restaurant.postcode}` : ''}
           </LogoFieldContent>
           {props.details.phone_number && (
             <LogoFieldContent icon="phone">

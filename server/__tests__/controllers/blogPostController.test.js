@@ -45,8 +45,6 @@ describe('tests for getBlogPosts controller', () => {
     const req = { params: { id } };
     await getBlogPosts(req);
     expect(response.sendInternalError).toHaveBeenCalledTimes(1);
-    expect(response.sendInternalError.mock.calls[0][1]).toEqual(
-      error.message
-    );
+    expect(response.sendInternalError.mock.calls[0][1]).toEqual(error.message);
   });
 });

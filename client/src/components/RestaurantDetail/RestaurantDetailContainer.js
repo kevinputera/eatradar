@@ -23,9 +23,7 @@ function RestaurantDetailContainer(props) {
   const [details, isDetailsLoading] = useFetchDetails(id);
   const [blogPosts, isBlogPostsLoading] = useFetchBlogPosts(id);
 
-  const [ratings, reviews, isRatingReviewsLoading] = useFetchRatingReviews(
-    id
-  );
+  const [ratings, reviews, isRatingReviewsLoading] = useFetchRatingReviews(id);
 
   const googleStarSupplier = useCallback(
     rating => <GenericRatingStars rating={rating} />,

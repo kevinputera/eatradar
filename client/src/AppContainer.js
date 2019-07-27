@@ -25,11 +25,7 @@ function App(props) {
     103.8283541,
   ]);
 
-  const [zoom, setZoom, handleZoomIn, handleZoomOut] = useMapZoom(
-    10.5,
-    10,
-    14.5
-  );
+  const [zoom, setZoom, handleZoomIn, handleZoomOut] = useMapZoom(10.5, 10, 14.5);
 
   return (
     <div className="app">

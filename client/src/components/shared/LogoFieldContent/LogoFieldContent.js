@@ -6,16 +6,10 @@ import './LogoFieldContent.css';
 function LogoFieldContentLoading(props) {
   return (
     <div className="logo-field-content">
-      <div
-        className={'logo-field-content-logo-loading ' + Classes.SKELETON}
-      >
+      <div className={'logo-field-content-logo-loading ' + Classes.SKELETON}>
         &nbsp;
       </div>
-      <div
-        className={
-          'logo-field-content-content-loading ' + Classes.SKELETON
-        }
-      >
+      <div className={'logo-field-content-content-loading ' + Classes.SKELETON}>
         &nbsp;
       </div>
     </div>
