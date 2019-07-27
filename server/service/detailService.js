@@ -11,29 +11,14 @@ const yelpApiService = require('./yelpApiService');
 exports.getDetails = async id => {
   try {
     const details = {};
-    const res = await Promise.all([
-      restaurantService.getGooglePlacesId(id),
-      restaurantService.getYelpId(id),
-    ]);
-
-    const placeId = {
-      googleId: res[0],
-      yelpId: res[1],
-    };
-
-    if (placeId.googleId) {
+    const googlePlaceId = await restaurantService.getGooglePlacesId(id);
+    if (googlePlaceId) {
       const googleDetails = await googlePlacesApiService.getDetails({
-        placeId: placeId.googleId,
+        placeId: googlePlaceId,
         language: 'en',
       });
       details['google'] = googleDetails;
     }
-
-    if (placeId.yelpId) {
-      const yelpDetails = await yelpApiService.getDetails(placeId.yelpId);
-      details['yelp'] = yelpDetails;
-    }
-
     return details;
   } catch (e) {
     const message = `detailService.js: error in getDetails\n${e}`;
