@@ -5,17 +5,11 @@ const sql = (async () => {
   const pgClient = await pgPool.connect();
 
   const dropQuery = /* sql */ `
-    DROP TABLE IF EXISTS restaurant_cuisine;
     DROP TABLE IF EXISTS restaurant;
-    DROP TABLE IF EXISTS cuisine;
     DROP TABLE IF EXISTS street;
-    DROP MATERIALIZED VIEW IF EXISTS lexeme;
-    DROP EXTENSION IF EXISTS pg_trgm;
   `;
 
   const createQuery = /* sql */ `
-    CREATE EXTENSION pg_trgm;
-
     CREATE TABLE street (
       id SERIAL PRIMARY KEY,
       name VARCHAR(200) UNIQUE NOT NULL
@@ -36,8 +30,7 @@ const sql = (async () => {
         ON UPDATE CASCADE ON DELETE CASCADE
     );
     CREATE INDEX location_geog_idx ON restaurant USING GIST (location);
-    CREATE INDEX name_ts_idx ON restaurant USING GIN (to_tsvector('simple', name));
-  `;
+ `;
 
   try {
     await pgClient.query(dropQuery);
