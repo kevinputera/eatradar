@@ -35,9 +35,8 @@ function RestaurantDetailReview(props) {
               </div>
             )}
           </div>
-          {props.reviews[offset].rating && (
-            <GenericRatingStars rating={props.reviews[offset].rating} />
-          )}
+          {props.reviews[offset].rating &&
+            props.starSupplier(props.reviews[offset].rating)}
         </div>
         {props.reviews[offset].text && (
           <div className="review-text">{props.reviews[offset].text}</div>

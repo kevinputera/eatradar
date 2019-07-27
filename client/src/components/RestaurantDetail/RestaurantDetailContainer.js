@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button, Divider } from '@blueprintjs/core';
 import { useFetchRestaurant } from '../../hooks/restaurantHooks';
 import { useFetchDetails } from '../../hooks/detailHooks';
@@ -9,7 +9,10 @@ import RestaurantDetailSummary from './RestaurantDetailSummary/RestaurantDetailS
 import RestaurantDetailContent from './RestaurantDetailContent/RestaurantDetailContent';
 import RestaurantDetailReview from './RestaurantDetailReview/RestaurantDetailReview';
 import RestaurantDetailBlogpost from './RestaurantDetailBlogpost/RestaurantDetailBlogpost';
+import GenericRatingStars from '../shared/GenericRatingStars/GenericRatingStars';
+import YelpRatingStars from '../shared/YelpRatingStars/YelpRatingStars';
 import GoogleAttribution from '../shared/GoogleAttribution/GoogleAttribution';
+import YelpAttribution from '../shared/YelpAttribution/YelpAttribution';
 
 import './RestaurantDetailContainer.css';
 
@@ -22,6 +25,15 @@ function RestaurantDetailContainer(props) {
 
   const [ratings, reviews, isRatingReviewsLoading] = useFetchRatingReviews(
     id
+  );
+
+  const googleStarSupplier = useCallback(
+    rating => <GenericRatingStars rating={rating} />,
+    []
+  );
+  const yelpStarSupplier = useCallback(
+    rating => <YelpRatingStars rating={rating} />,
+    []
   );
 
   return (
@@ -54,6 +66,7 @@ function RestaurantDetailContainer(props) {
       <div className="detail-wrapper">
         <RestaurantDetailReview
           isReviewsLoading={isRatingReviewsLoading}
+          starSupplier={googleStarSupplier}
           reviews={reviews.google}
           attribution={<GoogleAttribution />}
         />
@@ -62,8 +75,9 @@ function RestaurantDetailContainer(props) {
       <div className="detail-wrapper">
         <RestaurantDetailReview
           isReviewsLoading={isRatingReviewsLoading}
+          starSupplier={yelpStarSupplier}
           reviews={reviews.yelp}
-          attribution={<GoogleAttribution />}
+          attribution={<YelpAttribution />}
         />
       </div>
       {(isBlogPostsLoading || !!blogPosts.length) && <Divider />}
