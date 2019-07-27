@@ -4,7 +4,6 @@ import { usePaginatedContent } from '../../../hooks/paginationHooks';
 import PaginationControls from '../../shared/PaginationControls/PaginationControls';
 
 import './RestaurantDetailReview.css';
-import GenericRatingStars from '../../shared/GenericRatingStars/GenericRatingStars';
 
 function RestaurantDetailReview(props) {
   const [offset, handleOffsetDecr, handleOffsetIncr] = usePaginatedContent(
