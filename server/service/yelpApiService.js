@@ -52,7 +52,7 @@ exports.getPlaceId = async params => {
     }
     return null;
   } catch (e) {
-    const message = `yelpApiService.js: error in getId\n${e}`;
+    const message = `yelpApiService.js: Error in getId\n${e}`;
     console.log(message);
     throw new Error(message);
   }
@@ -75,7 +75,7 @@ exports.getReviews = async id => {
       time: review.time_created,
     }));
   } catch (e) {
-    const message = `yelpApiService.js: error in getReviews\n${e}`;
+    const message = `yelpApiService.js: Error in getReviews\n${e}`;
     console.log(message);
     throw new Error(message);
   }
@@ -93,7 +93,7 @@ exports.getDetails = async id => {
     const json = await queryYelpBusinessEndpoint(resource);
     return json;
   } catch (e) {
-    const message = `yelpApiService.js: error in getDetails\n${e}`;
+    const message = `yelpApiService.js: Error in getDetails\n${e}`;
     console.log(message);
     throw new Error(message);
   }
