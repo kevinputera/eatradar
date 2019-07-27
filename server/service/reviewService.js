@@ -10,31 +10,47 @@ const yelpApiService = require('./yelpApiService');
  */
 exports.getReviews = async id => {
   try {
-    const reviews = {};
-    const res = await Promise.all([
+    const res = {};
+
+    const placeId = await Promise.all([
       restaurantService.getGooglePlacesId(id),
       restaurantService.getYelpId(id),
     ]);
 
-    const placeId = {
-      googleId: res[0],
-      yelpId: res[1],
-    };
+    const reviews = await Promise.all(
+      placeId.map((id, idx) => {
+        if (id) {
+          switch (idx) {
+            case 0:
+              return googlePlacesApiService.getReviews({
+                placeId: placeId[0],
+                language: 'en',
+              });
+            case 1:
+              return yelpApiService.getReviews(placeId[1]);
+            default:
+              break;
+          }
+        }
+      })
+    );
 
-    if (placeId.googleId) {
-      const googleReviews = await googlePlacesApiService.getReviews({
-        placeId: placeId.googleId,
-        language: 'en',
-      });
-      reviews['google'] = googleReviews;
-    }
+    reviews.forEach((r, idx) => {
+      if (r) {
+        switch (idx) {
+          case 0:
+            res['google'] = r;
+            break;
+          case 1:
+            res['yelp'] = r;
+            break;
+          default:
+            break;
+        }
+      }
+    });
 
-    if (placeId.yelpId) {
-      const yelpReviews = await yelpApiService.getReviews(placeId.yelpId);
-      reviews['yelp'] = yelpReviews;
-    }
-
-    return reviews;
+    return res;
   } catch (e) {
     const message = `reviewService.js: error in getReviews\n${e}`;
     console.log(message);
