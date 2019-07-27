@@ -9,7 +9,10 @@ import { useFetchServer } from './apiHooks';
  */
 export const useFetchRatingReviews = id => {
   const reqParams = { method: 'GET' };
-  const [data, isLoading] = useFetchServer(`/reviews/${id}`, reqParams);
+  const [data, isLoading] = useFetchServer(
+    `/restaurants/${id}/rating-reviews`,
+    reqParams
+  );
 
   const reviews = {};
   const ratings = {};

@@ -8,7 +8,10 @@ import { useFetchServer } from './apiHooks';
  */
 export const useFetchDetails = id => {
   const reqParams = { method: 'GET' };
-  const [data, isLoading] = useFetchServer(`/details/${id}`, reqParams);
+  const [data, isLoading] = useFetchServer(
+    `/restaurants/${id}/details`,
+    reqParams
+  );
   if (data && data.google) {
     return [data.google, isLoading];
   }

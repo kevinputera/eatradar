@@ -8,7 +8,10 @@ import { useFetchServer } from './apiHooks';
  */
 export const useFetchBlogPosts = id => {
   const reqParams = { method: 'GET' };
-  const [data, isLoading] = useFetchServer(`/blogposts/${id}`, reqParams);
+  const [data, isLoading] = useFetchServer(
+    `/restaurants/${id}/blog-posts`,
+    reqParams
+  );
   if (data) {
     const blogPosts = data.map(bp => ({
       id: bp._id,
