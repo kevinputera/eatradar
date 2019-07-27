@@ -1,3 +1,6 @@
 .google-attribution {
+  position: relative;
+  top: 3px;
   height: 13px;
+  margin: 5px 0;
 }

@@ -50,11 +50,19 @@ function RestaurantDetailContainer(props) {
           details={details}
         />
       </div>
-      {(isRatingReviewsLoading || reviews.google) && <Divider />}
+      {(isRatingReviewsLoading || !!reviews.google.length) && <Divider />}
       <div className="detail-wrapper">
         <RestaurantDetailReview
           isReviewsLoading={isRatingReviewsLoading}
           reviews={reviews.google}
+          attribution={<GoogleAttribution />}
+        />
+      </div>
+      {(isRatingReviewsLoading || !!reviews.yelp.length) && <Divider />}
+      <div className="detail-wrapper">
+        <RestaurantDetailReview
+          isReviewsLoading={isRatingReviewsLoading}
+          reviews={reviews.yelp}
           attribution={<GoogleAttribution />}
         />
       </div>

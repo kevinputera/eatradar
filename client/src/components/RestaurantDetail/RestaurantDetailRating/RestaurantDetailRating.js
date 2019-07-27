@@ -5,7 +5,7 @@ import './RestaurantDetailRating.css';
 function RestaurantDetailRating(props) {
   return (
     <div className="rating">
-      <div className="rating-content">{props.children}</div>
+      <div className="rating-content">{props.stars}</div>
       <div className="rating-attribution">{props.attribution}</div>
     </div>
   );

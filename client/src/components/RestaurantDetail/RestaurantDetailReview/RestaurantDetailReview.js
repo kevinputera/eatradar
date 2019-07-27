@@ -11,6 +11,8 @@ function RestaurantDetailReview(props) {
     props.reviews.length
   );
 
+  console.log(props.reviews);
+
   return props.isReviewsLoading ? (
     <div className="restaurant-detail-review">
       <div className="restaurant-review-loading">Review loading...</div>

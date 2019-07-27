@@ -1,6 +1,11 @@
 import React from 'react';
 import { Classes } from '@blueprintjs/core';
-import RestaurantDetailRatingGoogle from '../RestaurantDetailRatingGoogle/RestaurantDetailRatingGoogle';
+
+import RestaurantDetailRating from '../RestaurantDetailRating/RestaurantDetailRating';
+import GenericRatingStars from '../../shared/GenericRatingStars/GenericRatingStars';
+import YelpRatingStars from '../../shared/YelpRatingStars/YelpRatingStars';
+import GoogleAttribution from '../../shared/GoogleAttribution/GoogleAttribution';
+import YelpAttribution from '../../shared/YelpAttribution/YelpAttribution';
 
 import './RestaurantDetailSummary.css';
 
@@ -20,29 +25,51 @@ function RestaurantDetailSummary(props) {
         </div>
       )}
       {props.isRatingsLoading ? (
-        <div
-          className={
-            'restaurant-detail-ratings-loading ' + Classes.SKELETON
-          }
-        >
-          &nbsp;
-        </div>
+        <>
+          <div
+            className={
+              'restaurant-detail-rating-loading ' + Classes.SKELETON
+            }
+          >
+            &nbsp;
+          </div>
+          <div
+            className={
+              'restaurant-detail-rating-loading ' + Classes.SKELETON
+            }
+          >
+            &nbsp;
+          </div>
+        </>
       ) : (
-        <div className="restaurant-detail-ratings">
+        <>
           {props.ratings.google && (
-            <div className="restaurant-google-rating-wrapper">
-              <RestaurantDetailRatingGoogle
-                rating={props.ratings.google}
+            <div className="restaurant-detail-rating">
+              <RestaurantDetailRating
+                stars={
+                  <GenericRatingStars
+                    large
+                    rating={props.ratings.google}
+                  />
+                }
+                attribution={<GoogleAttribution />}
               />
             </div>
           )}
           {props.ratings.yelp && (
-            <div className="restaurant-yelp-rating-wrapper"></div>
+            <div className="restaurant-detail-rating">
+              <RestaurantDetailRating
+                stars={
+                  <YelpRatingStars large rating={props.ratings.yelp} />
+                }
+                attribution={<YelpAttribution />}
+              />
+            </div>
           )}
           {noRatings && (
             <div className="ratings-not-found">No ratings</div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
