@@ -15,7 +15,7 @@ function RestaurantDetailReview(props) {
       <div className="restaurant-review-loading">Review loading...</div>
     </div>
   ) : (
-    !!props.reviews.length && (
+    !!props.reviews.length && !!props.reviews[offset] && (
       <div className="restaurant-detail-review detail-wrapper">
         <div className="review-upper-row">
           <div className="review-identity">
