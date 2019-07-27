@@ -6,12 +6,12 @@ import './RestaurantDetailBlogpost.css';
 
 function RestaurantDetailBlogpost(props) {
   return props.isBlogPostsLoading ? (
-    <div className="restaurant-detail-blogpost">
+    <div className="restaurant-detail-blogpost detail-wrapper">
       <div className="restaurant-blogpost-loading">Blog posts loading...</div>
     </div>
   ) : (
     !!props.blogPosts.length && (
-      <div className="restaurant-detail-blogpost">
+      <div className="restaurant-detail-blogpost detail-wrapper">
         <Carousel
           contents={props.blogPosts.map(blogPost => ({
             ...blogPost,

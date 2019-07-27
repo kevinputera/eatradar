@@ -12,7 +12,7 @@ function RestaurantDetailContent(props) {
   const today = new Date().getDay();
   console.log(props.details);
   return (
-    <div className="restaurant-detail-content">
+    <div className="restaurant-detail-content detail-wrapper">
       {props.isLoading ? (
         <>
           <LogoFieldContentLoading />

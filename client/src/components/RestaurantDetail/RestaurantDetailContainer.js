@@ -44,47 +44,37 @@ function RestaurantDetailContainer(props) {
           style={{ borderRadius: '20px' }}
         />
       </div>
-      <div className="detail-wrapper">
-        <RestaurantDetailSummary
-          isRestaurantLoading={isRestaurantLoading}
-          isRatingsLoading={isRatingReviewsLoading}
-          restaurant={restaurant}
-          ratings={ratings}
-        />
-      </div>
+      <RestaurantDetailSummary
+        isRestaurantLoading={isRestaurantLoading}
+        isRatingsLoading={isRatingReviewsLoading}
+        restaurant={restaurant}
+        ratings={ratings}
+      />
       <Divider />
-      <div className="detail-wrapper">
-        <RestaurantDetailContent
-          isLoading={isRestaurantLoading || isDetailsLoading}
-          restaurant={restaurant}
-          details={details}
-        />
-      </div>
+      <RestaurantDetailContent
+        isLoading={isRestaurantLoading || isDetailsLoading}
+        restaurant={restaurant}
+        details={details}
+      />
       {(isRatingReviewsLoading || !!reviews.google.length) && <Divider />}
-      <div className="detail-wrapper">
-        <RestaurantDetailReview
-          isReviewsLoading={isRatingReviewsLoading}
-          starSupplier={googleStarSupplier}
-          reviews={reviews.google}
-          attribution={<GoogleAttribution />}
-        />
-      </div>
+      <RestaurantDetailReview
+        isReviewsLoading={isRatingReviewsLoading}
+        starSupplier={googleStarSupplier}
+        reviews={reviews.google}
+        attribution={<GoogleAttribution />}
+      />
       {(isRatingReviewsLoading || !!reviews.yelp.length) && <Divider />}
-      <div className="detail-wrapper">
-        <RestaurantDetailReview
-          isReviewsLoading={isRatingReviewsLoading}
-          starSupplier={yelpStarSupplier}
-          reviews={reviews.yelp}
-          attribution={<YelpAttribution />}
-        />
-      </div>
+      <RestaurantDetailReview
+        isReviewsLoading={isRatingReviewsLoading}
+        starSupplier={yelpStarSupplier}
+        reviews={reviews.yelp}
+        attribution={<YelpAttribution />}
+      />
       {(isBlogPostsLoading || !!blogPosts.length) && <Divider />}
-      <div className="detail-wrapper">
-        <RestaurantDetailBlogpost
-          isBlogPostsLoading={isBlogPostsLoading}
-          blogPosts={blogPosts}
-        />
-      </div>
+      <RestaurantDetailBlogpost
+        isBlogPostsLoading={isBlogPostsLoading}
+        blogPosts={blogPosts}
+      />
     </div>
   );
 }

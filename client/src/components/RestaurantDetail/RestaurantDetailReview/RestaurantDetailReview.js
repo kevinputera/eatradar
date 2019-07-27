@@ -10,15 +10,13 @@ function RestaurantDetailReview(props) {
     props.reviews.length
   );
 
-  console.log(props.reviews);
-
   return props.isReviewsLoading ? (
-    <div className="restaurant-detail-review">
+    <div className="restaurant-detail-review detail-wrapper">
       <div className="restaurant-review-loading">Review loading...</div>
     </div>
   ) : (
     !!props.reviews.length && (
-      <div className="restaurant-detail-review">
+      <div className="restaurant-detail-review detail-wrapper">
         <div className="review-upper-row">
           <div className="review-identity">
             {props.reviews[offset].profile_photo_url && (

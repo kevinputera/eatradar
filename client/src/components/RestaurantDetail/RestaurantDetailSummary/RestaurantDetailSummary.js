@@ -12,7 +12,7 @@ import './RestaurantDetailSummary.css';
 function RestaurantDetailSummary(props) {
   const noRatings = !props.ratings.google && !props.ratings.yelp;
   return (
-    <div className="restaurant-detail-summary">
+    <div className="restaurant-detail-summary detail-wrapper">
       {props.isRestaurantLoading ? (
         <div className={'restaurant-detail-name-loading ' + Classes.SKELETON}>
           &nbsp;
