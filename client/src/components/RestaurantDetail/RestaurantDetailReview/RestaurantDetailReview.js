@@ -36,7 +36,19 @@ function RestaurantDetailReview(props) {
             props.starSupplier(props.reviews[offset].rating)}
         </div>
         {props.reviews[offset].text && (
-          <div className="review-text">{props.reviews[offset].text}</div>
+          <div className="review-text">
+            {props.reviews[offset].text}
+            {props.reviews[offset].read_more && (
+              <a
+                className="review-read-more"
+                href={props.reviews[offset].read_more}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
+            )}
+          </div>
         )}
         <div className="review-lower-row">
           <div className="review-attribution">{props.attribution}</div>

@@ -25,6 +25,10 @@
   border-radius: 20px;
 }
 
+.review-read-more {
+  margin-left: 5px;
+}
+
 .review-lower-row {
   display: flex;
   align-items: center;

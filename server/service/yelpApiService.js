@@ -98,6 +98,7 @@ exports.getReviews = async id => {
       rating: review.rating,
       time: review.time_created,
       relative_time_description: moment(review.time_created).fromNow(),
+      read_more: review.url,
     }));
   } catch (e) {
     const message = `yelpApiService.js: Error in getReviews\n${e}`;
