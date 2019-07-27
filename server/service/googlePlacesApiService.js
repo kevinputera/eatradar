@@ -59,7 +59,7 @@ exports.getDetails = async params => {
  * @param {language} [params.language]
  * @return {Promise<Object>} - rating and review
  */
-exports.getReviews = async params => {
+exports.getRatingReviews = async params => {
   try {
     const res = await placesClient
       .place({
@@ -71,7 +71,7 @@ exports.getReviews = async params => {
 
     return res.json.result;
   } catch (e) {
-    const message = `googlePlacesApiService.js: error in getReviews\n${e}`;
+    const message = `googlePlacesApiService.js: error in getRatingReviews\n${e}`;
     console.log(message);
     throw new Error(message);
   }

@@ -3,12 +3,12 @@ const googlePlacesApiService = require('./googlePlacesApiService');
 const yelpApiService = require('./yelpApiService');
 
 /**
- * Get reviews of a given restaurant id
+ * Get ratings and reviews of a given restaurant id
  *
  * @param {number} id
- * @return {Promise<Object>} - reviews
+ * @return {Promise<Object>} - ratings and reviews
  */
-exports.getReviews = async id => {
+exports.getRatingReviews = async id => {
   try {
     const res = {};
 
@@ -22,12 +22,12 @@ exports.getReviews = async id => {
         if (id) {
           switch (idx) {
             case 0:
-              return googlePlacesApiService.getReviews({
+              return googlePlacesApiService.getRatingReviews({
                 placeId: placeId[0],
                 language: 'en',
               });
             case 1:
-              return yelpApiService.getReviews(placeId[1]);
+              return yelpApiService.getRatingReviews(placeId[1]);
             default:
               break;
           }
@@ -52,7 +52,7 @@ exports.getReviews = async id => {
 
     return res;
   } catch (e) {
-    const message = `reviewService.js: error in getReviews\n${e}`;
+    const message = `ratingReviewService.js: error in getRatingReviews\n${e}`;
     console.log(message);
     throw new Error(message);
   }

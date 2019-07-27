@@ -1,10 +1,10 @@
-const reviewService = require('../service/reviewService');
+const ratingReviewService = require('../service/ratingReviewService');
 const response = require('../utils/response');
 
 /**
- * Get reviews of a restaurant based on id.
+ * Get ratings and reviews of a restaurant based on id.
  */
-async function getReviews(req, res) {
+async function getRatingReviews(req, res) {
   const id = parseInt(req.params.id);
   if (!Number.isInteger(id)) {
     response.sendBadRequest(res, 'Id must be of type number');
@@ -19,11 +19,11 @@ async function getReviews(req, res) {
     return;
   }
   try {
-    const result = await reviewService.getReviews(id);
+    const result = await ratingReviewService.getRatingReviews(id);
     response.sendOk(res, result);
   } catch (e) {
     response.sendInternalError(res, e.message);
   }
 }
 
-module.exports = { getReviews };
+module.exports = { getRatingReviews };

@@ -58,6 +58,29 @@ exports.getPlaceId = async params => {
 };
 
 /**
+ * Get ratings and reviews of a restaurant
+ *
+ * @param {string} id The yelp_id of the restaurant
+ * @return {Promise<Object>} - ratings and reviews of a restaurant
+ */
+exports.getRatingReviews = async id => {
+  try {
+    const ratingReviews = await Promise.all([
+      exports.getRating(id),
+      exports.getReviews(id),
+    ]);
+    return {
+      rating: ratingReviews[0],
+      reviews: ratingReviews[1],
+    };
+  } catch (e) {
+    const message = `yelpApiService.js: Error in getRatingReviews\n${e}`;
+    console.log(message);
+    throw new Error(message);
+  }
+};
+
+/**
  * Get reviews of a given restaurant id
  *
  * @param {string} id Id should be the actual yelp_id as it queries yelps api
@@ -66,19 +89,13 @@ exports.getPlaceId = async params => {
 exports.getReviews = async id => {
   try {
     const resource = `/${id}/reviews`;
-    const data = await Promise.all([
-      exports.getRating(id),
-      queryYelpBusinessEndpoint(resource),
-    ]);
-    return {
-      rating: data[0],
-      reviews: data[1].reviews.map(review => ({
-        author_name: review.user.name,
-        text: review.text,
-        rating: review.rating,
-        time: review.time_created,
-      })),
-    };
+    const json = await queryYelpBusinessEndpoint(resource);
+    return json.reviews.map(review => ({
+      author_name: review.user.name,
+      text: review.text,
+      rating: review.rating,
+      time: review.time_created,
+    }));
   } catch (e) {
     const message = `yelpApiService.js: Error in getReviews\n${e}`;
     console.log(message);
