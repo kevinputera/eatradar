@@ -50,7 +50,7 @@ function RestaurantDetailContainer(props) {
           details={details}
         />
       </div>
-      {(isReviewsLoading || reviews.google) && <Divider />}
+      {(isRatingReviewsLoading || reviews.google) && <Divider />}
       <div className="detail-wrapper">
         <RestaurantDetailReview
           isReviewsLoading={isRatingReviewsLoading}
