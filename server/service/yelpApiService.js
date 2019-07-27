@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const queryString = require('querystring');
+const moment = require('moment');
 
 /**
  * Helper function to send request to yelp's business endpoint.
@@ -96,6 +97,7 @@ exports.getReviews = async id => {
       text: review.text,
       rating: review.rating,
       time: review.time_created,
+      relative_time_description: moment(review.time_created).fromNow(),
     }));
   } catch (e) {
     const message = `yelpApiService.js: Error in getReviews\n${e}`;
