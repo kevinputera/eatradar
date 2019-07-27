@@ -6,7 +6,6 @@ const queryString = require('querystring');
  *
  * @param {string} resource
  * @return {Promise<Object>} The json result
- * @throws {Error} If HTTP response status is not within 200-299
  */
 async function queryYelpBusinessEndpoint(resource) {
   const urlBusiness = 'https://api.yelp.com/v3/businesses';
@@ -61,19 +60,25 @@ exports.getPlaceId = async params => {
 /**
  * Get reviews of a given restaurant id
  *
- * @param {number} id Id should be the actual yelp_id as it queries yelps api
+ * @param {string} id Id should be the actual yelp_id as it queries yelps api
  * @return {Promise<Object>} - reviews from yelp
  */
 exports.getReviews = async id => {
   try {
     const resource = `/${id}/reviews`;
-    const json = await queryYelpBusinessEndpoint(resource);
-    return json.reviews.map(review => ({
-      author_name: review.user.name,
-      text: review.text,
-      rating: review.rating,
-      time: review.time_created,
-    }));
+    const data = await Promise.all([
+      exports.getRating(id),
+      queryYelpBusinessEndpoint(resource),
+    ]);
+    return {
+      rating: data[0],
+      reviews: data[1].reviews.map(review => ({
+        author_name: review.user.name,
+        text: review.text,
+        rating: review.rating,
+        time: review.time_created,
+      })),
+    };
   } catch (e) {
     const message = `yelpApiService.js: Error in getReviews\n${e}`;
     console.log(message);
@@ -82,18 +87,18 @@ exports.getReviews = async id => {
 };
 
 /**
- * Get Details of a given restaurant id
+ * Get overall rating of a given restaurant
  *
- * @param {number} id Id should be the actual yelp_id as it queries yelps api
- * @return {Promise<Object>} - Details from yelp
+ * @param {string} id The yelp_id of this restaurant
+ * @return {Promise<number>} - The rating
  */
-exports.getDetails = async id => {
+exports.getRating = async id => {
   try {
     const resource = `/${id}`;
     const json = await queryYelpBusinessEndpoint(resource);
-    return json;
+    return json.rating;
   } catch (e) {
-    const message = `yelpApiService.js: Error in getDetails\n${e}`;
+    const message = `yelpApiService.js: Error in getRating\n${e}`;
     console.log(message);
     throw new Error(message);
   }
