@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for GoogleAttribution component render must match snapshot 1`] = `
+<a
+  href="https://www.google.com/"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <img
+    alt="Powered by Google"
+    className="google-attribution"
+    src="powered_by_google_on_white_hdpi.png"
+  />
+</a>
+`;
