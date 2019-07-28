@@ -7,7 +7,10 @@ import ZoomAction from '../../../../components/MapAction/ZoomAction/ZoomAction';
 
 describe('tests for ZoomAction component', () => {
   test('render must match snapshot', () => {
-    const tree = create(<ZoomAction />).toJSON();
+    const func = () => {};
+    const tree = create(
+      <ZoomAction handleZoomIn={func} handleZoomOut={func} />
+    ).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

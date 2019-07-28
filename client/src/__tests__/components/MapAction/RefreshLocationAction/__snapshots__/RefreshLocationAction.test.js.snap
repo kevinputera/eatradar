@@ -6,6 +6,7 @@ exports[`tests for RefreshLocationAction component render must match snapshot 1`
 >
   <button
     className="bp3-button bp3-large"
+    onClick={[Function]}
     onKeyDown={[Function]}
     onKeyUp={[Function]}
     style={

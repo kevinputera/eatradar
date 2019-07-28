@@ -7,7 +7,8 @@ import RefreshLocationAction from '../../../../components/MapAction/RefreshLocat
 
 describe('tests for RefreshLocationAction component', () => {
   test('render must match snapshot', () => {
-    const tree = create(<RefreshLocationAction />).toJSON();
+    const func = () => {};
+    const tree = create(<RefreshLocationAction refreshLocation={func} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 

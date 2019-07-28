@@ -9,6 +9,7 @@ exports[`tests for ZoomAction component render must match snapshot 1`] = `
   >
     <button
       className="bp3-button bp3-large zoom-in-button"
+      onClick={[Function]}
       onKeyDown={[Function]}
       onKeyUp={[Function]}
       style={
@@ -44,6 +45,7 @@ exports[`tests for ZoomAction component render must match snapshot 1`] = `
   >
     <button
       className="bp3-button bp3-large zoom-out-button"
+      onClick={[Function]}
       onKeyDown={[Function]}
       onKeyUp={[Function]}
       style={
