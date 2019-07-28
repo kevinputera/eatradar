@@ -19,7 +19,7 @@ function Carousel(props) {
       <div className="carousel-middle-wrapper">
         <CarouselContent content={props.contents[index]} />
         <CarouselPageIndicator
-          length={props.contents}
+          length={props.contents.length}
           index={index}
           jumpTo={jumpTo}
         />
