@@ -49,7 +49,7 @@ exports[`tests for Carousel component render must match snapshot 1`] = `
       <div
         className="carousel-content-post"
       >
-        A post
+        Post 1
       </div>
     </div>
     <div
@@ -57,6 +57,18 @@ exports[`tests for Carousel component render must match snapshot 1`] = `
     >
       <div
         className="carousel-page-bar active"
+        onClick={[Function]}
+      >
+         
+      </div>
+      <div
+        className="carousel-page-bar"
+        onClick={[Function]}
+      >
+         
+      </div>
+      <div
+        className="carousel-page-bar"
         onClick={[Function]}
       >
          
