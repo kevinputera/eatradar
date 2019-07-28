@@ -11,19 +11,21 @@ export const usePaginatedContent = size => {
   const [offset, setOffset] = useState(0);
 
   const handleOffsetDecr = useCallback(() => {
-    if (offset === 0) {
-      setOffset(size - 1);
-    } else {
-      setOffset(o => o - 1);
-    }
+    setOffset(o => {
+      if (o === 0) {
+        return size - 1;
+      }
+      return o - 1;
+    });
   }, [offset, size]);
 
   const handleOffsetIncr = useCallback(() => {
-    if (offset === size - 1) {
-      setOffset(0);
-    } else {
-      setOffset(o => o + 1);
-    }
+    setOffset(o => {
+      if (o === size - 1) {
+        return 0;
+      }
+      return o + 1;
+    });
   }, [offset, size]);
 
   return [offset, handleOffsetDecr, handleOffsetIncr];
