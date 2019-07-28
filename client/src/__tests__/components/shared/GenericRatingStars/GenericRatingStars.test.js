@@ -2,7 +2,7 @@ import React from 'react';
 import { create } from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
-import GenericRatingStars from '../../../components/shared/GenericRatingStars/GenericRatingStars';
+import GenericRatingStars from '../../../../components/shared/GenericRatingStars/GenericRatingStars';
 
 describe('tests for GenericRatingStars component', () => {
   test('render must match snapshot', () => {
