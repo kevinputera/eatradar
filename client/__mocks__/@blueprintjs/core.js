@@ -4,15 +4,18 @@
  */
 const core = jest.requireActual('@blueprintjs/core');
 
-export const clearMock = jest.fn();
-export const showMock = jest.fn();
-
-export const Toaster = {
+const clearMock = jest.fn();
+const showMock = jest.fn();
+const Toaster = {
   create: () => ({
     clear: clearMock,
     show: showMock,
   }),
 };
 
-export const Position = core.Position;
-export const Intent = core.Intent;
+module.exports = {
+  ...core,
+  clearMock,
+  showMock,
+  Toaster,
+};
