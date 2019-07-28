@@ -9,7 +9,7 @@ import './Carousel.css';
 
 function Carousel(props) {
   const [index, handlePrevClick, handleNextClick, jumpTo] = useCarousel({
-    contents: props.contents,
+    length: props.contents.length,
     timeout: 3000,
   });
 
