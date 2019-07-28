@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for YelpAttribution component render must match snapshot 1`] = `
+<a
+  href="https://www.yelp.com/"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <img
+    alt="Yelp trademark"
+    className="yelp-attribution"
+    src="Yelp_trademark_RGB_outline.png"
+  />
+</a>
+`;
