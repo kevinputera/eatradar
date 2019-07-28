@@ -11,7 +11,7 @@ describe('tests for RefreshLocationAction component', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  test('button clicks must trigger location refresh function prop', () => {
+  test('button clicks must trigger refreshLocation prop', () => {
     const refreshLocation = jest.fn();
     const wrapper = shallow(
       <RefreshLocationAction refreshLocation={refreshLocation} />
