@@ -1,0 +1,12 @@
+.carousel-content {
+  flex-grow: 1;
+}
+
+.carousel-content-link {
+  margin-left: 10px;
+}
+
+.carousel-content-author {
+  text-align: end;
+  font-style: italic;
+}

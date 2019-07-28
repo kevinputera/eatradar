@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for CarouselContent component render must match snapshot 1`] = `
+<div
+  className="carousel-content"
+>
+  <div
+    className="carousel-content-post"
+  >
+    A post
+  </div>
+</div>
+`;
+
+exports[`tests for CarouselContent component render must match snapshot 2`] = `
+<div
+  className="carousel-content"
+>
+  <div
+    className="carousel-content-title"
+  >
+    A title
+  </div>
+  <div
+    className="bp3-divider"
+  />
+  <div
+    className="carousel-content-post"
+  >
+    A post
+  </div>
+</div>
+`;
+
+exports[`tests for CarouselContent component render must match snapshot 3`] = `
+<div
+  className="carousel-content"
+>
+  <div
+    className="carousel-content-post"
+  >
+    A post
+    <a
+      className="carousel-content-link"
+      href="https://www.eatradar.com"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Read more
+    </a>
+  </div>
+</div>
+`;
+
+exports[`tests for CarouselContent component render must match snapshot 4`] = `
+<div
+  className="carousel-content"
+>
+  <div
+    className="carousel-content-post"
+  >
+    A post
+  </div>
+  <div
+    className="carousel-content-author"
+  >
+    An author
+  </div>
+</div>
+`;

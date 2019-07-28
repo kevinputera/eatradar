@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for SearchFilter component render must match snapshot 1`] = `
+<div
+  className="search-filter"
+>
+  <div
+    className="bp3-input-group bp3-large"
+  >
+    <span
+      className="bp3-icon bp3-icon-search"
+      icon="search"
+    >
+      <svg
+        data-icon="search"
+        height={16}
+        viewBox="0 0 16 16"
+        width={16}
+      >
+        <desc>
+          search
+        </desc>
+        <path
+          d="M15.55 13.43l-2.67-2.68a6.94 6.94 0 0 0 1.11-3.76c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 1 0 2.12-2.12zm-8.56-1.44c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+          fillRule="evenodd"
+        />
+      </svg>
+    </span>
+    <input
+      className="bp3-input"
+      onChange={[Function]}
+      placeholder="Search restaurants"
+      style={
+        Object {
+          "borderRadius": "10px",
+          "paddingRight": 10,
+        }
+      }
+      type="search"
+      value=""
+    />
+  </div>
+</div>
+`;

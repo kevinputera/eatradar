@@ -7,9 +7,10 @@ function PaginationControls(props) {
   return (
     <div className="pagination-controls">
       <Button
-        small
         minimal
+        small={props.small}
         icon="chevron-left"
+        className="pagination-controls-decr-button"
         onClick={props.handleOffsetDecr}
         style={{ borderRadius: '20px' }}
       />
@@ -24,9 +25,10 @@ function PaginationControls(props) {
         </div>
       )}
       <Button
-        small
         minimal
+        small={props.small}
         icon="chevron-right"
+        className="pagination-controls-incr-button"
         onClick={props.handleOffsetIncr}
         style={{ borderRadius: '20px' }}
       />

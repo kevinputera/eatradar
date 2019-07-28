@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for YelpRatingStars component render must match snapshot 1`] = `
+<div
+  className="yelp-rating-stars"
+>
+  <img
+    alt="Yelp star rating"
+    src="large_3.png"
+    width="91px"
+  />
+</div>
+`;
+
+exports[`tests for YelpRatingStars component render must match snapshot 2`] = `
+<div
+  className="yelp-rating-stars"
+>
+  <img
+    alt="Yelp star rating"
+    src="large_3.png"
+    width="77px"
+  />
+</div>
+`;
+
+exports[`tests for YelpRatingStars component render must match snapshot 3`] = `
+<div
+  className="yelp-rating-stars"
+>
+  <img
+    alt="Yelp star rating"
+    src="large_0.png"
+    width="77px"
+  />
+</div>
+`;

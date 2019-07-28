@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for GenericRatingStars component render must match snapshot 1`] = `
+<div
+  className="generic-rating-stars"
+  style={
+    Object {
+      "fontSize": "1.3em",
+    }
+  }
+>
+  <div
+    className="generic-stars-base"
+  >
+    ★★★★★
+  </div>
+  <div
+    className="generic-stars-overlay"
+    style={
+      Object {
+        "width": "90%",
+      }
+    }
+  >
+    ★★★★★
+  </div>
+</div>
+`;
+
+exports[`tests for GenericRatingStars component render must match snapshot 2`] = `
+<div
+  className="generic-rating-stars"
+  style={
+    Object {
+      "fontSize": "1.1em",
+    }
+  }
+>
+  <div
+    className="generic-stars-base"
+  >
+    ★★★★★
+  </div>
+  <div
+    className="generic-stars-overlay"
+    style={
+      Object {
+        "width": "90%",
+      }
+    }
+  >
+    ★★★★★
+  </div>
+</div>
+`;
+
+exports[`tests for GenericRatingStars component render must match snapshot 3`] = `
+<div
+  className="generic-rating-stars"
+  style={
+    Object {
+      "fontSize": "1.1em",
+    }
+  }
+>
+  <div
+    className="generic-stars-base"
+  >
+    ★★★★★
+  </div>
+</div>
+`;

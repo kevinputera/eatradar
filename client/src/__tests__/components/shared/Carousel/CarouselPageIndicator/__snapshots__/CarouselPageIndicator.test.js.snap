@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tests for CarouselPageIndicator component render must match snapshot 1`] = `
+<div
+  className="carousel-page-indicator"
+>
+  <div
+    className="carousel-page-bar"
+    onClick={[Function]}
+  >
+     
+  </div>
+  <div
+    className="carousel-page-bar"
+    onClick={[Function]}
+  >
+     
+  </div>
+  <div
+    className="carousel-page-bar"
+    onClick={[Function]}
+  >
+     
+  </div>
+  <div
+    className="carousel-page-bar active"
+    onClick={[Function]}
+  >
+     
+  </div>
+  <div
+    className="carousel-page-bar"
+    onClick={[Function]}
+  >
+     
+  </div>
+</div>
+`;
