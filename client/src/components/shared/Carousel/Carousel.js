@@ -17,9 +17,9 @@ function Carousel(props) {
     <div className="carousel-container">
       <CarouselNavigationButton icon="chevron-left" handleClick={handlePrevClick} />
       <div className="carousel-middle-wrapper">
-        <CarouselContent contents={props.contents} index={index} />
+        <CarouselContent content={props.contents[index]} />
         <CarouselPageIndicator
-          contents={props.contents}
+          length={props.contents}
           index={index}
           jumpTo={jumpTo}
         />

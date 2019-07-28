@@ -5,7 +5,7 @@ import './CarouselPageIndicator.css';
 function CarouselPageIndicator(props) {
   return (
     <div className="carousel-page-indicator">
-      {props.contents.map((_, index) => (
+      {new Array(props.length).fill(true).map((_, index) => (
         <div
           key={index}
           onClick={() => props.jumpTo(index)}

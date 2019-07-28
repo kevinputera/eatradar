@@ -4,21 +4,20 @@ import { Divider } from '@blueprintjs/core';
 import './CarouselContent.css';
 
 function CarouselContent(props) {
-  const content = props.contents[props.index];
   return (
     <div className="carousel-content">
-      {content.title && (
+      {props.content.title && (
         <>
-          <div className="carousel-content-title">{content.title}</div>
+          <div className="carousel-content-title">{props.content.title}</div>
           <Divider />
         </>
       )}
       <div className="carousel-content-post">
-        {content.post}
-        {content.link && (
+        {props.content.post}
+        {props.content.link && (
           <a
             className="carousel-content-link"
-            href={content.link}
+            href={props.content.link}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -26,8 +25,8 @@ function CarouselContent(props) {
           </a>
         )}
       </div>
-      {content.author && (
-        <div className="carousel-content-author">{content.author}</div>
+      {props.content.author && (
+        <div className="carousel-content-author">{props.content.author}</div>
       )}
     </div>
   );
