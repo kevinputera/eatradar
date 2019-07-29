@@ -17,7 +17,7 @@ export const usePaginatedContent = size => {
       }
       return o - 1;
     });
-  }, [offset, size]);
+  }, [size]);
 
   const handleOffsetIncr = useCallback(() => {
     setOffset(o => {
@@ -26,7 +26,7 @@ export const usePaginatedContent = size => {
       }
       return o + 1;
     });
-  }, [offset, size]);
+  }, [size]);
 
   return [offset, handleOffsetDecr, handleOffsetIncr];
 };
