@@ -1,0 +1,16 @@
+[
+  {
+    "id": "kml_1",
+    "name": "OMU",
+    "block": "3",
+    "street": "TEMASEK BOULEVARD",
+    "unit": "301A",
+    "postcode": "38983",
+    "level": "1",
+    "license": "OMU PTE. LTD.",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [103.857675501543, 1.29487905112126, 0]
+    }
+  }
+]
