@@ -18,7 +18,7 @@ Here's the screen recording!
 
 ![EatRadar GIF](eatradar.gif)
 
-*(Sorry for the lossy GIF file)*
+*(Apologies for the lossy GIF file!)*
 
 ## Developing
 
