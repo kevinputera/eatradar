@@ -5,7 +5,7 @@ EatRadar aims to solve food exploration's dull routine of:
 - Visiting multiple food review sites to compare ratings and reviews,
 - Switching between maps and food review sites to locate the restaurant,
 - Opening multiple tabs of food blogs, food testimonial sites, and others to get professional reviews of foods,
-- (And perhaps more)
+- *(And perhaps more)*
 
 By serving the users a map-based restaurant info aggregator application.
 
