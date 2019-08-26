@@ -95,10 +95,11 @@ exports.getRestaurants = async params => {
 
   try {
     ids = await exports.getRestaurantNamesAndLocations(params.q);
-    if (ids.length) {
-      filter = /* sql */ `WHERE restaurant.id IN (${ids
-        .map((_, idx) => '$' + (idx + values.length + 1))
-        .join(',')})`;
+    if (params.q && ids.length) {
+      filter = /* sql */ `INNER JOIN (VALUES ${ids
+        .map((_, idx) => '($' + (idx + values.length + 1) + ',' + (idx + 1) + ')')
+        .join(',')}) as f(id, ordering)
+        ON restaurant.id = f.id::integer`;
       values = [...values, ...ids.map(i => i._source.id)];
     }
   } catch (e) {
@@ -122,7 +123,11 @@ exports.getRestaurants = async params => {
       INNER JOIN street
           ON restaurant.street_id = street.id
       ${filter || ''}
-      ORDER BY restaurant.location <-> $1 ASC
+      ${
+        filter
+          ? /* sql */ `ORDER BY f.ordering`
+          : /* sql */ `ORDER BY restaurant.location <-> $1 ASC`
+      }
       OFFSET $2
       LIMIT $3;
     `,
