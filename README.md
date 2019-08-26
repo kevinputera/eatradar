@@ -5,7 +5,7 @@ EatRadar aims to solve food exploration's dull routine of:
 - Visiting multiple food review sites to compare ratings and reviews,
 - Switching between maps and food review sites to locate the restaurant,
 - Opening multiple tabs of food blogs, food testimonial sites, and others to get professional reviews of foods,
-- (And perhaps more)
+- *(And perhaps more)*
 
 By serving the users a map-based restaurant info aggregator application.
 
@@ -18,7 +18,7 @@ Here's the screen recording!
 
 ![EatRadar GIF](eatradar.gif)
 
-*(Sorry for the lossy GIF file)*
+*(Apologies for the lossy GIF file!)*
 
 ## Developing
 
@@ -27,7 +27,7 @@ First of, make a copy of the `.env.example` file in the root directory and renam
 Ensure [Docker](https://www.docker.com/get-started) is installed and `docker-compose` is working.
 
 Run `docker-compose up` in the project root. This will launch `postgres`, `pgweb`, `elasticsearch` and `kibana`
-docker images. The `postgres` image is loaded with PostGIS extension, used for geospatial querying.
+docker images. The `postgres` image is loaded with [PostGIS](https://postgis.net/) extension, used for geospatial querying.
 
 - `postgres`([learn more](https://www.postgresql.org/docs/)) runs on port `5432`.
 - `pgweb`([learn more](https://github.com/sosedoff/pgweb)) runs port `8081` (go to `localhost:8081` to use).
@@ -44,7 +44,7 @@ Run `npm run table` and `npm run seed` in that sequence if you haven't or if you
 
 Ensure that there are `blogposts.json` and `foodEstablishmentsParsed.json` files in the `scripts` directory.
 `blogposts.example.json` and `foodEstablishmentsParsed.example.json` are provided as templates.
-Raw data for `foodEstablishmentsParsed.json` can be obtained from [here](https://data.gov.sg/dataset/eating-establishments),
+Raw data for `foodEstablishmentsParsed.json` can be obtained [here](https://data.gov.sg/dataset/eating-establishments),
 while the processing of the raw data can be done by the `foodEstablishmentsRawParse.js` script.
 
 Create a `.env` file in the root directory, and copy the `.env.example` template.
