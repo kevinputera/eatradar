@@ -60,6 +60,6 @@
   border-radius: 10px;
   border: 1px solid #ced9e0;
 
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
